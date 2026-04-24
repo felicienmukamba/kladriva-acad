@@ -1,0 +1,22 @@
+{
+  "common": {
+    "dashboard": "Tableau de Bord",
+    "learning": "Centre d'Apprentissage",
+    "projects": "Espace Projets",
+    "mentorship": "Mentorat",
+    "network": "Réseau",
+    "jobs": "Marché du Travail",
+    "profile": "Profil",
+    "settings": "Paramètres",
+    "logout": "Déconnexion"
+  },
+  "dashboard": {
+    "welcome": "Bon retour, {name}",
+    "tagline": "Votre parcours de transformation de carrière continue.",
+    "reputation": "Points de Réputation"
+  },
+  "jobs": {
+    "title": "Marché de l'Emploi & Freelance",
+    "tagline": "Opportunités associées par IA basées sur vos compétences et votre portfolio."
+  }
+}

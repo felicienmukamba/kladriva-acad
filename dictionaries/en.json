@@ -1,0 +1,22 @@
+{
+  "common": {
+    "dashboard": "Dashboard",
+    "learning": "Learning Hub",
+    "projects": "Project Workspace",
+    "mentorship": "Mentorship",
+    "network": "Network",
+    "jobs": "Marketplace",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout"
+  },
+  "dashboard": {
+    "welcome": "Welcome back, {name}",
+    "tagline": "Your career transformation journey continues.",
+    "reputation": "Reputation Points"
+  },
+  "jobs": {
+    "title": "Job & Freelance Marketplace",
+    "tagline": "AI-matched opportunities based on your skills and project portfolio."
+  }
+}
