@@ -37,75 +37,62 @@ export function CourseList({ initialCourses, lang, dict }: CourseListProps) {
   return (
     <div className="space-y-12">
       {/* Search and Filters Bar */}
-      <div className="sticky top-20 z-30 py-6 bg-white/80 backdrop-blur-xl border-b border-slate-100 -mx-6 px-6">
-        <div className="flex flex-col gap-6">
-          <div className="flex flex-col md:flex-row gap-6 items-center">
+      <div className="py-8 bg-white">
+        <div className="flex flex-col gap-8">
+          <div className="flex flex-col md:flex-row gap-4 items-center max-w-2xl">
             <div className="flex-1 relative w-full group">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 w-5 h-5 group-focus-within:text-primary transition-colors" />
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-[#86868b] w-5 h-5 group-focus-within:text-[#1d1d1f] transition-colors" />
               <Input 
                 type="text" 
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                placeholder="What do you want to learn today?" 
-                className="w-full pl-12 pr-4 h-14 bg-slate-50 border-transparent rounded-2xl text-base focus-visible:ring-primary/20 focus-visible:border-primary/50 transition-all shadow-sm"
+                placeholder="Search courses..." 
+                className="w-full pl-12 pr-4 h-12 bg-[#f5f5f7] border-transparent rounded-full text-[17px] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] transition-all"
               />
-            </div>
-            <div className="flex gap-2 w-full md:w-auto">
-              <Button 
-                variant="outline" 
-                onClick={() => { setSearch(""); setSelectedCategory(null); setSelectedLevel(null); }}
-                className="rounded-2xl h-14 px-6 font-bold border-slate-200 hover:bg-slate-50 transition-all shrink-0"
-              >
-                Clear Filters
-              </Button>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-8 items-center">
-            <div className="space-y-3">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 pl-1">Category</h4>
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+          <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <Button 
+                variant="ghost"
+                onClick={() => setSelectedCategory(null)}
+                className={`rounded-full h-8 px-4 text-[13px] font-medium transition-all shrink-0 ${selectedCategory === null ? 'bg-[#1d1d1f] text-white hover:bg-black hover:text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]'}`}
+              >
+                All
+              </Button>
+              {categories.map(cat => (
                 <Button 
-                  variant={selectedCategory === null ? "default" : "outline"}
-                  onClick={() => setSelectedCategory(null)}
-                  className={`rounded-full h-9 px-5 font-bold transition-all shrink-0 ${selectedCategory === null ? 'bg-primary text-white' : 'border-slate-200'}`}
+                  key={cat}
+                  variant="ghost"
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`rounded-full h-8 px-4 text-[13px] font-medium transition-all shrink-0 ${selectedCategory === cat ? 'bg-[#1d1d1f] text-white hover:bg-black hover:text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]'}`}
                 >
-                  All
+                  {cat}
                 </Button>
-                {categories.map(cat => (
-                  <Button 
-                    key={cat}
-                    variant={selectedCategory === cat ? "default" : "outline"}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`rounded-full h-9 px-5 font-bold transition-all shrink-0 ${selectedCategory === cat ? 'bg-primary text-white' : 'border-slate-200'}`}
-                  >
-                    {cat}
-                  </Button>
-                ))}
-              </div>
+              ))}
             </div>
 
-            <div className="space-y-3">
-              <h4 className="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 pl-1">Level</h4>
-              <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+            <div className="h-6 w-[1px] bg-[#d2d2d7] hidden md:block mx-2"></div>
+
+            <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
+              <Button 
+                variant="ghost"
+                onClick={() => setSelectedLevel(null)}
+                className={`rounded-full h-8 px-4 text-[13px] font-medium transition-all shrink-0 ${selectedLevel === null ? 'bg-[#1d1d1f] text-white hover:bg-black hover:text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]'}`}
+              >
+                All Levels
+              </Button>
+              {levels.map(level => (
                 <Button 
-                  variant={selectedLevel === null ? "default" : "outline"}
-                  onClick={() => setSelectedLevel(null)}
-                  className={`rounded-full h-9 px-5 font-bold transition-all shrink-0 ${selectedLevel === null ? 'bg-primary text-white' : 'border-slate-200'}`}
+                  key={level}
+                  variant="ghost"
+                  onClick={() => setSelectedLevel(level)}
+                  className={`rounded-full h-8 px-4 text-[13px] font-medium transition-all shrink-0 ${selectedLevel === level ? 'bg-[#1d1d1f] text-white hover:bg-black hover:text-white' : 'bg-[#f5f5f7] text-[#1d1d1f] hover:bg-[#e8e8ed]'}`}
                 >
-                  All Levels
+                  {level}
                 </Button>
-                {levels.map(level => (
-                  <Button 
-                    key={level}
-                    variant={selectedLevel === level ? "default" : "outline"}
-                    onClick={() => setSelectedLevel(level)}
-                    className={`rounded-full h-9 px-5 font-bold transition-all shrink-0 ${selectedLevel === level ? 'bg-primary text-white' : 'border-slate-200'}`}
-                  >
-                    {level}
-                  </Button>
-                ))}
-              </div>
+              ))}
             </div>
           </div>
         </div>
@@ -123,65 +110,36 @@ export function CourseList({ initialCourses, lang, dict }: CourseListProps) {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               transition={{ duration: 0.4, delay: idx * 0.05 }}
             >
-              <Link href={`/${lang}/courses/${course.id}`} className="group block h-full">
-                <div className="relative bg-white rounded-[2.5rem] border border-slate-100 overflow-hidden hover:shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] transition-all duration-500 h-full flex flex-col group-hover:-translate-y-2">
+              <Link href={`/${lang}/courses/${course.id}`} className="group block">
+                <div className="flex flex-col gap-4">
                   {/* Image Container */}
-                  <div className="aspect-[16/10] bg-slate-100 relative overflow-hidden">
+                  <div className="aspect-[4/3] bg-[#f5f5f7] rounded-[18px] overflow-hidden relative">
                     {course.imageUrl ? (
                       <img 
                         src={course.imageUrl} 
                         alt={course.title} 
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" 
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
                       />
                     ) : (
-                      <div className="w-full h-full flex items-center justify-center bg-slate-50">
-                        <PlayCircle className="w-16 h-16 text-slate-200" />
+                      <div className="w-full h-full flex items-center justify-center">
+                        <PlayCircle className="w-12 h-12 text-[#d2d2d7]" />
                       </div>
                     )}
-                    <div className="absolute top-4 left-4 flex gap-2">
-                      <div className="px-3 py-1 rounded-full bg-white/90 backdrop-blur-md border border-white/20 text-[9px] font-black uppercase tracking-widest text-slate-900 shadow-sm">
-                        {course.category || "General"}
-                      </div>
-                      {(course as any).level && (
-                        <div className="px-3 py-1 rounded-full bg-slate-900/90 backdrop-blur-md text-[9px] font-black uppercase tracking-widest text-white shadow-sm">
-                          {(course as any).level}
-                        </div>
-                      )}
-                    </div>
                   </div>
 
                   {/* Content */}
-                  <div className="p-8 flex-1 flex flex-col">
-                    <div className="flex items-center gap-4 mb-4">
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-lg">
-                        <Star className="w-3 h-3 fill-amber-500" />
-                        4.8
-                      </div>
-                      <div className="flex items-center gap-1.5 text-xs font-bold text-slate-400">
-                        <BookOpen className="w-3 h-3" />
-                        {course.modules?.length || 0} Modules
-                      </div>
+                  <div>
+                    <div className="text-[11px] font-semibold text-[#86868b] uppercase tracking-wider mb-2">
+                      {course.category || "General"} {(course as any).level && ` • ${(course as any).level}`}
                     </div>
 
-                    <h3 className="text-xl font-bold mb-3 text-slate-900 group-hover:text-primary transition-colors line-clamp-2 leading-snug">
+                    <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-2 leading-tight">
                       {course.title}
                     </h3>
                     
-                    <p className="text-slate-500 text-sm mb-8 line-clamp-2 leading-relaxed">
+                    <p className="text-[#86868b] text-[15px] line-clamp-2 leading-relaxed">
                       {course.description}
                     </p>
-
-                    <div className="mt-auto pt-6 border-t border-slate-50 flex items-center justify-between">
-                      <div className="flex items-center gap-2 text-xs font-bold text-slate-900">
-                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                           <Globe className="w-3 h-3" />
-                        </div>
-                        English
-                      </div>
-                      <div className="text-sm font-black text-primary group-hover:translate-x-1 transition-transform flex items-center gap-1">
-                        View Details →
-                      </div>
-                    </div>
                   </div>
                 </div>
               </Link>

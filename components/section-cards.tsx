@@ -54,9 +54,9 @@ export function SectionCards() {
   return (
     <div className="grid grid-cols-1 gap-6 px-4 lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
       {stats.map((stat, i) => (
-        <Card key={i} className="group overflow-hidden border-none shadow-sm hover:shadow-xl transition-all duration-500 rounded-[2rem] bg-white relative">
+        <Card key={i} className="group overflow-hidden border-none shadow-apple hover:shadow-apple-lg transition-all duration-500 rounded-[2rem] apple-card relative">
           <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-             <stat.icon size={80} />
+             <stat.icon size={80} className="text-foreground" />
           </div>
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between mb-4">
@@ -68,13 +68,13 @@ export function SectionCards() {
                 {stat.trend}
               </Badge>
             </div>
-            <CardDescription className="font-bold text-slate-400 uppercase tracking-widest text-[10px]">{stat.title}</CardDescription>
-            <CardTitle className="text-3xl font-black text-slate-900 tabular-nums">
+            <CardDescription className="font-bold text-muted-foreground/70 uppercase tracking-widest text-[10px]">{stat.title}</CardDescription>
+            <CardTitle className="text-3xl font-black text-foreground tabular-nums">
               {stat.value}
             </CardTitle>
           </CardHeader>
           <CardFooter className="pt-2">
-            <p className="text-xs font-medium text-slate-500">{stat.desc}</p>
+            <p className="text-xs font-medium text-muted-foreground">{stat.desc}</p>
           </CardFooter>
         </Card>
       ))}

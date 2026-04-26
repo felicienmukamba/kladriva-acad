@@ -24,22 +24,13 @@ export default async function PathsPage({ params }: { params: Promise<{ lang: st
     <div className="min-h-screen bg-[#fcfcfd]">
       <Navbar />
       
-      <section className="relative pt-32 pb-16 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-1/4 w-[600px] h-[600px] bg-indigo-50 rounded-full blur-[120px] opacity-60" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8">
-              <Layers className="w-3 h-3 text-indigo-400" />
-              Career Acceleration
-            </div>
-            <h1 className="text-6xl md:text-7xl font-black text-slate-950 mb-8 tracking-tight leading-[0.95]">
-              Curated <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 italic">Learning Journeys.</span>
+      <section className="pt-32 pb-16 bg-[#f5f5f7]">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-4xl">
+            <h1 className="text-[56px] leading-[1.05] font-semibold text-[#1d1d1f] tracking-tight mb-4">
+              <span className="text-[#86868b]">Learning Paths.</span> From beginner to job-ready.
             </h1>
-            <p className="text-xl text-slate-500 leading-relaxed font-medium">
+            <p className="text-[24px] text-[#86868b] leading-relaxed font-normal">
               Take the guesswork out of learning. Our paths are carefully designed sequences of courses 
               that take you from beginner to job-ready professional.
             </p>

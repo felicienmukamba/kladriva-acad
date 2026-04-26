@@ -65,7 +65,7 @@ export async function completeLesson(enrollmentId: string, lessonId: string) {
     }
   }
 
-  revalidatePath("/dashboard/learning")
+  revalidatePath("/", "layout")
   return { success: true, isCompleted }
 }
 

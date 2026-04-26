@@ -62,39 +62,40 @@ export default async function LearningPage({
     if (!lesson) return <div>Lesson not found</div>
 
     return (
-      <div className="max-w-4xl mx-auto py-12 px-6 space-y-10">
-        <div className="space-y-4">
-          <h1 className="text-4xl font-black tracking-tight">{lesson.title}</h1>
-          <div className="flex items-center gap-4 text-sm text-slate-400 font-medium">
+      <div className="max-w-4xl mx-auto py-16 px-8 space-y-12">
+        <div className="space-y-3">
+          <div className="flex items-center gap-3 text-[13px] text-[#86868b] font-medium uppercase tracking-wider">
              <span className="flex items-center gap-1"><PlayCircle className="w-4 h-4" /> Video Lesson</span>
+             <span className="w-1 h-1 bg-[#d2d2d7] rounded-full"></span>
              <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Part of Module</span>
           </div>
+          <h1 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f] leading-tight">{lesson.title}</h1>
         </div>
 
         {lesson.videoUrl && (
-          <div className="aspect-video bg-slate-900 rounded-3xl overflow-hidden shadow-2xl ring-1 ring-slate-200">
+          <div className="aspect-video bg-black rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)] relative">
             <iframe 
               src={lesson.videoUrl.replace("watch?v=", "embed/")} 
-              className="w-full h-full"
+              className="w-full h-full border-0"
               allowFullScreen
               title={lesson.title}
             />
           </div>
         )}
 
-        <div className="prose prose-slate max-w-none">
-          <p className="text-lg text-slate-600 leading-relaxed">
+        <div className="prose prose-lg max-w-none prose-p:text-[#1d1d1f] prose-p:leading-relaxed prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-[#1d1d1f]">
+          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
             {lesson.content || "No content available for this lesson yet."}
           </p>
         </div>
 
-        <div className="pt-10 border-t flex justify-end">
+        <div className="pt-12 border-t border-[#d2d2d7] flex justify-end">
           <form action={async () => {
             "use server"
             await completeLesson(enrollment.id, lesson.id)
           }}>
-            <Button size="lg" className="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-10 h-14 rounded-2xl shadow-xl shadow-emerald-600/20 gap-2">
-              <CheckCircle2 className="w-5 h-5" /> Mark as Completed
+            <Button size="lg" className="bg-[#0066cc] hover:bg-[#0055b3] text-white font-medium px-8 h-12 rounded-full transition-all active:scale-[0.98]">
+              Mark as Completed
             </Button>
           </form>
         </div>
@@ -109,41 +110,45 @@ export default async function LearningPage({
     })
 
     return (
-      <div className="max-w-4xl mx-auto py-20 px-6 text-center space-y-12 h-full flex flex-col justify-center">
-        <div className="space-y-4">
-          <div className="w-20 h-20 bg-emerald-100 rounded-full flex items-center justify-center mx-auto mb-6">
-            <Award className="w-10 h-10 text-emerald-600" />
+      <div className="max-w-4xl mx-auto py-24 px-8 text-center space-y-12 h-full flex flex-col justify-center items-center">
+        <div className="space-y-6 flex flex-col items-center">
+          <div className="w-24 h-24 bg-[#f5f5f7] rounded-full flex items-center justify-center mb-4">
+            <Award className="w-12 h-12 text-[#1d1d1f]" />
           </div>
-          <h1 className="text-5xl font-black tracking-tight">Course Completed!</h1>
-          <p className="text-xl text-slate-500 max-w-2xl mx-auto">
+          <h1 className="text-[48px] font-semibold tracking-tight text-[#1d1d1f] leading-tight">Course Completed</h1>
+          <p className="text-[20px] text-[#86868b] max-w-2xl mx-auto leading-relaxed">
             Amazing work! You've successfully finished <strong>{enrollment.course.title}</strong>. 
             Your hard work and dedication have paid off.
           </p>
         </div>
 
         {certificate && (
-          <CertificateDownload 
-            data={{
-              userName: enrollment.user.name || "Student",
-              courseName: enrollment.course.title,
-              date: certificate.issuedAt,
-              certificateCode: certificate.code
-            }}
-          />
+          <div className="mt-8">
+            <CertificateDownload 
+              data={{
+                userName: enrollment.user.name || "Student",
+                courseName: enrollment.course.title,
+                date: certificate.issuedAt,
+                certificateCode: certificate.code
+              }}
+            />
+          </div>
         )}
       </div>
     )
   }
 
   return (
-    <div className="max-w-4xl mx-auto py-20 px-6 text-center space-y-8 h-full flex flex-col justify-center">
-      <div className="w-20 h-20 bg-primary/10 rounded-full flex items-center justify-center mx-auto">
-        <PlayCircle className="w-10 h-10 text-primary" />
+    <div className="max-w-4xl mx-auto py-24 px-8 text-center space-y-8 h-full flex flex-col justify-center items-center">
+      <div className="w-24 h-24 bg-[#f5f5f7] rounded-full flex items-center justify-center">
+        <PlayCircle className="w-12 h-12 text-[#1d1d1f]" />
       </div>
-      <h1 className="text-4xl font-black">Ready to start?</h1>
-      <p className="text-xl text-slate-500 max-w-md mx-auto">
-        Select a lesson from the sidebar to begin your transformation journey.
-      </p>
+      <div className="space-y-4">
+        <h1 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f]">Ready to start?</h1>
+        <p className="text-[20px] text-[#86868b] max-w-md mx-auto leading-relaxed">
+          Select a lesson from the sidebar to begin.
+        </p>
+      </div>
     </div>
   )
 }

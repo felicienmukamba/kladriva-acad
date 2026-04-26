@@ -67,94 +67,49 @@ export default async function CourseDetail({
       </div>
 
       {/* Hero Section */}
-      <section className="relative py-24 overflow-hidden border-b border-slate-100 bg-white">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-primary/5 to-transparent" />
-          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-rose-50/30 rounded-full blur-[100px]" />
-        </div>
+      <section className="pt-32 pb-24 bg-[#f5f5f7]">
+        <div className="max-w-7xl mx-auto px-6 text-center">
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-black text-white text-[11px] font-semibold uppercase tracking-widest mb-8">
+            <Zap className="w-4 h-4 text-[#0066cc]" />
+            Specialization
+          </div>
+          
+          <h1 className="text-[56px] md:text-[80px] font-semibold text-[#1d1d1f] tracking-tight leading-[1.05] mb-6">
+            {course.title}
+          </h1>
+          
+          <p className="text-[24px] md:text-[28px] text-[#86868b] max-w-4xl mx-auto font-normal leading-relaxed mb-12">
+            {course.description}
+          </p>
 
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <div className="space-y-8">
-               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-950 text-white text-[10px] font-black uppercase tracking-[0.2em]">
-                 <Zap className="w-3 h-3 text-primary" />
-                 Specialization
-               </div>
-               
-               <h1 className="text-5xl md:text-6xl font-black text-slate-950 leading-[0.95] tracking-tight">
-                 {course.title}
-               </h1>
-               
-               <p className="text-xl text-slate-500 leading-relaxed max-w-xl font-medium">
-                 {course.description}
-               </p>
-               
-               <div className="flex flex-wrap gap-8 text-sm font-bold text-slate-400 uppercase tracking-widest">
-                  <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-900 border border-slate-100">
-                        <Users className="w-5 h-5" />
-                     </div>
-                     <div className="flex flex-col">
-                        <span className="text-slate-900">12,450+</span>
-                        <span className="text-[10px]">Students</span>
-                     </div>
-                  </div>
-                  <div className="flex items-center gap-3">
-                     <div className="w-10 h-10 rounded-2xl bg-slate-50 flex items-center justify-center text-slate-900 border border-slate-100">
-                        <Globe className="w-5 h-5" />
-                     </div>
-                     <div className="flex flex-col">
-                        <span className="text-slate-900">English</span>
-                        <span className="text-[10px]">Language</span>
-                     </div>
-                  </div>
-               </div>
-
-               <div className="pt-4 max-w-xs">
-                  <EnrollButton 
-                    userId={session?.user?.id || ""} 
-                    courseId={id} 
-                    isEnrolled={!!enrollment}
-                    lang={lang}
-                  />
-                  <p className="text-[10px] text-center text-slate-400 font-bold uppercase tracking-widest mt-4">
-                    7-day free trial included
-                  </p>
-               </div>
+          <div className="flex flex-col items-center gap-4">
+            <div className="scale-110">
+              <EnrollButton 
+                userId={session?.user?.id || ""} 
+                courseId={id} 
+                isEnrolled={!!enrollment}
+                lang={lang}
+              />
             </div>
-
-            <div className="relative group lg:block hidden">
-               <div className="absolute -inset-4 bg-gradient-to-tr from-primary/10 to-rose-500/10 rounded-[3rem] blur-2xl group-hover:blur-3xl transition-all duration-700" />
-               <div className="relative aspect-video rounded-[3rem] overflow-hidden border-8 border-white shadow-2xl bg-slate-900">
-                  {course.imageUrl ? (
-                    <img src={course.imageUrl} alt={course.title} className="w-full h-full object-cover opacity-80" />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                       <PlayCircle className="w-20 h-20 text-white/20" />
-                    </div>
-                  )}
-               </div>
-            </div>
+            <p className="text-[14px] text-[#86868b] mt-4">7-day free trial included.</p>
           </div>
         </div>
       </section>
 
       {/* Key Info Bar */}
-      <section className="bg-white border-b border-slate-100">
-        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-4 divide-y md:divide-y-0 md:divide-x divide-slate-100">
+      <section className="bg-white border-b border-[#d2d2d7]">
+        <div className="max-w-7xl mx-auto px-6 grid grid-cols-2 md:grid-cols-4 divide-x divide-[#d2d2d7]">
            {[
              { icon: Calendar, title: "Flexible Schedule", desc: "Learn at your own pace" },
              { icon: Award, title: "Pro Certificate", desc: "Shareable on LinkedIn" },
              { icon: ShieldCheck, title: "100% Online", desc: "Start instantly today" },
              { icon: Clock, title: "120 Hours", desc: "Comprehensive content" }
            ].map((item, i) => (
-             <div key={i} className="py-8 md:px-8 flex items-center gap-4">
-               <div className="w-12 h-12 rounded-2xl bg-slate-50 flex items-center justify-center text-primary shrink-0">
-                 <item.icon className="w-6 h-6" />
-               </div>
+             <div key={i} className="py-10 px-4 md:px-8 flex flex-col items-center text-center gap-3">
+               <item.icon className="w-8 h-8 text-[#1d1d1f]" />
                <div>
-                 <p className="font-bold text-slate-900 text-sm">{item.title}</p>
-                 <p className="text-slate-500 text-xs">{item.desc}</p>
+                 <p className="font-semibold text-[#1d1d1f] text-[15px]">{item.title}</p>
+                 <p className="text-[#86868b] text-[13px]">{item.desc}</p>
                </div>
              </div>
            ))}
@@ -163,56 +118,25 @@ export default async function CourseDetail({
 
       {/* Course Details Content */}
       <section className="max-w-7xl mx-auto px-6 py-24">
-        <div className="grid lg:grid-cols-3 gap-24">
-           <div className="lg:col-span-2 space-y-20">
-              <div className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm relative overflow-hidden">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-slate-50 rounded-full blur-3xl opacity-50" />
-                 <h2 className="text-3xl font-black mb-8 tracking-tight">Skills you'll acquire</h2>
-                 <div className="grid sm:grid-cols-2 gap-6">
-                    {[
-                      "Advanced System Architecture",
-                      "Industrial AI Implementation",
-                      "Production-grade Security",
-                      "Real-time Data Processing"
-                    ].map(text => (
-                      <div key={text} className="flex gap-4 items-center">
-                         <div className="w-6 h-6 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 shrink-0">
-                            <CheckCircle2 className="w-4 h-4" />
-                         </div>
-                         <span className="text-slate-700 font-bold text-sm">{text}</span>
-                      </div>
-                    ))}
-                 </div>
-              </div>
-
-              <div className="space-y-10">
-                 <div className="flex items-center justify-between">
-                   <h2 className="text-3xl font-black tracking-tight">Program Syllabus</h2>
-                   <div className="text-xs font-black uppercase tracking-widest text-slate-400">
-                     {course.modules.length} Modules • {course.modules.reduce((acc, m) => acc + m.lessons.length, 0)} Lessons
-                   </div>
-                 </div>
+        <div className="grid lg:grid-cols-3 gap-16">
+           <div className="lg:col-span-2 space-y-24">
+              <div className="space-y-12">
+                 <h2 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f]">Program Syllabus</h2>
                  
-                 <div className="space-y-4">
+                 <div className="space-y-6">
                     {course.modules.map((module, idx) => (
-                      <div key={module.id} className="group p-8 bg-white rounded-[2.5rem] border border-slate-100 hover:border-primary/20 hover:shadow-xl transition-all duration-500">
-                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-                            <div className="space-y-2">
-                               <div className="text-[10px] font-black text-primary uppercase tracking-[0.2em]">Module {idx + 1}</div>
-                               <h4 className="text-xl font-bold text-slate-900 group-hover:text-primary transition-colors">
-                                 {module.title}
-                               </h4>
-                               <p className="text-slate-500 text-sm leading-relaxed max-w-xl">
-                                 {module.description}
-                               </p>
-                            </div>
-                            <div className="shrink-0 flex items-center gap-3">
-                               <div className="bg-slate-50 px-4 py-2 rounded-2xl text-[10px] font-black text-slate-400 uppercase tracking-widest">
-                                 {module.lessons.length} Lessons
-                               </div>
-                               <div className="w-10 h-10 rounded-full bg-slate-50 flex items-center justify-center text-slate-300 group-hover:bg-primary group-hover:text-white transition-all">
-                                 <ChevronRight className="w-5 h-5" />
-                               </div>
+                      <div key={module.id} className="p-8 bg-[#f5f5f7] rounded-[24px] hover:bg-[#e8e8ed] transition-colors duration-300">
+                         <div className="flex flex-col gap-4">
+                            <div className="text-[12px] font-semibold text-[#86868b] uppercase tracking-wider">Module {idx + 1}</div>
+                            <h4 className="text-[24px] font-semibold text-[#1d1d1f]">
+                              {module.title}
+                            </h4>
+                            <p className="text-[#1d1d1f] text-[17px] leading-relaxed max-w-xl">
+                              {module.description}
+                            </p>
+                            <div className="flex items-center gap-2 text-[#0066cc] font-medium mt-2">
+                               <PlayCircle className="w-4 h-4" />
+                               <span className="text-[15px]">{module.lessons.length} Lessons</span>
                             </div>
                          </div>
                       </div>
@@ -221,27 +145,25 @@ export default async function CourseDetail({
               </div>
            </div>
 
-           <aside className="space-y-12">
-              <div className="bg-slate-900 rounded-[3rem] p-10 text-white relative overflow-hidden">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-primary rounded-full blur-[80px] opacity-20" />
-                 <h4 className="text-xl font-bold mb-6 flex items-center gap-2">
-                   <Award className="w-5 h-5 text-primary" />
+           <aside className="space-y-8">
+              <div className="bg-[#1d1d1f] rounded-[24px] p-8 text-white">
+                 <h4 className="text-[24px] font-semibold mb-4">
                    Certification
                  </h4>
-                 <p className="text-slate-400 text-sm leading-relaxed mb-8">
+                 <p className="text-[#a1a1a6] text-[15px] leading-relaxed mb-8">
                    Upon completion, you'll receive a verified digital certificate issued by Kladriva Academy 
                    to share with your professional network.
                  </p>
-                 <div className="aspect-video bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center italic text-white/20 text-xs font-bold uppercase tracking-widest">
+                 <div className="aspect-[4/3] bg-white/10 rounded-[12px] flex items-center justify-center text-white/30 text-[13px] font-medium">
                    Sample Certificate
                  </div>
               </div>
 
-              <div className="space-y-6">
-                 <h4 className="text-xs font-black uppercase tracking-widest text-slate-400 pl-2">Tools you'll master</h4>
-                 <div className="flex flex-wrap gap-2">
+              <div className="bg-[#f5f5f7] rounded-[24px] p-8">
+                 <h4 className="text-[20px] font-semibold mb-6 text-[#1d1d1f]">Tools you'll master</h4>
+                 <div className="flex flex-wrap gap-3">
                     {["Python", "Docker", "TensorFlow", "React", "Prisma"].map(skill => (
-                      <span key={skill} className="bg-white border border-slate-100 px-4 py-2 rounded-xl text-xs font-bold text-slate-900 shadow-sm">
+                      <span key={skill} className="bg-white px-4 py-2 rounded-full text-[15px] font-medium text-[#1d1d1f] shadow-sm">
                         {skill}
                       </span>
                     ))}

@@ -44,13 +44,13 @@ export function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 border-b border-black/6 bg-white/72 backdrop-blur-2xl">
-      <div className="apple-section-shell flex h-16 items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 border-b border-[#d2d2d7] bg-white/80 backdrop-blur-2xl">
+      <div className="max-w-7xl mx-auto px-6 flex h-14 items-center justify-between gap-4">
         <Link href={baseHref} className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-full bg-black text-white shadow-sm">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1d1d1f] text-white">
             <GraduationCap className="h-4 w-4" />
           </div>
-          <span className="text-[15px] font-semibold tracking-[-0.02em] text-slate-950">
+          <span className="text-[15px] font-semibold tracking-tight text-[#1d1d1f]">
             Kladriva Academy
           </span>
         </Link>
@@ -60,7 +60,7 @@ export function Navbar() {
             <Link
               key={item.href}
               href={item.href}
-              className="text-sm font-medium tracking-[-0.01em] text-slate-600 transition-colors hover:text-slate-950"
+              className="text-[13px] font-medium text-[#1d1d1f] transition-colors hover:text-[#86868b]"
             >
               {item.label}
             </Link>
@@ -68,7 +68,7 @@ export function Navbar() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden items-center gap-1 rounded-full border border-black/8 bg-white/80 p-1 sm:flex">
+          <div className="hidden items-center gap-1 rounded-full border border-[#d2d2d7] bg-[#f5f5f7] p-1 sm:flex">
             <LanguageToggle />
             <ThemeToggle />
           </div>
@@ -103,13 +103,13 @@ export function Navbar() {
               <Button
                 onClick={() => signIn()}
                 variant="ghost"
-                className="h-10 rounded-full px-4 text-sm font-medium text-slate-700"
+                className="h-8 rounded-full px-4 text-[13px] font-medium text-[#1d1d1f] hover:bg-[#f5f5f7]"
               >
                 {labels.signIn}
               </Button>
               <Button
                 onClick={() => signIn()}
-                className="h-10 rounded-full bg-slate-950 px-5 text-sm font-medium text-white shadow-[0_10px_30px_rgba(15,23,42,0.16)] hover:bg-slate-800"
+                className="h-8 rounded-full bg-[#0066cc] px-5 text-[13px] font-medium text-white hover:bg-[#0055b3]"
               >
                 {labels.cta}
               </Button>

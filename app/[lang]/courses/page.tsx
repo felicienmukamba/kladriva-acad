@@ -30,26 +30,12 @@ export default async function CoursesCatalog({
       <Navbar />
       
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-50 rounded-full blur-[120px] opacity-60" />
-          <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-rose-50 rounded-full blur-[120px] opacity-40" />
-        </div>
-
-        <div className="max-w-7xl mx-auto px-6 relative z-10">
-          <div className="max-w-3xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] mb-8">
-              <Sparkles className="w-3 h-3 text-indigo-400" />
-              Expert-Led Training
-            </div>
-            <h1 className="text-6xl md:text-7xl font-black text-slate-950 mb-8 tracking-tight leading-[0.95]">
-              Level Up Your <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60 italic">Technical Skills.</span>
+      <section className="pt-32 pb-16">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="max-w-4xl">
+            <h1 className="text-[56px] leading-[1.05] font-semibold text-[#1d1d1f] tracking-tight">
+              <span className="text-[#86868b]">Kladriva Courses.</span> The best way to master industrial technology.
             </h1>
-            <p className="text-xl text-slate-500 leading-relaxed max-w-2xl font-medium">
-              Explore our library of advanced courses in Industrial AI, Automation, and Modern Development. 
-              Built by engineers, for engineers.
-            </p>
           </div>
         </div>
       </section>

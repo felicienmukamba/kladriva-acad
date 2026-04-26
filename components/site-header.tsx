@@ -52,16 +52,16 @@ export function SiteHeader() {
   const breadcrumb = crumbs.slice(0, -1)
 
   return (
-    <header className="sticky top-0 z-40 flex h-(--header-height) shrink-0 items-center border-b border-black/6 bg-white/72 backdrop-blur-2xl transition-[width,height] ease-linear">
+    <header className="sticky top-0 z-40 flex h-(--header-height) shrink-0 items-center border-b border-border/40 bg-background/70 backdrop-blur-2xl transition-[width,height] ease-linear shadow-sm">
       <div className="flex w-full items-center gap-2 px-4 lg:px-6">
-        <SidebarTrigger className="-ml-1 text-slate-500 hover:text-slate-950 transition-colors" />
+        <SidebarTrigger className="-ml-1 text-muted-foreground hover:text-foreground transition-colors" />
         <Separator
           orientation="vertical"
-          className="mx-1 h-4 bg-black/10"
+          className="mx-1 h-4 bg-border/50"
         />
         <div className="flex items-center gap-2 min-w-0">
           {breadcrumb.length > 0 ? (
-            <p className="hidden sm:flex items-center gap-2 text-[13px] text-slate-500 truncate">
+            <p className="hidden sm:flex items-center gap-2 text-[13px] text-muted-foreground truncate">
               {breadcrumb.map((item) => (
                 <span key={item} className="truncate">
                   {item}
@@ -70,14 +70,14 @@ export function SiteHeader() {
             </p>
           ) : null}
           {breadcrumb.length > 0 ? (
-            <span className="hidden sm:block text-slate-300">/</span>
+            <span className="hidden sm:block text-muted-foreground/40">/</span>
           ) : null}
-          <h1 className="text-[15px] font-semibold tracking-[-0.02em] text-slate-950 truncate">
+          <h1 className="text-[15px] font-semibold tracking-[-0.02em] text-foreground truncate">
             {title}
           </h1>
         </div>
         <div className="ml-auto flex items-center gap-2">
-          <div className="flex items-center gap-1 rounded-full border border-black/8 bg-white/80 p-1 shadow-sm">
+          <div className="flex items-center gap-1 rounded-full border border-border/50 bg-background/50 backdrop-blur-md p-1 shadow-sm">
             <LanguageToggle />
             <ThemeToggle />
           </div>

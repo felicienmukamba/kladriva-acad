@@ -31,8 +31,8 @@ export default async function DashboardLayout({
       }
     >
       <AppSidebar variant="inset" lang={lang} />
-      <SidebarInset className="bg-[#f5f5f7] relative overflow-hidden">
-        <div className="absolute inset-0 bg-mesh pointer-events-none opacity-50" />
+      <SidebarInset className="bg-background relative overflow-hidden">
+        <div className="absolute inset-0 bg-mesh pointer-events-none opacity-40 mix-blend-screen dark:mix-blend-lighten" />
         <SiteHeader />
         <main className="flex flex-1 flex-col relative z-10">
           <div className="@container/main flex flex-1 flex-col py-8">

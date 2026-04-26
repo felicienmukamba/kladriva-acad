@@ -44,40 +44,40 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">{dict.network.title}</h1>
-          <p className="text-slate-400">{dict.network.tagline}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">{dict.network.title}</h1>
+          <p className="text-muted-foreground">{dict.network.tagline}</p>
         </div>
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="apple-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-200">Connections</CardTitle>
-            <Users className="h-4 w-4 text-indigo-400" />
+            <CardTitle className="text-sm font-medium text-foreground">Connections</CardTitle>
+            <Users className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">0</div>
-            <p className="text-xs text-slate-500">No new this month</p>
+            <div className="text-2xl font-bold text-foreground">0</div>
+            <p className="text-xs text-muted-foreground">No new this month</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="apple-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-200">Profile Views</CardTitle>
-            <TrendingUp className="h-4 w-4 text-indigo-400" />
+            <CardTitle className="text-sm font-medium text-foreground">Profile Views</CardTitle>
+            <TrendingUp className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">0</div>
-            <p className="text-xs text-slate-500">Starting fresh</p>
+            <div className="text-2xl font-bold text-foreground">0</div>
+            <p className="text-xs text-muted-foreground">Starting fresh</p>
           </CardContent>
         </Card>
-        <Card className="bg-slate-900 border-slate-800">
+        <Card className="apple-card">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-slate-200">Post Impressions</CardTitle>
-            <Globe className="h-4 w-4 text-indigo-400" />
+            <CardTitle className="text-sm font-medium text-foreground">Post Impressions</CardTitle>
+            <Globe className="h-4 w-4 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-white">0</div>
-            <p className="text-xs text-slate-500">Last 30 days</p>
+            <div className="text-2xl font-bold text-foreground">0</div>
+            <p className="text-xs text-muted-foreground">Last 30 days</p>
           </CardContent>
         </Card>
       </div>
@@ -88,17 +88,17 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
           {session.user?.id && <CreatePostForm userId={session.user.id} />}
           
           <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-white">Community Feed</h2>
+            <h2 className="text-xl font-semibold text-foreground">Community Feed</h2>
             {posts.length === 0 ? (
-              <Card className="bg-slate-900 border-slate-800 py-10 text-center">
-                <p className="text-slate-500">The feed is quiet. Be the first to post!</p>
+              <Card className="apple-card py-10 text-center">
+                <p className="text-muted-foreground">The feed is quiet. Be the first to post!</p>
               </Card>
             ) : (
               posts.map((post) => (
-                <Card key={post.id} className="bg-slate-900 border-slate-800 hover:border-slate-700 transition-colors">
+                <Card key={post.id} className="apple-card transition-colors">
                   <CardContent className="pt-4">
                     <div className="flex items-center gap-3 mb-4">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white font-bold text-sm overflow-hidden">
+                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm overflow-hidden">
                         {post.user.image ? (
                           <img src={post.user.image} alt={post.user.name || ''} className="w-full h-full object-cover" />
                         ) : (
@@ -106,21 +106,21 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
                         )}
                       </div>
                       <div>
-                        <p className="font-semibold text-white text-sm">{post.user.name}</p>
-                        <p className="text-xs text-slate-500">
+                        <p className="font-semibold text-foreground text-sm">{post.user.name}</p>
+                        <p className="text-xs text-muted-foreground">
                           {new Date(post.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    <p className="text-slate-300 text-sm leading-relaxed mb-6">
+                    <p className="text-foreground/80 text-sm leading-relaxed mb-6">
                       {post.content}
                     </p>
-                    <div className="flex items-center gap-6 pt-4 border-t border-slate-800">
-                      <button className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-indigo-400 transition-colors group">
-                        <Heart className="w-4 h-4 group-hover:fill-indigo-400/20" /> 
+                    <div className="flex items-center gap-6 pt-4 border-t border-border/50">
+                      <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors group">
+                        <Heart className="w-4 h-4 group-hover:fill-primary/20" /> 
                         <span>{post._count.likes}</span>
                       </button>
-                      <button className="flex items-center gap-1.5 text-sm text-slate-400 hover:text-indigo-400 transition-colors">
+                      <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
                         <MessageCircle className="w-4 h-4" /> 
                         <span>{post._count.comments}</span>
                       </button>
@@ -134,11 +134,11 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
 
         {/* Suggested Connections */}
         <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">Suggested for you</h2>
+          <h2 className="text-xl font-semibold text-foreground">Suggested for you</h2>
           {suggestedUsers.map((person) => (
-            <Card key={person.id} className="bg-slate-900 border-slate-800">
+            <Card key={person.id} className="apple-card">
               <CardContent className="py-4 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center text-white font-bold text-sm shrink-0 overflow-hidden">
+                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm shrink-0 overflow-hidden">
                   {person.image ? (
                     <img src={person.image} alt={person.name || ''} className="w-full h-full object-cover" />
                   ) : (
@@ -146,10 +146,10 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-white text-sm truncate">{person.name}</p>
-                  <p className="text-xs text-slate-400 truncate">{person.headline || 'Kladriva Student'}</p>
+                  <p className="font-semibold text-foreground text-sm truncate">{person.name}</p>
+                  <p className="text-xs text-muted-foreground truncate">{person.headline || 'Kladriva Student'}</p>
                 </div>
-                <Button size="sm" variant="outline" className="border-indigo-500/30 text-indigo-400 hover:bg-indigo-500/10 shrink-0">
+                <Button size="sm" variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 shrink-0">
                   <UserPlus className="w-4 h-4" />
                 </Button>
               </CardContent>

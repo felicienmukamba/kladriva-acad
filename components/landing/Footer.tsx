@@ -70,32 +70,32 @@ export function Footer({ lang }: FooterProps) {
         };
 
   return (
-    <footer className="border-t border-black/6 bg-[#f5f5f7] py-12">
-      <div className="apple-section-shell">
+    <footer className="bg-[#f5f5f7] py-16 border-t border-[#d2d2d7]">
+      <div className="max-w-7xl mx-auto px-6">
         <div className="grid gap-10 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div className="max-w-sm">
             <Link href={`/${lang}`} className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-950 text-white">
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1d1d1f] text-white">
                 <GraduationCap className="h-4 w-4" />
               </div>
-              <span className="text-base font-semibold tracking-[-0.02em] text-slate-950">
+              <span className="text-[15px] font-semibold tracking-tight text-[#1d1d1f]">
                 Kladriva Academy
               </span>
             </Link>
-            <p className="mt-5 text-sm leading-7 text-slate-500">{copy.description}</p>
+            <p className="mt-4 text-[13px] leading-relaxed text-[#86868b]">{copy.description}</p>
           </div>
 
           {copy.sections.map((section) => (
             <div key={section.title}>
-              <h4 className="text-sm font-semibold uppercase tracking-[0.18em] text-slate-500">
+              <h4 className="text-[12px] font-semibold uppercase tracking-wider text-[#1d1d1f]">
                 {section.title}
               </h4>
-              <ul className="mt-5 space-y-3">
+              <ul className="mt-4 space-y-2">
                 {section.links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm text-slate-600 transition-colors hover:text-slate-950"
+                      className="text-[13px] text-[#86868b] transition-colors hover:text-[#1d1d1f]"
                     >
                       {link.label}
                     </Link>
@@ -106,7 +106,7 @@ export function Footer({ lang }: FooterProps) {
           ))}
         </div>
 
-        <div className="mt-10 border-t border-black/6 pt-6 text-xs text-slate-500">
+        <div className="mt-16 border-t border-[#d2d2d7] pt-8 text-[12px] text-[#86868b] text-center">
           {copy.footer}
         </div>
       </div>

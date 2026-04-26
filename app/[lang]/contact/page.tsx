@@ -16,8 +16,10 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
         <div className="grid lg:grid-cols-2 gap-20">
           <div className="space-y-12">
             <div className="space-y-6">
-              <h1 className="text-5xl font-black tracking-tight">Let's start a <br/><span className="text-primary">Conversation</span></h1>
-              <p className="text-xl text-slate-500 leading-relaxed">
+              <h1 className="text-[56px] leading-[1.05] font-semibold text-[#1d1d1f] tracking-tight">
+                Let's start a <br/><span className="text-[#86868b]">Conversation</span>
+              </h1>
+              <p className="text-[20px] text-[#86868b] leading-relaxed">
                 Have questions about our programs, mentorship, or corporate training? We're here to help you navigate your journey.
               </p>
             </div>
@@ -29,41 +31,31 @@ export default async function ContactPage({ params }: { params: Promise<{ lang: 
                 { icon: MapPin, title: "Visit us", detail: "123 Tech Avenue, Silicon Valley", sub: "Global Headquarters" }
               ].map((item, i) => (
                 <div key={i} className="flex gap-6">
-                   <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-primary shrink-0">
-                      <item.icon className="w-6 h-6" />
+                   <div className="w-12 h-12 flex items-center justify-center text-[#1d1d1f] shrink-0">
+                      <item.icon className="w-8 h-8" />
                    </div>
                    <div>
-                      <h3 className="font-bold text-slate-900">{item.title}</h3>
-                      <p className="text-lg text-slate-600 font-medium">{item.detail}</p>
-                      <p className="text-sm text-slate-400">{item.sub}</p>
+                      <h3 className="font-semibold text-[#1d1d1f] text-[17px]">{item.title}</h3>
+                      <p className="text-[15px] text-[#1d1d1f]">{item.detail}</p>
+                      <p className="text-[13px] text-[#86868b]">{item.sub}</p>
                    </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <div className="bg-slate-50 rounded-[3rem] p-10 md:p-16 border border-slate-200 shadow-sm relative">
-             <div className="space-y-8 relative z-10">
-                <div className="grid md:grid-cols-2 gap-6">
-                   <div className="space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Full Name</label>
-                      <Input className="h-14 rounded-2xl border-slate-200 focus-visible:ring-primary/20 bg-white" placeholder="John Doe" />
-                   </div>
-                   <div className="space-y-2">
-                      <label className="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Email Address</label>
-                      <Input className="h-14 rounded-2xl border-slate-200 focus-visible:ring-primary/20 bg-white" placeholder="john@example.com" />
-                   </div>
+          <div className="bg-[#f5f5f7] rounded-[24px] p-8 md:p-12">
+             <div className="space-y-6">
+                <div className="grid md:grid-cols-2 gap-4">
+                   <Input className="h-14 rounded-xl border-[#d2d2d7] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] bg-white text-[17px]" placeholder="First Name" />
+                   <Input className="h-14 rounded-xl border-[#d2d2d7] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] bg-white text-[17px]" placeholder="Last Name" />
                 </div>
-                <div className="space-y-2">
-                   <label className="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Subject</label>
-                   <Input className="h-14 rounded-2xl border-slate-200 focus-visible:ring-primary/20 bg-white" placeholder="How can we help?" />
-                </div>
-                <div className="space-y-2">
-                   <label className="text-xs font-black uppercase tracking-widest text-slate-400 px-1">Message</label>
-                   <Textarea className="min-h-[160px] rounded-2xl border-slate-200 focus-visible:ring-primary/20 bg-white py-4" placeholder="Tell us more about your inquiry..." />
-                </div>
-                <Button size="lg" className="w-full h-16 rounded-2xl font-bold text-lg shadow-xl shadow-primary/20 gap-2">
-                   <MessageSquare className="w-5 h-5" /> Send Message
+                <Input className="h-14 rounded-xl border-[#d2d2d7] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] bg-white text-[17px]" placeholder="Email Address" />
+                <Input className="h-14 rounded-xl border-[#d2d2d7] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] bg-white text-[17px]" placeholder="Subject" />
+                <Textarea className="min-h-[160px] rounded-xl border-[#d2d2d7] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] bg-white text-[17px] py-4" placeholder="Your Message..." />
+                
+                <Button size="lg" className="w-full h-12 bg-[#0066cc] hover:bg-[#0055b3] text-white rounded-full font-medium text-[15px] mt-4">
+                   Send Message
                 </Button>
              </div>
           </div>

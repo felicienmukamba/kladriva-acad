@@ -62,8 +62,8 @@
   "dashboard": {
     "student": {
       "title": "Portail Étudiant",
-      "tagline": "Continuez votre cursus et suivez vos progrès académiques.",
-      "activePrograms": "Programmes d'Apprentissage Actifs",
+      "tagline": "Propulsez votre carrière. Suivez votre progression et atteignez l'élite professionnelle.",
+      "activePrograms": "Vos Parcours de Transformation",
       "stats": {
         "courses": { "title": "Mes Cours", "desc": "Cours en cours" },
         "mentorship": { "title": "Mentorat", "desc": "Connexions actives" },
@@ -150,8 +150,8 @@
   },
   "projects": {
     "title": "Laboratoire de Projets",
-    "tagline": "Construisez des applications réelles et montrez vos compétences.",
-    "leaderboard": "Classement",
+    "tagline": "Forgez votre portfolio avec des défis concrets et démontrez votre expertise au marché.",
+    "leaderboard": "Classement des Talents",
     "difficulty": "Difficulté",
     "startLab": "Démarrer le Lab",
     "capstone": {
@@ -162,8 +162,8 @@
   },
   "learning": {
     "title": "Centre d'Apprentissage",
-    "tagline": "Votre espace personnel pour maîtriser de nouvelles compétences.",
-    "resume": "Reprendre l'apprentissage",
+    "tagline": "Maîtrisez les compétences de demain et transformez votre trajectoire professionnelle avec nos experts.",
+    "resume": "Reprendre l'ascension",
     "myCourses": "Mes Cours",
     "completed": "Terminé"
   },
@@ -184,8 +184,8 @@
   },
   "network": {
     "title": "Réseau de l'Académie",
-    "tagline": "Connectez-vous avec vos pairs, mentors et recruteurs.",
-    "connect": "Se connecter",
+    "tagline": "Développez un réseau d'influence avec des leaders de l'industrie, des mentors et des recruteurs de premier plan.",
+    "connect": "S'allier",
     "message": "Message"
   },
   "paths": {

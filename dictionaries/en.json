@@ -62,8 +62,8 @@
   "dashboard": {
     "student": {
       "title": "Student Portal",
-      "tagline": "Continue your curriculum and track your academic progress.",
-      "activePrograms": "Active Learning Programs",
+      "tagline": "Accelerate your career. Track your progress and join the professional elite.",
+      "activePrograms": "Your Transformation Paths",
       "stats": {
         "courses": { "title": "My Courses", "desc": "Courses in progress" },
         "mentorship": { "title": "Mentorship", "desc": "Active connections" },
@@ -150,8 +150,8 @@
   },
   "projects": {
     "title": "Project Labs",
-    "tagline": "Build real-world applications and showcase your skills.",
-    "leaderboard": "Leaderboard",
+    "tagline": "Forge your portfolio with real-world challenges and prove your expertise to the market.",
+    "leaderboard": "Talent Leaderboard",
     "difficulty": "Difficulty",
     "startLab": "Start Lab",
     "capstone": {
@@ -162,8 +162,8 @@
   },
   "learning": {
     "title": "Learning Hub",
-    "tagline": "Your personal classroom for mastered skills and growth.",
-    "resume": "Resume learning",
+    "tagline": "Master tomorrow's skills today and transform your professional trajectory with our experts.",
+    "resume": "Resume your ascent",
     "myCourses": "My Courses",
     "completed": "Completed"
   },
@@ -184,8 +184,8 @@
   },
   "network": {
     "title": "Academy Network",
-    "tagline": "Connect with peers, mentors, and industry recruiters.",
-    "connect": "Connect",
+    "tagline": "Build an influential network with industry leaders, elite mentors, and top-tier recruiters.",
+    "connect": "Ally",
     "message": "Message"
   },
   "paths": {

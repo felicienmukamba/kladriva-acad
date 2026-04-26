@@ -121,15 +121,15 @@
 @layer utilities {
   /* Définition de l'effet glass */
   .glass {
-    @apply bg-background/70 backdrop-blur-2xl border border-white/10 shadow-apple;
+    @apply bg-background/70 backdrop-blur-2xl border border-border/50 shadow-apple;
   }
   
   .glass-dark {
-    @apply bg-black/40 backdrop-blur-2xl border border-white/5 shadow-apple-lg;
+    @apply bg-background/40 backdrop-blur-2xl border border-border/30 shadow-apple-lg;
   }
 
   .apple-card {
-    @apply bg-card rounded-2xl border border-border shadow-apple transition-all duration-300 hover:shadow-apple-lg;
+    @apply bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50 shadow-apple transition-all duration-300 hover:shadow-apple-lg hover:bg-card/90;
   }
 
   .apple-button {
@@ -149,13 +149,13 @@
   }
 
   .apple-surface {
-    @apply rounded-2xl border border-border bg-card shadow-apple;
+    @apply rounded-2xl border border-border/50 bg-card/80 backdrop-blur-xl shadow-apple;
   }
 
   /* Correction ici : On remplace @apply glass par les styles directs */
   .apple-toolbar {
-    @apply bg-background/70 backdrop-blur-2xl border border-white/10 shadow-apple;
-    @apply flex items-center justify-between gap-3 rounded-2xl px-4 py-3;
+    @apply bg-background/70 backdrop-blur-2xl border border-border/50 shadow-sm;
+    @apply flex items-center justify-between gap-3 rounded-2xl px-5 py-4;
   }
 
   .apple-section-shell {
