@@ -7,19 +7,75 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// --- CONSTANTES POUR SIMULER LES ENUMS EN SQLITE ---
+// Role: STUDENT, INSTRUCTOR, ADMIN, COMPANY
+// LessonType: VIDEO, ARTICLE, QUIZ, ASSIGNMENT
+// Difficulty: BEGINNER, INTERMEDIATE, ADVANCED, MIXED
+// SubmissionStatus: PENDING, UNDER_REVIEW, APPROVED, REJECTED
+
+// --- AUTHENTIFICATION & UTILISATEURS ---
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  password      String?
+  image         String?
+  role          String    @default("STUDENT")
+  bio           String?
+  headline      String?
+  reputation    Int       @default(0)
+  
+  // Relations Authentification
+  accounts      Account[]
+  sessions      Session[]
+  subscription  Subscription?
+
+  // Relations Pédagogiques
+  coursesEnrolled     Enrollment[]
+  pathsEnrolled       PathEnrollment[]
+  coursesInstructing  Course[]            @relation("CourseInstructor")
+  lessonsProgress     LessonProgress[]
+  certificates        Certificate[]
+  
+  // Évaluations & Travaux
+  submissions         ProjectSubmission[]
+  reviewsGiven        PeerReview[]        @relation("Reviewer")
+  
+  // Mentorat
+  mentorshipsGiven    MentorshipSession[] @relation("MentorSessions")
+  mentorshipsReceived MentorshipSession[] @relation("MenteeSessions")
+  availabilitySlots   AvailabilitySlot[]  @relation("MentorSlots")
+
+  // Social & Networking
+  posts               Post[]
+  threads             Thread[]
+  comments            Comment[]
+  likes               Like[]
+  followers           Connection[]        @relation("Followers")
+  following           Connection[]        @relation("Following")
+
+  // Carrière
+  jobsPosted          Job[]               @relation("CompanyJobs")
+  jobApplications     JobApplication[]
+  payments            Payment[]
+  quizSubmissions     QuizSubmission[]
+}
+
 model Account {
-  id                 String  @id @default(cuid())
-  userId             String
-  type               String
-  provider           String
-  providerAccountId  String
-  refresh_token      String?
-  access_token       String?
-  expires_at         Int?
-  token_type         String?
-  scope              String?
-  id_token           String?
-  session_state      String?
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
@@ -34,63 +90,26 @@ model Session {
   user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  password      String?
-  image         String?
-  role          String    @default("STUDENT") // STUDENT, PROFESSIONAL, MENTOR, COMPANY
-  lastLogin     DateTime?
-  bio           String?
-  headline      String?
-  reputation    Int       @default(0)
-  
-  accounts      Account[]
-  sessions      Session[]
-  
-  // Platform Relations
-  enrollments         Enrollment[]
-  pathEnrollments     PathEnrollment[]
-  projectSubmissions  ProjectSubmission[]
-  mentorshipsGiven    MentorshipSession[] @relation("MentorSessions")
-  mentorshipsReceived MentorshipSession[] @relation("MenteeSessions")
-  jobApplications     JobApplication[]
-  jobsPosted          Job[]               @relation("CompanyJobs")
-  
-  // Networking
-  posts               Post[]
-  comments            Comment[]
-  likes               Like[]
-  followers           Connection[]        @relation("Followers")
-  following           Connection[]        @relation("Following")
-  availabilitySlots   AvailabilitySlot[]  @relation("MentorSlots")
-  quizSubmissions     QuizSubmission[]
-  certificates        Certificate[]
-}
-
-model VerificationToken {
-  identifier String
-  token      String   @unique
-  expires    DateTime
-
-  @@unique([identifier, token])
-}
+// --- STRUCTURE DES COURS (LMS) ---
 
 model Course {
-  id          String       @id @default(cuid())
-  title       String
-  description String
-  imageUrl    String?
-  published   Boolean      @default(false)
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
-  
-  enrollments Enrollment[]
-  modules     Module[]
+  id           String      @id @default(cuid())
+  title        String
+  description  String
+  imageUrl     String?
+  price        Float       @default(0)
+  level        String      @default("BEGINNER")
+  published    Boolean     @default(false)
+  instructorId String
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  instructor   User           @relation("CourseInstructor", fields: [instructorId], references: [id], onDelete: Cascade)
+  modules      Module[]
+  enrollments  Enrollment[]
   certificates Certificate[]
-  paths       CourseOnPath[]
+  paths        CourseOnPath[]
+  forum        Forum?
 }
 
 model Module {
@@ -105,93 +124,159 @@ model Module {
 }
 
 model Lesson {
-  id        String   @id @default(cuid())
-  moduleId  String
-  title     String
-  content   String?
-  videoUrl  String?
-  order     Int
-  module    Module   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  quiz      Quiz?
-  resources Resource[]
-}
-
-model Resource {
-  id          String   @id @default(cuid())
-  lessonId    String
+  id          String      @id @default(cuid())
+  moduleId    String
   title       String
-  description String?
-  url         String
-  type        String   // PDF, FIGMA, ZIP, LINK
-  category    String   // Technical, Design, Career
-  size        String?  // e.g. "2.4 MB"
-  createdAt   DateTime @default(now())
-
-  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-}
-
-model Enrollment {
-  id        String   @id @default(cuid())
-  userId    String
-  courseId  String
-  progress  Int      @default(0) // percentage
-  isCompleted Boolean  @default(false)
-  completedAt DateTime?
-  createdAt DateTime @default(now())
+  content     String?
+  videoUrl    String?
+  type        String      @default("VIDEO")
+  order       Int
   
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
-
-  @@unique([userId, courseId])
+  module      Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  resources   Resource[]
+  quiz        Quiz?
+  progress    LessonProgress[]
 }
+
+model LessonProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  lessonId    String
+  isCompleted Boolean  @default(false)
+  lastPosition Int     @default(0) // Pour reprendre la vidéo où on s'est arrêté
+
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  lesson      Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, lessonId])
+}
+
+// --- ÉVALUATIONS ET PEER REVIEW ---
 
 model Project {
   id          String   @id @default(cuid())
   title       String
   description String
-  difficulty  String   @default("BEGINNER") // BEGINNER, INTERMEDIATE, ADVANCED
-  skills      String   // Comma separated
+  difficulty  String   @default("BEGINNER")
+  skills      String?
   
   submissions ProjectSubmission[]
 }
 
 model ProjectSubmission {
-  id        String   @id @default(cuid())
+  id        String           @id @default(cuid())
   projectId String
   userId    String
   repoUrl   String?
   liveUrl   String?
-  status    String   @default("PENDING") // PENDING, REVIEWED, APPROVED
-  score     Int?
+  status    String           @default("PENDING")
+  grade     Float?
   feedback  String?
+  createdAt DateTime         @default(now())
+  
+  project   Project          @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  reviews   PeerReview[]
+}
+
+model PeerReview {
+  id           String   @id @default(cuid())
+  submissionId String
+  reviewerId   String
+  score        Int
+  feedback     String
+  createdAt    DateTime @default(now())
+
+  submission   ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+  reviewer     User              @relation("Reviewer", fields: [reviewerId], references: [id], onDelete: Cascade)
+}
+
+// --- MONÉTISATION ---
+
+model Subscription {
+  id        String    @id @default(cuid())
+  userId    String    @unique
+  plan      String    @default("FREE") // FREE, PLUS, PROFESSIONAL
+  active    Boolean   @default(true)
+  endDate   DateTime?
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Float
+  currency      String   @default("USD")
+  status        String   @default("PAID")
+  transactionId String   @unique
+  createdAt     DateTime @default(now())
+  
+  user          User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// --- COMMUNAUTÉ ET FORUMS (CONTEXTUELS) ---
+
+model Forum {
+  id        String   @id @default(cuid())
+  courseId  String   @unique
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  threads   Thread[]
+}
+
+model Thread {
+  id        String   @id @default(cuid())
+  forumId   String
+  authorId  String
+  title     String
+  content   String
   createdAt DateTime @default(now())
 
-  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  forum     Forum    @relation(fields: [forumId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  comments  Comment[]
 }
 
-model MentorshipSession {
+model Comment {
   id        String   @id @default(cuid())
-  mentorId  String
-  menteeId  String
-  status    String   @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED
-  date      DateTime
-  notes     String?
-  
-  mentor User @relation("MentorSessions", fields: [mentorId], references: [id], onDelete: Cascade)
-  mentee User @relation("MenteeSessions", fields: [menteeId], references: [id], onDelete: Cascade)
+  content   String
+  userId    String
+  threadId  String?
+  postId    String?
+  createdAt DateTime @default(now())
+
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  thread    Thread?  @relation(fields: [threadId], references: [id], onDelete: Cascade)
+  post      Post?    @relation(fields: [postId], references: [id], onDelete: Cascade)
 }
 
-model AvailabilitySlot {
-  id        String   @id @default(cuid())
-  mentorId  String
-  startTime DateTime
-  endTime   DateTime
-  isBooked  Boolean  @default(false)
-  
-  mentor    User     @relation("MentorSlots", fields: [mentorId], references: [id], onDelete: Cascade)
+// --- RESTE DU SYSTÈME (POSTS, JOBS, MENTORSHIP) ---
 
-  @@unique([mentorId, startTime])
+model Post {
+  id        String   @id @default(cuid())
+  userId    String
+  content   String
+  imageUrl  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  comments  Comment[]
+  likes     Like[]
+}
+
+model Enrollment {
+  id          String   @id @default(cuid())
+  userId      String
+  courseId    String
+  progress    Int      @default(0)
+  isCompleted Boolean  @default(false)
+  completedAt DateTime?
+  createdAt   DateTime @default(now())
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, courseId])
 }
 
 model Job {
@@ -202,9 +287,9 @@ model Job {
   location    String?
   remote      Boolean  @default(false)
   salaryRange String?
-  type        String   @default("FULL_TIME") // FULL_TIME, PART_TIME, CONTRACT, FREELANCE
+  type        String   @default("FULL_TIME")
   createdAt   DateTime @default(now())
-  
+
   company      User             @relation("CompanyJobs", fields: [companyId], references: [id], onDelete: Cascade)
   applications JobApplication[]
 }
@@ -213,7 +298,7 @@ model JobApplication {
   id        String   @id @default(cuid())
   jobId     String
   userId    String
-  status    String   @default("APPLIED") // APPLIED, REVIEWING, INTERVIEWING, REJECTED, HIRED
+  status    String   @default("APPLIED")
   coverNote String?
   createdAt DateTime @default(now())
 
@@ -223,86 +308,48 @@ model JobApplication {
   @@unique([jobId, userId])
 }
 
-model Post {
-  id        String    @id @default(cuid())
-  userId    String
-  content   String
-  imageUrl  String?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
-  
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  comments  Comment[]
-  likes     Like[]
-}
-
-model Comment {
-  id        String   @id @default(cuid())
-  postId    String
-  userId    String
-  content   String
-  createdAt DateTime @default(now())
-  
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-}
-
-model Like {
-  id        String   @id @default(cuid())
-  postId    String
-  userId    String
-  createdAt DateTime @default(now())
-  
-  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([postId, userId])
-}
-
-model Connection {
-  id          String   @id @default(cuid())
-  followerId  String
-  followingId String
-  status      String   @default("PENDING") // PENDING, ACCEPTED
-  createdAt   DateTime @default(now())
-
-  follower  User @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
-  following User @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
-
-  @@unique([followerId, followingId])
-}
-model Quiz {
-  id          String   @id @default(cuid())
-  moduleId    String?  @unique
-  lessonId    String?  @unique
-  title       String
+model Resource {
+  id       String @id @default(cuid())
+  lessonId String
+  title    String
   description String?
-  passingScore Int     @default(80)
-  
-  module      Module?  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
-  lesson      Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
-  questions   Question[]
+  category String?
+  type     String?
+  size     String?
+  createdAt DateTime @default(now())
+  url      String
+  lesson   Lesson @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+}
+
+model Quiz {
+  id        String   @id @default(cuid())
+  lessonId  String?  @unique
+  moduleId  String?  @unique
+  title     String
+  description String?
+  passingScore Int   @default(80)
+  lesson    Lesson?  @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  module    Module?  @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  questions Question[]
   submissions QuizSubmission[]
 }
 
 model Question {
-  id        String   @id @default(cuid())
-  quizId    String
-  text      String
-  type      String   @default("MULTIPLE_CHOICE") // MULTIPLE_CHOICE, TRUE_FALSE
-  points    Int      @default(1)
-  
-  quiz      Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
-  options   Option[]
+  id     String @id @default(cuid())
+  quizId String
+  text   String
+  type   String @default("MULTIPLE_CHOICE")
+  points Int    @default(1)
+  quiz   Quiz   @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  options Option[]
 }
 
 model Option {
-  id          String   @id @default(cuid())
-  questionId  String
-  text        String
-  isCorrect   Boolean  @default(false)
-  
-  question    Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  id         String   @id @default(cuid())
+  questionId String
+  text       String
+  isCorrect  Boolean  @default(false)
+  question   Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }
 
 model QuizSubmission {
@@ -318,17 +365,17 @@ model QuizSubmission {
 }
 
 model Certificate {
-  id        String   @id @default(cuid())
-  userId    String
-  courseId  String
-  code      String   @unique // Verification code
-  issuedAt  DateTime @default(now())
-  
-  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  id       String @id @default(cuid())
+  userId   String
+  courseId String
+  code     String @unique
+  issuedAt DateTime @default(now())
+  user     User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
   @@unique([userId, courseId])
 }
+
 model Path {
   id          String   @id @default(cuid())
   title       String
@@ -336,8 +383,7 @@ model Path {
   imageUrl    String?
   published   Boolean  @default(false)
   createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-
+  updatedAt   DateTime @default(now())
   courses     CourseOnPath[]
   enrollments PathEnrollment[]
 }
@@ -346,7 +392,6 @@ model CourseOnPath {
   pathId   String
   courseId String
   order    Int
-
   path     Path   @relation(fields: [pathId], references: [id], onDelete: Cascade)
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
@@ -354,15 +399,65 @@ model CourseOnPath {
 }
 
 model PathEnrollment {
-  id        String   @id @default(cuid())
-  userId    String
-  pathId    String
-  progress  Int      @default(0)
-  isCompleted Boolean @default(false)
-  createdAt DateTime @default(now())
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  path Path @relation(fields: [pathId], references: [id], onDelete: Cascade)
+  id          String   @id @default(cuid())
+  userId      String
+  pathId      String
+  progress    Int      @default(0)
+  isCompleted Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  path        Path     @relation(fields: [pathId], references: [id], onDelete: Cascade)
 
   @@unique([userId, pathId])
+}
+
+model MentorshipSession {
+  id       String @id @default(cuid())
+  mentorId String
+  menteeId String
+  status   String @default("SCHEDULED")
+  date     DateTime?
+  notes    String?
+  mentor   User   @relation("MentorSessions", fields: [mentorId], references: [id], onDelete: Cascade)
+  mentee   User   @relation("MenteeSessions", fields: [menteeId], references: [id], onDelete: Cascade)
+}
+
+model AvailabilitySlot {
+  id        String   @id @default(cuid())
+  mentorId  String
+  startTime DateTime
+  endTime   DateTime?
+  isBooked  Boolean  @default(false)
+  mentor    User     @relation("MentorSlots", fields: [mentorId], references: [id], onDelete: Cascade)
+}
+
+model Connection {
+  id          String @id @default(cuid())
+  followerId  String
+  followingId String
+  status      String @default("PENDING")
+  createdAt   DateTime @default(now())
+  follower    User   @relation("Following", fields: [followerId], references: [id], onDelete: Cascade)
+  following   User   @relation("Followers", fields: [followingId], references: [id], onDelete: Cascade)
+
+  @@unique([followerId, followingId])
+}
+
+model Like {
+  id        String @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+  post      Post   @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user      User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

@@ -5,7 +5,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Label } from "@/components/ui/label"
-import { CheckCircle2, XCircle, ChevronRight, ChevronLeft, Award } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { CheckCircle2, XCircle, ChevronRight, ChevronLeft, Award, Sparkles } from "lucide-react"
 import { toast } from "sonner"
 
 interface QuizProps {
@@ -80,46 +81,58 @@ export function QuizView({ quiz, onComplete }: QuizProps) {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-6 rounded-2xl bg-slate-50 space-y-4">
-             <div className="flex justify-between items-center text-sm">
-                <span className="font-medium text-slate-500">Passing Score:</span>
-                <span className="font-bold">{quiz.passingScore}%</span>
+          <div className="p-6 rounded-[24px] bg-[#f5f5f7] space-y-4">
+             <div className="flex justify-between items-center text-[15px]">
+                <span className="font-medium text-[#86868b]">Passing Score:</span>
+                <span className="font-semibold text-[#1d1d1f]">{quiz.passingScore}%</span>
              </div>
-             <div className="flex justify-between items-center text-sm">
-                <span className="font-medium text-slate-500">Your Score:</span>
-                <span className={`font-bold ${passed ? 'text-emerald-600' : 'text-red-600'}`}>{percentage}%</span>
+             <div className="flex justify-between items-center text-[15px]">
+                <span className="font-medium text-[#86868b]">Your Score:</span>
+                <span className={`font-bold ${passed ? 'text-emerald-600' : 'text-red-500'}`}>{percentage}%</span>
              </div>
-             <div className="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
+             <div className="w-full bg-[#e8e8ed] h-2 rounded-full overflow-hidden">
                 <div 
                   className={`h-full transition-all duration-1000 ${passed ? 'bg-emerald-500' : 'bg-red-500'}`} 
                   style={{ width: `${percentage}%` }}
                 />
              </div>
           </div>
+
+          {!passed && (
+            <div className="p-8 mt-6 rounded-[24px] bg-[#1d1d1f] text-white">
+              <div className="flex items-center gap-3 mb-4">
+                <Sparkles className="w-5 h-5 text-[#0066cc]" />
+                <span className="font-semibold text-[17px]">Antigravity Analysis</span>
+              </div>
+              <p className="text-[#a1a1a6] text-[15px] leading-relaxed">
+                I noticed some friction in your understanding of the core concepts. To ensure a weightless learning experience, I strongly recommend reviewing the previous lessons to strengthen your foundation before retrying. Real progress takes time.
+              </p>
+            </div>
+          )}
           
           <div className="space-y-4 pt-6">
-             <h4 className="font-bold">Review Answers</h4>
+             <h4 className="font-semibold text-[17px] text-[#1d1d1f]">Review Answers</h4>
              {quiz.questions.map((q, i) => {
                const selectedOptId = answers[q.id]
                const correctOpt = q.options.find(o => o.isCorrect)
                const isCorrect = selectedOptId === correctOpt?.id
                
                return (
-                 <div key={q.id} className={`p-4 rounded-xl border ${isCorrect ? 'border-emerald-100 bg-emerald-50/30' : 'border-red-100 bg-red-50/30'}`}>
-                    <p className="text-sm font-medium mb-3">{i + 1}. {q.text}</p>
-                    <div className="space-y-2">
-                       <div className="flex items-center gap-2 text-xs">
+                 <div key={q.id} className={`p-6 rounded-[24px] border ${isCorrect ? 'border-emerald-100 bg-emerald-50/30' : 'border-red-100 bg-red-50/30'}`}>
+                    <p className="text-[15px] font-medium mb-4 text-[#1d1d1f]">{i + 1}. {q.text}</p>
+                    <div className="space-y-3">
+                       <div className="flex items-center gap-2 text-[13px]">
                           {isCorrect ? (
-                            <span className="text-emerald-600 font-bold flex items-center gap-1"><CheckCircle2 className="w-3 h-3" /> Correct:</span>
+                            <span className="text-emerald-600 font-semibold flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Correct:</span>
                           ) : (
-                            <span className="text-red-600 font-bold flex items-center gap-1"><XCircle className="w-3 h-3" /> Incorrect:</span>
+                            <span className="text-red-500 font-semibold flex items-center gap-1"><XCircle className="w-4 h-4" /> Incorrect:</span>
                           )}
-                          <span className="text-slate-700">{q.options.find(o => o.id === selectedOptId)?.text || "No answer"}</span>
+                          <span className="text-[#86868b]">{q.options.find(o => o.id === selectedOptId)?.text || "No answer"}</span>
                        </div>
                        {!isCorrect && (
-                         <div className="flex items-center gap-2 text-xs">
-                            <span className="text-emerald-600 font-bold">Correct Answer:</span>
-                            <span className="text-slate-700">{correctOpt?.text}</span>
+                         <div className="flex items-center gap-2 text-[13px]">
+                            <span className="text-emerald-600 font-semibold">Correct Answer:</span>
+                            <span className="text-[#1d1d1f] font-medium">{correctOpt?.text}</span>
                          </div>
                        )}
                     </div>

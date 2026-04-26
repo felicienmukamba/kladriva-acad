@@ -44,10 +44,10 @@ export default async function SubmissionDetailPage({ params }: { params: Promise
           }`}>
             {submission.status}
           </Badge>
-          {submission.score && (
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-lg px-4 py-1.5">
+          {submission.grade && (
+            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-4 py-2">
               <BarChart3 className="w-4 h-4 text-indigo-400" />
-              <span className="text-white font-bold text-xl">{submission.score}</span>
+              <span className="text-white font-bold text-xl">{submission.grade}</span>
               <span className="text-slate-500 text-sm">/100</span>
             </div>
           )}

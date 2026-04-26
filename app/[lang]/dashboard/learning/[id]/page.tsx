@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button"
 import { CheckCircle2, PlayCircle, Award } from "lucide-react"
 import { completeLesson, submitQuiz } from "@/app/actions/learning"
 import { CertificateDownload } from "@/components/certificates/CertificateDownload"
+import { CourseForum } from "@/components/learning/CourseForum"
+import ReactMarkdown from "react-markdown"
 
 export default async function LearningPage({
   params,
@@ -61,6 +63,17 @@ export default async function LearningPage({
 
     if (!lesson) return <div>Lesson not found</div>
 
+    const forum = await prisma.forum.findUnique({
+      where: { courseId: id },
+      include: {
+        threads: {
+          include: { author: true, comments: { include: { user: true } } },
+          orderBy: { createdAt: "desc" }
+        }
+      }
+    })
+    const threads = forum?.threads || []
+
     return (
       <div className="max-w-4xl mx-auto py-16 px-8 space-y-12">
         <div className="space-y-3">
@@ -83,10 +96,10 @@ export default async function LearningPage({
           </div>
         )}
 
-        <div className="prose prose-lg max-w-none prose-p:text-[#1d1d1f] prose-p:leading-relaxed prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-[#1d1d1f]">
-          <p className="text-[17px] text-[#1d1d1f] leading-relaxed">
+        <div className="prose prose-lg max-w-none prose-p:text-[#1d1d1f] prose-p:leading-relaxed prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-[#1d1d1f] prose-a:text-[#0066cc] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#1d1d1f] prose-ul:text-[#1d1d1f] prose-li:marker:text-[#86868b]">
+          <ReactMarkdown>
             {lesson.content || "No content available for this lesson yet."}
-          </p>
+          </ReactMarkdown>
         </div>
 
         <div className="pt-12 border-t border-[#d2d2d7] flex justify-end">
@@ -99,6 +112,8 @@ export default async function LearningPage({
             </Button>
           </form>
         </div>
+
+        <CourseForum courseId={id} threads={threads} />
       </div>
     )
   }

@@ -9,8 +9,8 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { bookSession } from "@/app/actions/mentorship";
 
-export default async function MentorProfilePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function MentorProfilePage({ params }: { params: Promise<{ lang: string, id: string }> }) {
+  const { lang, id } = await params;
   const session = await auth();
   
   if (!session?.user) {
@@ -39,21 +39,21 @@ export default async function MentorProfilePage({ params }: { params: Promise<{ 
 
   return (
     <div className="space-y-8 pb-12">
-      <div className="flex items-center gap-2 text-sm text-slate-400">
-        <Link href="/dashboard/mentorship" className="hover:text-white transition-colors">Mentorship</Link>
+      <div className="flex items-center gap-2 text-[13px] text-[#86868b] font-medium uppercase tracking-wider mb-8">
+        <Link href="/dashboard/mentorship" className="hover:text-[#1d1d1f] transition-colors">Mentorship</Link>
         <ChevronRight className="w-4 h-4" />
-        <span className="text-slate-200">{mentor.name}</span>
+        <span className="text-[#1d1d1f]">{mentor.name}</span>
       </div>
 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Left Column: Profile Info */}
         <div className="lg:col-span-2 space-y-8">
-          <Card className="bg-slate-900 border-slate-800 overflow-hidden">
-            <div className="h-32 bg-gradient-to-r from-indigo-600 via-violet-600 to-purple-600" />
+          <Card className="bg-white border-[#d2d2d7] rounded-[24px] shadow-none overflow-hidden">
+            <div className="h-32 bg-[#f5f5f7] border-b border-[#d2d2d7]" />
             <CardContent className="relative pt-0">
-              <div className="absolute -top-12 left-6">
-                <div className="h-24 w-24 rounded-2xl bg-slate-900 p-1">
-                  <div className="h-full w-full rounded-xl bg-gradient-to-br from-indigo-500 to-violet-500 flex items-center justify-center text-white text-3xl font-bold overflow-hidden">
+              <div className="absolute -top-12 left-8">
+                <div className="h-24 w-24 rounded-[18px] bg-white p-1 border border-[#d2d2d7]">
+                  <div className="h-full w-full rounded-[14px] bg-[#e8e8ed] flex items-center justify-center text-[#1d1d1f] text-3xl font-semibold overflow-hidden">
                     {mentor.image ? (
                       <img src={mentor.image} alt={mentor.name || ''} className="w-full h-full object-cover" />
                     ) : (
@@ -63,37 +63,37 @@ export default async function MentorProfilePage({ params }: { params: Promise<{ 
                 </div>
               </div>
               
-              <div className="pt-16 pb-6">
+              <div className="pt-16 pb-8">
                 <div className="flex justify-between items-start">
                   <div>
-                    <h1 className="text-3xl font-bold text-white mb-1">{mentor.name}</h1>
-                    <p className="text-indigo-400 font-medium mb-4">{mentor.headline}</p>
-                    <div className="flex flex-wrap gap-4 text-sm text-slate-400">
-                      <span className="flex items-center gap-1"><Star className="w-4 h-4 text-amber-400 fill-amber-400" /> 4.9 (48 reviews)</span>
-                      <span className="flex items-center gap-1"><MessageSquare className="w-4 h-4" /> 124 Sessions</span>
-                      <span className="flex items-center gap-1"><Globe className="w-4 h-4" /> English, French</span>
+                    <h1 className="text-[32px] font-semibold text-[#1d1d1f] tracking-tight mb-2">{mentor.name}</h1>
+                    <p className="text-[#86868b] text-[17px] font-medium mb-6">{mentor.headline}</p>
+                    <div className="flex flex-wrap gap-6 text-[13px] font-medium text-[#86868b] uppercase tracking-wider">
+                      <span className="flex items-center gap-1.5"><Star className="w-4 h-4 text-[#1d1d1f] fill-[#1d1d1f]" /> 4.9 (48 reviews)</span>
+                      <span className="flex items-center gap-1.5"><MessageSquare className="w-4 h-4 text-[#1d1d1f]" /> 124 Sessions</span>
+                      <span className="flex items-center gap-1.5"><Globe className="w-4 h-4 text-[#1d1d1f]" /> English, French</span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
-                    <Button variant="outline" className="border-slate-700 text-slate-300">Message</Button>
-                    <Button className="bg-indigo-600 hover:bg-indigo-700">Follow</Button>
+                  <div className="flex gap-3">
+                    <Button variant="outline" className="border-[#d2d2d7] text-[#1d1d1f] font-medium rounded-full h-10 px-6 hover:bg-[#f5f5f7]">Message</Button>
+                    <Button className="bg-[#1d1d1f] hover:bg-black text-white font-medium rounded-full h-10 px-6">Follow</Button>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-6 border-t border-slate-800 pt-6">
+              <div className="space-y-8 border-t border-[#d2d2d7] pt-8">
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-3">About Me</h3>
-                  <p className="text-slate-300 leading-relaxed">
+                  <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-4">About Me</h3>
+                  <p className="text-[#86868b] text-[15px] leading-relaxed">
                     {mentor.bio || "No biography provided."}
                   </p>
                 </div>
 
                 <div>
-                  <h3 className="text-lg font-semibold text-white mb-3">Expertise</h3>
+                  <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-4">Expertise</h3>
                   <div className="flex flex-wrap gap-2">
                     {expertise.map((skill) => (
-                      <Badge key={skill} variant="secondary" className="bg-slate-800 text-slate-300">
+                      <Badge key={skill} variant="secondary" className="bg-[#f5f5f7] text-[#1d1d1f] border-transparent font-medium px-4 py-1.5 rounded-full">
                         {skill}
                       </Badge>
                     ))}
@@ -106,57 +106,53 @@ export default async function MentorProfilePage({ params }: { params: Promise<{ 
 
         {/* Right Column: Booking */}
         <div className="space-y-6">
-          <Card className="bg-slate-900 border-slate-800 sticky top-24">
-            <CardHeader>
-              <CardTitle className="text-white flex items-center gap-2">
-                <CalendarIcon className="w-5 h-5 text-indigo-400" /> Book a Session
+          <Card className="bg-[#f5f5f7] border-[#d2d2d7] rounded-[24px] shadow-none sticky top-24">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-[#1d1d1f] flex items-center gap-2 text-[20px] font-semibold tracking-tight">
+                <CalendarIcon className="w-5 h-5 text-[#1d1d1f]" /> Book a Session
               </CardTitle>
-              <CardDescription className="text-slate-400">
+              <CardDescription className="text-[#86868b] text-[15px]">
                 Pick a slot that works for you. All sessions are 60 minutes.
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
-              <div className="space-y-3">
-                <h4 className="text-sm font-medium text-slate-200">Available Slots</h4>
+              <div className="space-y-4">
+                <h4 className="text-[12px] font-semibold text-[#86868b] uppercase tracking-wider">Available Slots</h4>
                 {mentor.availabilitySlots.length === 0 ? (
-                  <p className="text-sm text-slate-500 py-4 text-center border border-dashed border-slate-800 rounded-lg">
+                  <p className="text-[15px] text-[#86868b] py-6 text-center bg-white border border-[#d2d2d7] rounded-[16px]">
                     No upcoming slots available.
                   </p>
                 ) : (
-                  <div className="grid grid-cols-1 gap-2">
+                  <div className="grid grid-cols-1 gap-3">
                     {mentor.availabilitySlots.map((slot) => (
-                      <form key={slot.id} action={bookSession}>
-                        <input type="hidden" name="slotId" value={slot.id} />
-                        <input type="hidden" name="mentorId" value={mentor.id} />
-                        {session.user?.id && <input type="hidden" name="menteeId" value={session.user.id} />}
+                      <Link key={slot.id} href={`/${lang}/checkout?slotId=${slot.id}&mentorId=${mentor.id}`}>
                         <Button 
-                          type="submit"
                           variant="outline" 
-                          className="w-full justify-between border-slate-800 bg-slate-800/50 hover:bg-indigo-600 hover:border-indigo-600 group text-slate-300 hover:text-white transition-all py-6"
+                          className="w-full justify-between border-[#d2d2d7] bg-white hover:border-[#1d1d1f] hover:bg-white group text-[#1d1d1f] transition-all py-8 rounded-[16px]"
                         >
                           <div className="text-left">
-                            <div className="text-xs text-slate-500 group-hover:text-indigo-100 uppercase tracking-wider font-bold">
+                            <div className="text-[11px] text-[#86868b] group-hover:text-[#1d1d1f] uppercase tracking-wider font-semibold mb-1 transition-colors">
                               {format(slot.startTime, 'EEEE, MMM do')}
                             </div>
-                            <div className="font-semibold">
+                            <div className="font-semibold text-[15px]">
                               {format(slot.startTime, 'p')}
                             </div>
                           </div>
-                          <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                          <ChevronRight className="w-5 h-5 opacity-0 group-hover:opacity-100 transition-opacity text-[#1d1d1f]" />
                         </Button>
-                      </form>
+                      </Link>
                     ))}
                   </div>
                 )}
               </div>
 
-              <div className="pt-6 border-t border-slate-800 space-y-4">
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-400">Session Price</span>
-                  <span className="text-white font-bold text-lg">$60.00</span>
+              <div className="pt-6 border-t border-[#d2d2d7] space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-[#86868b] text-[15px]">Session Price</span>
+                  <span className="text-[#1d1d1f] font-semibold text-[20px]">$60.00</span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 bg-slate-800/50 p-3 rounded-lg border border-slate-800">
-                  <Shield className="w-4 h-4 text-emerald-500" />
+                <div className="flex items-center gap-2 text-[13px] text-[#1d1d1f] font-medium bg-white p-4 rounded-[16px] border border-[#d2d2d7]">
+                  <Shield className="w-5 h-5 text-emerald-500" />
                   Secure payment via Kladriva Escrow.
                 </div>
               </div>

@@ -26,21 +26,21 @@ export function CreatePostForm({ userId }: { userId: string }) {
   };
 
   return (
-    <Card className="bg-slate-900 border-slate-800">
-      <CardContent className="pt-4">
+    <Card className="border border-[#d2d2d7] shadow-none bg-[#f5f5f7] rounded-[24px]">
+      <CardContent className="pt-6">
         <form onSubmit={handleSubmit}>
           <textarea 
-            className="w-full bg-slate-800 border border-slate-700 rounded-lg p-3 text-slate-200 placeholder:text-slate-500 resize-none focus:outline-none focus:ring-2 focus:ring-indigo-500"
+            className="w-full bg-white border border-[#d2d2d7] rounded-[16px] p-4 text-[#1d1d1f] placeholder:text-[#86868b] resize-none focus:outline-none focus:border-[#1d1d1f] transition-colors"
             placeholder="Share an update, project, or insight..."
             rows={3}
             value={content}
             onChange={(e) => setContent(e.target.value)}
           />
-          <div className="flex justify-end mt-2">
+          <div className="flex justify-end mt-4">
             <Button 
               type="submit" 
               disabled={isSubmitting || !content.trim()}
-              className="bg-indigo-600 hover:bg-indigo-700 gap-2"
+              className="bg-[#1d1d1f] hover:bg-black text-white font-medium rounded-full h-10 px-6 gap-2"
             >
               {isSubmitting ? "Posting..." : "Post"}
               <Send className="w-4 h-4" />

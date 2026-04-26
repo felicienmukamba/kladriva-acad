@@ -19,18 +19,17 @@ export default async function HelpPage({ params }: { params: Promise<{ lang: str
       <Navbar />
       
       <main>
-        <section className="py-24 bg-slate-900 text-white overflow-hidden relative">
-           <div className="absolute inset-0 bg-primary/10 opacity-50" />
-           <div className="max-w-4xl mx-auto px-6 relative z-10 text-center space-y-8">
-              <h1 className="text-5xl font-black tracking-tight">How can we help?</h1>
-              <div className="relative">
-                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-slate-400" />
-                 <Input className="h-16 pl-16 pr-8 rounded-2xl bg-white/10 border-white/20 text-white placeholder:text-slate-400 focus-visible:ring-primary/40 text-lg shadow-2xl" placeholder="Search for help articles, guides..." />
+        <section className="py-24 bg-[#f5f5f7] border-b border-[#d2d2d7]">
+           <div className="max-w-4xl mx-auto px-6 text-center space-y-8">
+              <h1 className="text-[56px] leading-[1.05] font-semibold text-[#1d1d1f] tracking-tight">How can we help?</h1>
+              <div className="relative max-w-2xl mx-auto">
+                 <Search className="absolute left-6 top-1/2 -translate-y-1/2 w-6 h-6 text-[#86868b]" />
+                 <Input className="h-16 pl-16 pr-8 rounded-full bg-white border border-[#d2d2d7] text-[#1d1d1f] placeholder:text-[#86868b] focus-visible:ring-4 focus-visible:ring-[#0066cc]/20 focus-visible:border-[#0066cc] text-[17px] shadow-sm transition-all" placeholder="Search for help articles, guides..." />
               </div>
-              <div className="flex flex-wrap justify-center gap-4">
-                 <span className="text-sm text-slate-400 font-bold uppercase tracking-widest">Popular:</span>
+              <div className="flex flex-wrap justify-center gap-6">
+                 <span className="text-[13px] text-[#86868b] font-semibold uppercase tracking-wider">Popular:</span>
                  {["Enrollment", "Billing", "Certificates", "Pro Plan"].map(tag => (
-                   <button key={tag} className="text-sm font-bold hover:text-primary transition-colors text-slate-300 underline underline-offset-4">{tag}</button>
+                   <button key={tag} className="text-[15px] font-medium hover:text-[#0066cc] transition-colors text-[#1d1d1f]">{tag}</button>
                  ))}
               </div>
            </div>
@@ -42,37 +41,37 @@ export default async function HelpPage({ params }: { params: Promise<{ lang: str
              { icon: MessageCircle, title: "Direct Support", desc: "Chat with our support team for complex technical or billing issues." },
              { icon: FileText, title: "Course Guides", desc: "Downloadable PDF summaries and supplemental materials for every path." }
            ].map((card, i) => (
-             <div key={i} className="p-10 rounded-[2.5rem] border border-slate-100 bg-white hover:border-primary hover:shadow-xl transition-all cursor-pointer group">
-                <div className="w-14 h-14 bg-slate-50 rounded-2xl flex items-center justify-center text-slate-400 group-hover:bg-primary group-hover:text-white transition-all mb-6">
+             <div key={i} className="p-10 rounded-[24px] border border-[#d2d2d7] bg-white hover:border-[#1d1d1f] transition-all cursor-pointer group">
+                <div className="w-14 h-14 bg-[#f5f5f7] rounded-[16px] flex items-center justify-center text-[#1d1d1f] mb-6">
                    <card.icon className="w-7 h-7" />
                 </div>
-                <h3 className="text-xl font-bold mb-4">{card.title}</h3>
-                <p className="text-slate-500 leading-relaxed mb-6">{card.desc}</p>
-                <div className="flex items-center gap-2 text-primary font-bold">
+                <h3 className="text-[20px] font-semibold text-[#1d1d1f] mb-3">{card.title}</h3>
+                <p className="text-[#86868b] text-[15px] leading-relaxed mb-6">{card.desc}</p>
+                <div className="flex items-center gap-2 text-[#0066cc] font-medium text-[15px]">
                    Learn more <ChevronRight className="w-4 h-4" />
                 </div>
              </div>
            ))}
         </section>
 
-        <section className="py-24 bg-slate-50">
+        <section className="py-24 bg-[#f5f5f7]">
            <div className="max-w-3xl mx-auto px-6">
-              <h2 className="text-3xl font-black text-center mb-16">Frequently Asked Questions</h2>
+              <h2 className="text-[32px] font-semibold text-center text-[#1d1d1f] mb-16 tracking-tight">Frequently Asked Questions</h2>
               <div className="space-y-4">
                  {faqs.map((faq, i) => (
-                    <div key={i} className="bg-white p-8 rounded-3xl border border-slate-100">
-                       <h3 className="text-lg font-bold text-slate-900 mb-2 flex items-center gap-3">
-                          <HelpCircle className="w-5 h-5 text-primary" /> {faq.q}
+                    <div key={i} className="bg-white p-8 rounded-[24px] border border-[#d2d2d7]">
+                       <h3 className="text-[17px] font-semibold text-[#1d1d1f] mb-3 flex items-start gap-3">
+                          <HelpCircle className="w-5 h-5 text-[#86868b] shrink-0 mt-0.5" /> {faq.q}
                        </h3>
-                       <p className="text-slate-600 leading-relaxed pl-8">
+                       <p className="text-[#86868b] text-[15px] leading-relaxed pl-8">
                           {faq.a}
                        </p>
                     </div>
                  ))}
               </div>
               <div className="mt-16 text-center">
-                 <p className="text-slate-500 mb-6">Still have questions?</p>
-                 <Button size="lg" className="rounded-2xl h-14 px-10 font-bold gap-2 shadow-xl shadow-primary/20">
+                 <p className="text-[#86868b] text-[15px] mb-6">Still have questions?</p>
+                 <Button size="lg" className="rounded-full h-12 px-8 font-medium gap-2 bg-[#1d1d1f] text-white hover:bg-black">
                     <MessageCircle className="w-5 h-5" /> Contact Support
                  </Button>
               </div>

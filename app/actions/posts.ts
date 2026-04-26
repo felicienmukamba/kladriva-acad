@@ -13,7 +13,7 @@ export async function createPost(userId: string, content: string) {
     },
   });
 
-  revalidatePath("/dashboard/network");
+  revalidatePath("/", "layout");
 }
 
 export async function likePost(postId: string, userId: string) {
@@ -41,5 +41,19 @@ export async function likePost(postId: string, userId: string) {
     });
   }
 
-  revalidatePath("/dashboard/network");
+  revalidatePath("/", "layout");
+}
+
+export async function followUser(followerId: string, followingId: string) {
+  if (!followerId || !followingId) return;
+  const existing = await prisma.connection.findUnique({
+    where: { followerId_followingId: { followerId, followingId } }
+  });
+  
+  if (!existing) {
+    await prisma.connection.create({
+      data: { followerId, followingId, status: "ACCEPTED" }
+    });
+  }
+  revalidatePath("/", "layout");
 }

@@ -109,7 +109,7 @@ export function Features({ lang }: FeaturesProps) {
               return (
                 <article
                   key={card.title}
-                  className={`rounded-[32px] border p-7 shadow-[0_18px_60px_rgba(15,23,42,0.08)] ${cardToneClasses[card.tone]}`}
+                  className={`relative overflow-hidden rounded-[32px] p-10 flex flex-col transition-all duration-700 hover:shadow-[0_18px_60px_rgba(15,23,42,0.08)] ${cardToneClasses[card.tone as keyof typeof cardToneClasses]}`}
                 >
                   <div className="flex h-full flex-col justify-between gap-10">
                     <div>

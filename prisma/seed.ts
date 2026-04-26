@@ -65,6 +65,7 @@ async function main() {
       description: 'Master React 19, Server Components, and advanced state management.',
       imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=800',
       published: true,
+      instructorId: mentor1.id,
       modules: {
         create: [
           {
@@ -130,6 +131,7 @@ async function main() {
       description: 'Build scalable APIs and manage data with professional tools.',
       imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800',
       published: true,
+      instructorId: mentor1.id,
       modules: {
         create: [
           {

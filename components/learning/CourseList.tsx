@@ -6,6 +6,7 @@ import { Search, Globe, ChevronDown, Filter, PlayCircle, Star, Clock, BookOpen }
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { motion, AnimatePresence } from "framer-motion"
+import Image from "next/image"
 
 interface CourseListProps {
   initialCourses: any[]
@@ -114,17 +115,11 @@ export function CourseList({ initialCourses, lang, dict }: CourseListProps) {
                 <div className="flex flex-col gap-4">
                   {/* Image Container */}
                   <div className="aspect-[4/3] bg-[#f5f5f7] rounded-[18px] overflow-hidden relative">
-                    {course.imageUrl ? (
-                      <img 
-                        src={course.imageUrl} 
-                        alt={course.title} 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <PlayCircle className="w-12 h-12 text-[#d2d2d7]" />
-                      </div>
-                    )}
+                    <img 
+                      src={course.imageUrl || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&q=80&w=800"} 
+                      alt={course.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                    />
                   </div>
 
                   {/* Content */}
@@ -137,9 +132,20 @@ export function CourseList({ initialCourses, lang, dict }: CourseListProps) {
                       {course.title}
                     </h3>
                     
-                    <p className="text-[#86868b] text-[15px] line-clamp-2 leading-relaxed">
+                    <p className="text-[#86868b] text-[15px] line-clamp-2 leading-relaxed mb-6">
                       {course.description}
                     </p>
+
+                    <div className="flex items-center gap-3 mt-auto pt-4 border-t border-[#d2d2d7]">
+                      <div className="w-8 h-8 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center font-semibold text-[11px] overflow-hidden">
+                        {course.instructor?.image ? (
+                           <img src={course.instructor.image} alt={course.instructor.name || "Instructor"} className="w-full h-full object-cover" />
+                        ) : (
+                           (course.instructor?.name || "Kladriva").charAt(0)
+                        )}
+                      </div>
+                      <span className="text-[13px] font-medium text-[#1d1d1f]">{course.instructor?.name || "Kladriva Expert"}</span>
+                    </div>
                   </div>
                 </div>
               </Link>

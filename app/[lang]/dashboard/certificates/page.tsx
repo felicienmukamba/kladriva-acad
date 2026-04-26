@@ -4,6 +4,7 @@ import { redirect } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Award, Download, Share2, ExternalLink, ShieldCheck } from "lucide-react"
+import Link from "next/link"
 import { CertificateDownload } from "@/components/certificates/CertificateDownload"
 import { getDictionary } from "@/lib/dictionary"
 import { Badge } from "@/components/ui/badge"
@@ -32,7 +33,9 @@ export default async function CertificatesDashboard({ params }: { params: Promis
           <Award className="w-16 h-16 text-[#d2d2d7] mb-6" />
           <h2 className="text-[24px] font-semibold text-[#1d1d1f] mb-2">{dict.certificates.empty}</h2>
           <p className="text-[#86868b] text-[15px] mb-8 max-w-sm text-center">{dict.certificates.emptyDesc}</p>
-          <Button size="lg" className="rounded-full bg-[#1d1d1f] hover:bg-black text-white font-medium h-12 px-8">{dict.sidebar.learningPaths}</Button>
+          <Link href={`/${lang}/paths`}>
+            <Button size="lg" className="rounded-full bg-[#1d1d1f] hover:bg-black text-white font-medium h-12 px-8">{dict.sidebar.learningPaths}</Button>
+          </Link>
         </div>
       ) : (
         <div className="grid md:grid-cols-2 gap-8">

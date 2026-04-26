@@ -18,8 +18,12 @@ export async function createCourse(data: {
   published: boolean
 }) {
   await checkAdmin()
+  const session = await auth()
   const course = await prisma.course.create({
-    data
+    data: {
+      ...data,
+      instructorId: session?.user?.id as string
+    }
   })
   revalidatePath("/courses")
   return course

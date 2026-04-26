@@ -27,7 +27,7 @@ export default async function AdminUsersPage({ params }: { params: Promise<{ lan
   const dict = await getDictionary(lang as "en" | "fr")
 
   const users = await prisma.user.findMany({
-    orderBy: { lastLogin: "desc" },
+    orderBy: { id: "desc" },
   })
 
   return (

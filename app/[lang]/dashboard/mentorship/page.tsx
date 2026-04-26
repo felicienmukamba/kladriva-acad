@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Calendar, MessageCircle, Star, Video } from "lucide-react"
+import Link from "next/link"
 
 export default async function MentorshipDashboard({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
@@ -59,9 +60,11 @@ export default async function MentorshipDashboard({ params }: { params: Promise<
                    <Button variant="outline" className="h-10 rounded-full font-medium border-[#d2d2d7] text-[#1d1d1f] bg-white hover:bg-[#f5f5f7]">
                       Message
                    </Button>
-                   <Button className="h-10 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-medium">
-                      Book Session
-                   </Button>
+                   <Link href={`/${lang}/dashboard/mentorship/${mentor.id}`}>
+                     <Button className="w-full h-10 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-medium">
+                        Book Session
+                     </Button>
+                   </Link>
                 </div>
              </CardContent>
           </Card>

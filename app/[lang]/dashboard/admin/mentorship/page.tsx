@@ -58,7 +58,7 @@ export default async function AdminMentorshipPage({ params }: { params: Promise<
                 <TableCell className="py-6 pl-8">
                   <div className="flex items-center gap-2 text-sm text-slate-600">
                     <Calendar className="w-4 h-4 text-slate-400" />
-                    {new Date(session.date).toLocaleDateString()}
+                    {session.date ? new Date(session.date).toLocaleDateString() : 'TBD'}
                   </div>
                 </TableCell>
                 <TableCell>

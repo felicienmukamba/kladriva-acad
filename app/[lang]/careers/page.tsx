@@ -1,17 +1,15 @@
 import { Navbar } from "@/components/Navbar"
 import { Footer } from "@/components/landing/Footer"
 import { Button } from "@/components/ui/button"
-import { Briefcase, MapPin, Clock, ArrowRight, Zap, Heart, Globe } from "lucide-react"
+import { MapPin, Clock, ArrowRight, Zap, Heart, Globe } from "lucide-react"
+import { prisma } from "@/lib/prisma"
 
 export default async function CareersPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
   
-  const jobs = [
-    { title: "Senior React Instructor", type: "Full-time", location: "Remote", dept: "Education" },
-    { title: "Product Designer", type: "Full-time", location: "London / Remote", dept: "Design" },
-    { title: "Developer Relations Manager", type: "Full-time", location: "San Francisco", dept: "Marketing" },
-    { title: "Backend Engineer (Go)", type: "Contract", location: "Remote", dept: "Engineering" },
-  ]
+  const jobs = await prisma.job.findMany({
+    orderBy: { createdAt: 'desc' }
+  })
 
   return (
     <div className="min-h-screen bg-white">
@@ -56,21 +54,27 @@ export default async function CareersPage({ params }: { params: Promise<{ lang: 
                  <p className="text-[#86868b] font-medium">{jobs.length} roles available</p>
               </div>
               <div className="space-y-6">
-                 {jobs.map((job, i) => (
-                    <div key={i} className="group p-8 rounded-[24px] bg-[#f5f5f7] hover:bg-[#e8e8ed] transition-colors cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-6">
-                       <div className="space-y-3">
-                          <div className="text-[12px] font-semibold uppercase tracking-wider text-[#0066cc]">{job.dept}</div>
-                          <h3 className="text-[24px] font-semibold text-[#1d1d1f]">{job.title}</h3>
-                          <div className="flex items-center gap-6 text-[15px] text-[#86868b] font-medium">
-                             <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {job.location}</span>
-                             <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> {job.type}</span>
-                          </div>
-                       </div>
-                       <Button variant="ghost" className="rounded-full font-medium text-[#0066cc] hover:bg-transparent hover:text-[#0055b3] px-0">
-                          Apply Now <ArrowRight className="w-4 h-4 ml-2" />
-                       </Button>
+                 {jobs.length === 0 ? (
+                    <div className="text-center py-20 bg-[#f5f5f7] rounded-[24px]">
+                       <p className="text-[#86868b] text-[17px]">No open positions currently available. Please check back later.</p>
                     </div>
-                 ))}
+                 ) : (
+                   jobs.map((job) => (
+                      <div key={job.id} className="group p-8 rounded-[24px] bg-[#f5f5f7] hover:bg-[#e8e8ed] transition-colors cursor-pointer flex flex-col md:flex-row md:items-center justify-between gap-6">
+                         <div className="space-y-3">
+                            <div className="text-[12px] font-semibold uppercase tracking-wider text-[#0066cc]">{job.type.replace("_", " ")}</div>
+                            <h3 className="text-[24px] font-semibold text-[#1d1d1f]">{job.title}</h3>
+                            <div className="flex items-center gap-6 text-[15px] text-[#86868b] font-medium">
+                               <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> {job.location || "Remote"}</span>
+                               <span className="flex items-center gap-2"><Clock className="w-4 h-4" /> {job.type}</span>
+                            </div>
+                         </div>
+                         <Button variant="ghost" className="rounded-full font-medium text-[#0066cc] hover:bg-transparent hover:text-[#0055b3] px-0">
+                            Apply Now <ArrowRight className="w-4 h-4 ml-2" />
+                         </Button>
+                      </div>
+                   ))
+                 )}
               </div>
            </div>
         </section>

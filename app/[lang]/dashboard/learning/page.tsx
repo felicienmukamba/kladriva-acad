@@ -1,7 +1,7 @@
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, Clock, BookOpen, Search } from "lucide-react";
+import { PlayCircle, Clock, BookOpen, Search, Sparkles } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
 import { auth } from "@/lib/auth";
@@ -48,6 +48,8 @@ export default async function LearningDashboard({
     status: en.progress === 100 ? "COMPLETED" : "IN_PROGRESS",
   }));
 
+  const completedCoursesCount = courses.filter((c) => c.status === "COMPLETED").length;
+
   return (
     <div className="space-y-8">
       <div className="flex items-center justify-between">
@@ -57,7 +59,7 @@ export default async function LearningDashboard({
         </div>
         <Link href={`/${lang}/courses`}>
           <Button className="h-10 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-medium gap-2 px-6">
-            <Search className="w-4 h-4" /> {dict.common.library}
+            <Search className="w-4 h-4" /> {dict.sidebar.myLearning}
           </Button>
         </Link>
       </div>
@@ -133,6 +135,36 @@ export default async function LearningDashboard({
           ))
         )}
       </div>
+
+      {completedCoursesCount > 0 && (
+        <div className="bg-[#1d1d1f] rounded-[24px] p-8 text-white mt-12 border border-[#d2d2d7]/20 shadow-lg">
+           <div className="flex items-center gap-3 mb-6">
+              <Sparkles className="w-6 h-6 text-[#0066cc]" />
+              <h2 className="text-[20px] font-semibold">Antigravity Career Strategy</h2>
+           </div>
+           <p className="text-[#a1a1a6] text-[15px] leading-relaxed mb-8 max-w-2xl">
+             You have completed {completedCoursesCount} {completedCoursesCount === 1 ? "course" : "courses"}. 
+             Your skills are becoming market-ready. To maintain momentum and eliminate friction, here are the strategic next steps to translate your knowledge into a career.
+           </p>
+           
+           <div className="grid md:grid-cols-2 gap-6">
+              <div className="bg-white/10 rounded-[16px] p-6 border border-white/10 hover:bg-white/15 transition-colors">
+                 <h3 className="text-white font-semibold mb-2">Book a Mentorship Session</h3>
+                 <p className="text-[#a1a1a6] text-[13px] mb-6">Validate your portfolio and mock interview with a Senior Engineer.</p>
+                 <Link href={`/${lang}/dashboard/mentorship`}>
+                   <Button className="bg-white text-[#1d1d1f] hover:bg-[#f5f5f7] rounded-full h-10 px-6 text-[13px] font-medium">Find a Mentor</Button>
+                 </Link>
+              </div>
+              <div className="bg-white/10 rounded-[16px] p-6 border border-white/10 hover:bg-white/15 transition-colors">
+                 <h3 className="text-white font-semibold mb-2">Explore Open Roles</h3>
+                 <p className="text-[#a1a1a6] text-[13px] mb-6">Apply for jobs matching your newly acquired technical skill set.</p>
+                 <Link href={`/${lang}/careers`}>
+                   <Button className="bg-[#0066cc] text-white hover:bg-[#0055b3] rounded-full h-10 px-6 text-[13px] font-medium">View Jobs</Button>
+                 </Link>
+              </div>
+           </div>
+        </div>
+      )}
     </div>
   );
 }

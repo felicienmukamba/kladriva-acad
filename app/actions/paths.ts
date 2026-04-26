@@ -37,7 +37,7 @@ export async function enrollInPath(userId: string, pathId: string) {
       }
     }
 
-    revalidatePath("/[lang]/dashboard/paths", "page")
+    revalidatePath("/", "layout")
     return { success: true }
   } catch (error) {
     console.error("Path enrollment error:", error)

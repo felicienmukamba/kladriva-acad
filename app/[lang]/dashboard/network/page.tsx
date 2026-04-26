@@ -7,6 +7,7 @@ import { auth } from "@/lib/auth";
 import { CreatePostForm } from "@/components/CreatePostForm";
 import { redirect } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
+import { likePost, followUser } from "@/app/actions/posts";
 
 export default async function NetworkPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -44,40 +45,40 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">{dict.network.title}</h1>
-          <p className="text-muted-foreground">{dict.network.tagline}</p>
+          <h1 className="text-[32px] font-semibold tracking-tight text-[#1d1d1f] mb-2">{dict.network.title}</h1>
+          <p className="text-[17px] text-[#86868b]">{dict.network.tagline}</p>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
-        <Card className="apple-card">
+      <div className="grid gap-6 md:grid-cols-3">
+        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Connections</CardTitle>
-            <Users className="h-4 w-4 text-primary" />
+            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Connections</CardTitle>
+            <Users className="h-5 w-5 text-[#1d1d1f]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">No new this month</p>
+            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
+            <p className="text-[13px] font-medium text-[#86868b]">No new this month</p>
           </CardContent>
         </Card>
-        <Card className="apple-card">
+        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Profile Views</CardTitle>
-            <TrendingUp className="h-4 w-4 text-primary" />
+            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Profile Views</CardTitle>
+            <TrendingUp className="h-5 w-5 text-[#1d1d1f]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">Starting fresh</p>
+            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
+            <p className="text-[13px] font-medium text-[#86868b]">Starting fresh</p>
           </CardContent>
         </Card>
-        <Card className="apple-card">
+        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-foreground">Post Impressions</CardTitle>
-            <Globe className="h-4 w-4 text-primary" />
+            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Post Impressions</CardTitle>
+            <Globe className="h-5 w-5 text-[#1d1d1f]" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-foreground">0</div>
-            <p className="text-xs text-muted-foreground">Last 30 days</p>
+            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
+            <p className="text-[13px] font-medium text-[#86868b]">Last 30 days</p>
           </CardContent>
         </Card>
       </div>
@@ -87,18 +88,18 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
         <div className="lg:col-span-2 space-y-6">
           {session.user?.id && <CreatePostForm userId={session.user.id} />}
           
-          <div className="space-y-4">
-            <h2 className="text-xl font-semibold text-foreground">Community Feed</h2>
+          <div className="space-y-6">
+            <h2 className="text-[20px] font-semibold text-[#1d1d1f]">Community Feed</h2>
             {posts.length === 0 ? (
-              <Card className="apple-card py-10 text-center">
-                <p className="text-muted-foreground">The feed is quiet. Be the first to post!</p>
+              <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none py-16 text-center">
+                <p className="text-[#86868b] text-[15px]">The feed is quiet. Be the first to post!</p>
               </Card>
             ) : (
               posts.map((post) => (
-                <Card key={post.id} className="apple-card transition-colors">
-                  <CardContent className="pt-4">
-                    <div className="flex items-center gap-3 mb-4">
-                      <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm overflow-hidden">
+                <Card key={post.id} className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none overflow-hidden">
+                  <CardContent className="p-6">
+                    <div className="flex items-center gap-4 mb-6">
+                      <div className="h-12 w-12 rounded-[14px] bg-[#f5f5f7] border border-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] font-semibold text-[15px] overflow-hidden">
                         {post.user.image ? (
                           <img src={post.user.image} alt={post.user.name || ''} className="w-full h-full object-cover" />
                         ) : (
@@ -106,22 +107,28 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
                         )}
                       </div>
                       <div>
-                        <p className="font-semibold text-foreground text-sm">{post.user.name}</p>
-                        <p className="text-xs text-muted-foreground">
+                        <p className="font-semibold text-[#1d1d1f] text-[15px]">{post.user.name}</p>
+                        <p className="text-[13px] text-[#86868b] font-medium">
                           {new Date(post.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    <p className="text-foreground/80 text-sm leading-relaxed mb-6">
+                    <p className="text-[#1d1d1f] text-[15px] leading-relaxed mb-6">
                       {post.content}
                     </p>
-                    <div className="flex items-center gap-6 pt-4 border-t border-border/50">
-                      <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors group">
-                        <Heart className="w-4 h-4 group-hover:fill-primary/20" /> 
-                        <span>{post._count.likes}</span>
-                      </button>
-                      <button className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary transition-colors">
-                        <MessageCircle className="w-4 h-4" /> 
+                    <div className="flex items-center gap-8 pt-6 border-t border-[#d2d2d7]">
+                      <form action={async () => {
+                        "use server"
+                        if(!session?.user?.id) return;
+                        await likePost(post.id, session.user.id);
+                      }}>
+                        <button type="submit" className="flex items-center gap-2 text-[14px] font-medium text-[#86868b] hover:text-[#0066cc] transition-colors group">
+                          <Heart className="w-5 h-5 group-hover:fill-[#0066cc]/20" /> 
+                          <span>{post._count.likes}</span>
+                        </button>
+                      </form>
+                      <button className="flex items-center gap-2 text-[14px] font-medium text-[#86868b] hover:text-[#1d1d1f] transition-colors">
+                        <MessageCircle className="w-5 h-5" /> 
                         <span>{post._count.comments}</span>
                       </button>
                     </div>
@@ -133,12 +140,12 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
         </div>
 
         {/* Suggested Connections */}
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-foreground">Suggested for you</h2>
+        <div className="space-y-6">
+          <h2 className="text-[20px] font-semibold text-[#1d1d1f]">Suggested for you</h2>
           {suggestedUsers.map((person) => (
-            <Card key={person.id} className="apple-card">
-              <CardContent className="py-4 flex items-center gap-3">
-                <div className="h-10 w-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm shrink-0 overflow-hidden">
+            <Card key={person.id} className="border border-[#d2d2d7] rounded-[20px] bg-white shadow-none">
+              <CardContent className="p-4 flex items-center gap-4">
+                <div className="h-12 w-12 rounded-[14px] bg-[#f5f5f7] border border-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] font-semibold text-[15px] shrink-0 overflow-hidden">
                   {person.image ? (
                     <img src={person.image} alt={person.name || ''} className="w-full h-full object-cover" />
                   ) : (
@@ -146,12 +153,18 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
                   )}
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-foreground text-sm truncate">{person.name}</p>
-                  <p className="text-xs text-muted-foreground truncate">{person.headline || 'Kladriva Student'}</p>
+                  <p className="font-semibold text-[#1d1d1f] text-[15px] truncate">{person.name}</p>
+                  <p className="text-[13px] font-medium text-[#86868b] truncate">{person.headline || 'Kladriva Student'}</p>
                 </div>
-                <Button size="sm" variant="outline" className="border-primary/30 text-primary hover:bg-primary/10 shrink-0">
-                  <UserPlus className="w-4 h-4" />
-                </Button>
+                <form action={async () => {
+                  "use server"
+                  if(!session?.user?.id) return;
+                  await followUser(session.user.id, person.id);
+                }}>
+                  <Button type="submit" size="sm" variant="outline" className="border-[#d2d2d7] text-[#1d1d1f] hover:bg-[#f5f5f7] rounded-full shrink-0">
+                    <UserPlus className="w-4 h-4" />
+                  </Button>
+                </form>
               </CardContent>
             </Card>
           ))}

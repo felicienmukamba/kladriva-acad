@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { GraduationCap, ArrowRight, Layers, Clock, Award, CheckCircle2, ShieldCheck } from "lucide-react"
 import { enrollInPath } from "@/app/actions/paths"
+import { redirect } from "next/navigation"
 
 export default async function PathDetailPage({ 
   params 
@@ -71,6 +72,7 @@ export default async function PathDetailPage({
                   "use server"
                   if (!session?.user) return
                   await enrollInPath(session.user.id!, path.id)
+                  redirect(`/${lang}/dashboard/paths`)
                 }}>
                   <Button size="lg" className="bg-[#0066cc] hover:bg-[#0055b3] text-white font-medium h-12 px-8 rounded-full gap-2">
                     Enroll in Path <ArrowRight className="w-4 h-4" />
@@ -175,6 +177,7 @@ export default async function PathDetailPage({
                     "use server"
                     if (!session?.user) return
                     await enrollInPath(session.user.id!, path.id)
+                    redirect(`/${lang}/dashboard/paths`)
                   }}>
                     <Button className="w-full h-12 bg-white text-[#1d1d1f] hover:bg-[#f5f5f7] font-medium rounded-full text-[15px]">
                       Get Started Today

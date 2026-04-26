@@ -6,63 +6,56 @@ import { format } from 'date-fns';
 
 const styles = StyleSheet.create({
   page: {
-    padding: 60,
+    padding: 40,
     backgroundColor: '#ffffff',
     fontFamily: 'Helvetica',
   },
   container: {
-    border: '10pt solid #0056d2',
+    border: '1pt solid #d2d2d7',
+    borderRadius: 16,
     height: '100%',
-    padding: 40,
+    padding: 60,
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     position: 'relative',
-  },
-  innerBorder: {
-    border: '2pt solid #0056d2',
-    position: 'absolute',
-    top: 5,
-    bottom: 5,
-    left: 5,
-    right: 5,
+    backgroundColor: '#fcfcfc',
   },
   header: {
     fontSize: 48,
     fontWeight: 'bold',
-    color: '#0056d2',
-    marginBottom: 20,
+    color: '#1d1d1f',
+    marginBottom: 10,
     textAlign: 'center',
-    textTransform: 'uppercase',
-    letterSpacing: 2,
+    letterSpacing: 1,
   },
   subHeader: {
-    fontSize: 18,
-    color: '#64748b',
+    fontSize: 14,
+    color: '#86868b',
     marginBottom: 40,
     textAlign: 'center',
     textTransform: 'uppercase',
+    letterSpacing: 4,
   },
   presentedTo: {
-    fontSize: 16,
-    color: '#64748b',
+    fontSize: 14,
+    color: '#86868b',
     marginBottom: 10,
     textAlign: 'center',
   },
   userName: {
     fontSize: 36,
     fontWeight: 'bold',
-    color: '#0f172a',
+    color: '#1d1d1f',
     marginBottom: 30,
     textAlign: 'center',
-    borderBottom: '2pt solid #e2e8f0',
     minWidth: 300,
     paddingBottom: 10,
   },
   description: {
     fontSize: 14,
-    color: '#64748b',
+    color: '#86868b',
     marginBottom: 10,
     textAlign: 'center',
     maxWidth: 500,
@@ -71,7 +64,7 @@ const styles = StyleSheet.create({
   courseName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#0056d2',
+    color: '#1d1d1f',
     marginBottom: 40,
     textAlign: 'center',
   },
@@ -80,9 +73,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     width: '100%',
-    marginTop: 40,
+    marginTop: 60,
     paddingTop: 20,
-    borderTop: '1pt solid #e2e8f0',
+    borderTop: '1pt solid #d2d2d7',
   },
   signatureBlock: {
     display: 'flex',
@@ -90,15 +83,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   signature: {
-    fontSize: 16,
+    fontSize: 18,
     fontStyle: 'italic',
     marginBottom: 5,
-    color: '#0f172a',
+    color: '#1d1d1f',
   },
   signerRole: {
     fontSize: 10,
-    color: '#94a3b8',
+    color: '#86868b',
     textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   dateBlock: {
     display: 'flex',
@@ -109,19 +103,30 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     marginBottom: 5,
-    color: '#0f172a',
+    color: '#1d1d1f',
   },
   dateLabel: {
     fontSize: 10,
-    color: '#94a3b8',
+    color: '#86868b',
     textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   code: {
     position: 'absolute',
     bottom: 20,
     right: 20,
     fontSize: 8,
-    color: '#94a3b8',
+    color: '#86868b',
+  },
+  brand: {
+    position: 'absolute',
+    top: 40,
+    left: 40,
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#1d1d1f',
+    letterSpacing: 2,
+    textTransform: 'uppercase',
   }
 });
 
@@ -136,7 +141,7 @@ export const CertificatePDF = ({ data }: { data: CertificateData }) => (
   <Document>
     <Page size="A4" orientation="landscape" style={styles.page}>
       <View style={styles.container}>
-        <View style={styles.innerBorder} />
+        <Text style={styles.brand}>KLADRIVA</Text>
         
         <Text style={styles.header}>Certificate</Text>
         <Text style={styles.subHeader}>of Achievement</Text>
