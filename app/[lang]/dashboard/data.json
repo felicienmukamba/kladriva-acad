@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "header": "Full-Stack Next.js 16 Masterclass",
+    "type": "Engineering",
+    "status": "Done",
+    "target": "100%",
+    "limit": "100%",
+    "reviewer": "Sarah Jenkins"
+  },
+  {
+    "id": 2,
+    "header": "Advanced UI/UX with Figma",
+    "type": "Design",
+    "status": "In Progress",
+    "target": "85%",
+    "limit": "90%",
+    "reviewer": "Alex Rivera"
+  },
+  {
+    "id": 3,
+    "header": "System Design for Scalability",
+    "type": "Engineering",
+    "status": "Not Started",
+    "target": "0%",
+    "limit": "100%",
+    "reviewer": "David Okafor"
+  },
+  {
+    "id": 4,
+    "header": "Industrial React Patterns",
+    "type": "Engineering",
+    "status": "In Progress",
+    "target": "45%",
+    "limit": "100%",
+    "reviewer": "Sarah Jenkins"
+  }
+]

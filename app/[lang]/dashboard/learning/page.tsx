@@ -1,92 +1,128 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PlayCircle, Clock, BookOpen } from "lucide-react";
+import { PlayCircle, Clock, BookOpen, Search } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default async function LearningDashboard() {
-  const coursesFromDb = await prisma.course.findMany({
-    where: { published: true },
+import { getDictionary } from "@/lib/dictionary";
+
+export default async function LearningDashboard({
+  params
+}: {
+  params: Promise<{ lang: string }>
+}) {
+  const { lang } = await params;
+  const session = await auth();
+
+  if (!session?.user) {
+    redirect(`/${lang}/auth/signin`);
+  }
+
+  const dict = await getDictionary(lang as "en" | "fr");
+
+  const enrollments = await prisma.enrollment.findMany({
+    where: { userId: session.user.id! },
     include: {
-      modules: {
+      course: {
         include: {
-          lessons: true,
+          modules: {
+            include: {
+              lessons: true,
+            },
+          },
         },
       },
     },
   });
 
-  // Map DB data to match the UI structure (adding some mock progress for now)
-  const courses = coursesFromDb.map((course) => ({
-    id: course.id,
-    title: course.title,
-    description: course.description,
-    progress: Math.floor(Math.random() * 100), // Mock progress until Enrollment is implemented
-    modulesCount: course.modules.length,
-    lessonsCount: course.modules.reduce((acc, mod) => acc + mod.lessons.length, 0),
-    status: "IN_PROGRESS", // Mock status
+  const courses = enrollments.map((en) => ({
+    id: en.course.id,
+    title: en.course.title,
+    description: en.course.description,
+    progress: en.progress,
+    modulesCount: en.course.modules.length,
+    lessonsCount: en.course.modules.reduce((acc, mod) => acc + mod.lessons.length, 0),
+    status: en.progress === 100 ? "COMPLETED" : "IN_PROGRESS",
   }));
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-between items-center">
+      <div className="apple-toolbar">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Learning Hub</h1>
-          <p className="text-slate-400">Pick up where you left off or start a new skill.</p>
+          <h1 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">{dict.learning.title}</h1>
+          <p className="text-sm text-slate-600">{dict.learning.tagline}</p>
         </div>
-        <Button className="bg-indigo-600 hover:bg-indigo-700">Browse Catalog</Button>
+        <Link href={`/${lang}/courses`}>
+          <Button className="h-11 rounded-full bg-slate-950 text-white hover:bg-slate-800 font-medium gap-2">
+            <Search className="w-4 h-4" /> {dict.sidebar.library}
+          </Button>
+        </Link>
       </div>
 
       <div className="grid gap-6">
         {courses.length === 0 ? (
-          <div className="text-center py-20 bg-slate-900 rounded-lg border border-slate-800">
-            <p className="text-slate-400">No courses available yet.</p>
+          <div className="text-center py-32 bg-white rounded-3xl border-2 border-dashed border-slate-200 shadow-sm">
+            <div className="bg-slate-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-6">
+               <BookOpen className="text-slate-950 w-8 h-8" />
+            </div>
+            <h3 className="text-xl font-bold mb-2">No courses yet</h3>
+            <p className="text-slate-600 mb-8 max-w-xs mx-auto">
+              Enroll in your first course to start your professional transformation.
+            </p>
+            <Link href={`/${lang}/courses`}>
+              <Button variant="outline" className="h-11 rounded-full border-slate-200 bg-white text-slate-900 hover:bg-slate-50 font-medium">
+                {dict.sidebar.library}
+              </Button>
+            </Link>
           </div>
         ) : (
           courses.map((course) => (
-            <Card key={course.id} className="bg-slate-900 border-slate-800 overflow-hidden">
+            <Card key={course.id} className="apple-surface overflow-hidden bg-white border-black/6 hover:shadow-apple-lg transition-shadow">
               <div className="md:flex">
-                <div className="md:w-1/3 bg-slate-800 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-slate-700">
-                  <BookOpen className="w-16 h-16 text-indigo-400/50" />
+                <div className="md:w-1/4 bg-slate-50 flex items-center justify-center p-8 border-b md:border-b-0 md:border-r border-slate-200/70">
+                  <PlayCircle className="w-16 h-16 text-slate-950/15" />
                 </div>
-                <div className="md:w-2/3 p-6 flex flex-col justify-between">
+                <div className="md:w-3/4 p-6 flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start mb-2">
-                      <CardTitle className="text-xl text-white">{course.title}</CardTitle>
-                      {course.progress === 100 && (
-                        <Badge className="bg-emerald-500/20 text-emerald-400 hover:bg-emerald-500/30">Completed</Badge>
+                      <CardTitle className="text-xl font-bold">{course.title}</CardTitle>
+                      {course.status === "COMPLETED" ? (
+                        <Badge className="bg-emerald-100 text-emerald-700 hover:bg-emerald-100 border-none">{dict.learning.completed}</Badge>
+                      ) : (
+                        <Badge variant="outline" className="text-slate-700 border-slate-200 bg-slate-50">{course.progress}%</Badge>
                       )}
                     </div>
-                    <CardDescription className="text-slate-400 mb-6">
+                    <CardDescription className="text-slate-600 mb-6 line-clamp-2">
                       {course.description}
                     </CardDescription>
                   </div>
 
                   <div className="space-y-4">
-                    {course.progress < 100 && (
-                      <div>
-                        <div className="flex justify-between text-xs text-slate-400 mb-1">
-                          <span>{course.progress}% Complete</span>
-                        </div>
-                        <div className="w-full bg-slate-800 rounded-full h-2">
-                          <div 
-                            className="bg-indigo-500 h-2 rounded-full transition-all duration-500" 
-                            style={{ width: `${course.progress}%` }}
-                          ></div>
-                        </div>
+                    <div>
+                      <div className="flex justify-between text-xs font-semibold text-slate-600 mb-2">
+                        <span className="uppercase">{dict.learning.resume}</span>
+                        <span>{course.progress}%</span>
                       </div>
-                    )}
+                      <div className="w-full bg-slate-200/70 rounded-full h-2">
+                        <div 
+                          className="bg-slate-950 h-2 rounded-full transition-all duration-500" 
+                          style={{ width: `${course.progress}%` }}
+                        ></div>
+                      </div>
+                    </div>
                     
-                    <div className="flex items-center justify-between pt-2">
-                      <div className="flex gap-4 text-sm text-slate-400">
-                        <span className="flex items-center gap-1"><BookOpen className="w-4 h-4" /> {course.modulesCount} Modules</span>
-                        <span className="flex items-center gap-1"><Clock className="w-4 h-4" /> {course.lessonsCount} Lessons</span>
+                    <div className="flex items-center justify-between pt-2 border-t mt-4">
+                      <div className="flex gap-4 text-xs font-medium text-slate-500">
+                        <span className="flex items-center gap-1 uppercase"><BookOpen className="w-3 h-3" /> {course.modulesCount} Modules</span>
+                        <span className="flex items-center gap-1 uppercase"><Clock className="w-3 h-3" /> {course.lessonsCount} Lessons</span>
                       </div>
                       
-                      <Link href={`/dashboard/learning/${course.id}`}>
-                        <Button className="bg-indigo-600 hover:bg-indigo-700 gap-2">
-                          <PlayCircle className="w-4 h-4" /> {course.progress === 0 ? 'Start' : 'Continue'}
+                      <Link href={`/${lang}/dashboard/learning/${course.id}`}>
+                        <Button className="h-10 rounded-full bg-slate-950 hover:bg-slate-800 gap-2 font-medium text-white">
+                          {course.progress === 0 ? 'Start' : course.progress === 100 ? 'Review' : 'Continue'}
                         </Button>
                       </Link>
                     </div>

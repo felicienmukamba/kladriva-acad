@@ -2,21 +2,195 @@
   "common": {
     "dashboard": "Dashboard",
     "learning": "Learning Hub",
-    "projects": "Project Workspace",
+    "projects": "Project Labs",
     "mentorship": "Mentorship",
     "network": "Network",
-    "jobs": "Marketplace",
+    "jobs": "Careers",
     "profile": "Profile",
     "settings": "Settings",
-    "logout": "Logout"
+    "logout": "Log out",
+    "help": "Help Center",
+    "search": "Search...",
+    "save": "Save Changes",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "add": "Add",
+    "loading": "Loading...",
+    "back": "Back",
+    "system": "System",
+    "platform": "Platform",
+    "education": "Education",
+    "growth": "Growth",
+    "support": "Support",
+    "library": "Library",
+    "certificates": "Certificates"
+  },
+  "auth": {
+    "signIn": "Sign In",
+    "signUp": "Sign Up",
+    "welcomeBack": "Welcome back",
+    "createAccount": "Create an account",
+    "email": "Email address",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "name": "Full Name",
+    "dontHaveAccount": "Don't have an account?",
+    "alreadyHaveAccount": "Already have an account?",
+    "forgotPassword": "Forgot your password?",
+    "signInWithGithub": "Continue with GitHub",
+    "signInWithGoogle": "Continue with Google"
+  },
+  "sidebar": {
+    "system": "System",
+    "platform": "Platform",
+    "education": "Education",
+    "growth": "Growth",
+    "support": "Support",
+    "adminConsole": "Admin Console",
+    "overview": "Overview",
+    "myLearning": "My Learning",
+    "network": "Network",
+    "learningPaths": "Learning Paths",
+    "projectLabs": "Project Labs",
+    "coachDashboard": "Coach Dashboard",
+    "findMentor": "Find a Mentor",
+    "hiringPortal": "Hiring Portal",
+    "careers": "Careers",
+    "helpCenter": "Help Center"
   },
   "dashboard": {
-    "welcome": "Welcome back, {name}",
-    "tagline": "Your career transformation journey continues.",
-    "reputation": "Reputation Points"
+    "student": {
+      "title": "Student Portal",
+      "tagline": "Continue your curriculum and track your academic progress.",
+      "activePrograms": "Active Learning Programs",
+      "stats": {
+        "courses": { "title": "My Courses", "desc": "Courses in progress" },
+        "mentorship": { "title": "Mentorship", "desc": "Active connections" },
+        "projects": { "title": "Projects", "desc": "Labs completed" },
+        "reputation": { "title": "Reputation", "desc": "Academy points" }
+      }
+    },
+    "mentor": {
+      "title": "Coach Command Center",
+      "tagline": "Manage your sessions, guide your mentees, and track your impact.",
+      "activeMentees": "Active Mentees",
+      "scheduledSessions": "Scheduled Sessions",
+      "unreadMessages": "Unread Messages",
+      "avgRating": "Avg Rating",
+      "upcomingSessions": "Upcoming Sessions",
+      "recentFeedback": "Recent Feedback"
+    },
+    "company": {
+      "title": "Recruitment Suite",
+      "tagline": "Source top talent from our elite pool of skilled professionals.",
+      "activeJobs": "Active Jobs",
+      "totalApplications": "Total Applications",
+      "newCandidates": "New Candidates",
+      "hiringVelocity": "Hiring Velocity",
+      "activePostings": "Active Job Postings",
+      "candidatePipeline": "Candidate Pipeline"
+    },
+    "admin": {
+      "title": "Administrative Hub",
+      "tagline": "Orchestrate the platform ecosystem and monitor operational health.",
+      "totalUsers": "Total Users",
+      "monthlyRevenue": "Monthly Revenue",
+      "activeInstructors": "Active Instructors",
+      "systemHealth": "System Health",
+      "auditLog": "System Audit Log",
+      "growth": "Platform Growth"
+    }
   },
-  "jobs": {
-    "title": "Job & Freelance Marketplace",
-    "tagline": "AI-matched opportunities based on your skills and project portfolio."
+  "admin": {
+    "courses": {
+      "title": "Course Architecture",
+      "tagline": "Engineer your curriculum: settings, modules, and intellectual challenges.",
+      "settings": "Settings",
+      "curriculum": "Curriculum",
+      "addModule": "Add module",
+      "lessonsLabs": "Lessons & Labs",
+      "addLesson": "Add lesson",
+      "questions": "Questions",
+      "courseTitle": "Course Title",
+      "description": "Description",
+      "imageUrl": "Image URL",
+      "published": "Make this course public",
+      "saveChanges": "Save Changes",
+      "deleteCourse": "Delete Course"
+    },
+    "users": {
+      "title": "User Ecosystem",
+      "tagline": "Manage student accounts, mentors, and platform permissions.",
+      "invite": "Invite user",
+      "search": "Search users...",
+      "table": {
+        "user": "User",
+        "role": "Role",
+        "reputation": "Reputation",
+        "status": "Status",
+        "actions": "Actions",
+        "roles": {
+          "admin": "Admin",
+          "student": "Student",
+          "mentor": "Mentor",
+          "company": "Company"
+        },
+        "statuses": {
+          "active": "Active",
+          "suspended": "Suspended"
+        }
+      }
+    },
+    "jobs": {
+      "title": "Career Hub Admin",
+      "tagline": "Curate job opportunities and manage the hiring pipeline.",
+      "addJob": "Post new job"
+    }
+  },
+  "projects": {
+    "title": "Project Labs",
+    "tagline": "Build real-world applications and showcase your skills.",
+    "leaderboard": "Leaderboard",
+    "difficulty": "Difficulty",
+    "startLab": "Start Lab",
+    "capstone": {
+      "title": "Industrial Capstone",
+      "tagline": "Ready to graduate? Collaborate with a team to solve a real corporate problem.",
+      "apply": "Apply for Capstone"
+    }
+  },
+  "learning": {
+    "title": "Learning Hub",
+    "tagline": "Your personal classroom for mastered skills and growth.",
+    "resume": "Resume learning",
+    "myCourses": "My Courses",
+    "completed": "Completed"
+  },
+  "certificates": {
+    "title": "Credentials & Badges",
+    "tagline": "Manage and share your verifiable professional certifications.",
+    "empty": "No certificates earned yet",
+    "emptyDesc": "Complete your first course and pass the final exam to earn your professional credential.",
+    "verified": "Verified",
+    "share": "Share to LinkedIn",
+    "verificationPortal": "Verification Portal",
+    "verificationDesc": "All Kladriva certificates are secured on our platform with a unique verification code."
+  },
+  "resources": {
+    "title": "Academy Library",
+    "tagline": "Access premium guides, templates, and industry whitepapers.",
+    "download": "Download Resource"
+  },
+  "network": {
+    "title": "Academy Network",
+    "tagline": "Connect with peers, mentors, and industry recruiters.",
+    "connect": "Connect",
+    "message": "Message"
+  },
+  "paths": {
+    "title": "Learning Paths",
+    "tagline": "Curated journeys to master specific professional domains.",
+    "enroll": "Enroll in Path"
   }
 }

@@ -6,12 +6,16 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { CreatePostForm } from "@/components/CreatePostForm";
 import { redirect } from "next/navigation";
+import { getDictionary } from "@/lib/dictionary";
 
-export default async function NetworkPage() {
+export default async function NetworkPage({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params;
   const session = await auth();
   if (!session?.user) {
-    redirect("/api/auth/signin");
+    redirect(`/${lang}/auth/signin`);
   }
+
+  const dict = await getDictionary(lang as "en" | "fr");
 
   // Fetch posts with author info and counts
   const posts = await prisma.post.findMany({
@@ -40,8 +44,8 @@ export default async function NetworkPage() {
     <div className="space-y-8">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Professional Network</h1>
-          <p className="text-slate-400">Connect with peers, share your journey, and grow your professional influence.</p>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">{dict.network.title}</h1>
+          <p className="text-slate-400">{dict.network.tagline}</p>
         </div>
       </div>
 

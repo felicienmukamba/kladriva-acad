@@ -5,18 +5,192 @@
     "projects": "Espace Projets",
     "mentorship": "Mentorat",
     "network": "Réseau",
-    "jobs": "Marché du Travail",
+    "jobs": "Carrières",
     "profile": "Profil",
     "settings": "Paramètres",
-    "logout": "Déconnexion"
+    "logout": "Déconnexion",
+    "help": "Centre d'Aide",
+    "search": "Rechercher...",
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "loading": "Chargement...",
+    "back": "Retour",
+    "system": "Système",
+    "platform": "Plateforme",
+    "education": "Éducation",
+    "growth": "Croissance",
+    "support": "Support",
+    "library": "Bibliothèque",
+    "certificates": "Certificats"
+  },
+  "auth": {
+    "signIn": "Connexion",
+    "signUp": "Inscription",
+    "welcomeBack": "Bon retour",
+    "createAccount": "Créer un compte",
+    "email": "Adresse e-mail",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "name": "Nom complet",
+    "dontHaveAccount": "Vous n'avez pas de compte ?",
+    "alreadyHaveAccount": "Vous avez déjà un compte ?",
+    "forgotPassword": "Mot de passe oublié ?",
+    "signInWithGithub": "Continuer avec GitHub",
+    "signInWithGoogle": "Continuer avec Google"
+  },
+  "sidebar": {
+    "system": "Système",
+    "platform": "Plateforme",
+    "education": "Éducation",
+    "growth": "Croissance",
+    "support": "Support",
+    "adminConsole": "Console d'Administration",
+    "overview": "Aperçu",
+    "myLearning": "Mon Apprentissage",
+    "network": "Mon Réseau",
+    "learningPaths": "Parcours d'Apprentissage",
+    "projectLabs": "Laboratoire Projets",
+    "coachDashboard": "Dashboard Coach",
+    "findMentor": "Trouver un Mentor",
+    "hiringPortal": "Portail Recrutement",
+    "careers": "Carrières",
+    "helpCenter": "Centre d'Aide"
   },
   "dashboard": {
-    "welcome": "Bon retour, {name}",
-    "tagline": "Votre parcours de transformation de carrière continue.",
-    "reputation": "Points de Réputation"
+    "student": {
+      "title": "Portail Étudiant",
+      "tagline": "Continuez votre cursus et suivez vos progrès académiques.",
+      "activePrograms": "Programmes d'Apprentissage Actifs",
+      "stats": {
+        "courses": { "title": "Mes Cours", "desc": "Cours en cours" },
+        "mentorship": { "title": "Mentorat", "desc": "Connexions actives" },
+        "projects": { "title": "Projets", "desc": "Labs terminés" },
+        "reputation": { "title": "Réputation", "desc": "Points Academy" }
+      }
+    },
+    "mentor": {
+      "title": "Centre de Commandement Coach",
+      "tagline": "Gérez vos sessions, guidez vos mentorés et suivez votre impact.",
+      "activeMentees": "Mentorés Actifs",
+      "scheduledSessions": "Sessions Planifiées",
+      "unreadMessages": "Messages non lus",
+      "avgRating": "Note Moyenne",
+      "upcomingSessions": "Sessions à venir",
+      "recentFeedback": "Retours Récents"
+    },
+    "company": {
+      "title": "Suite de Recrutement",
+      "tagline": "Sourcez les meilleurs talents parmi notre vivier de professionnels qualifiés.",
+      "activeJobs": "Offres Actives",
+      "totalApplications": "Total Candidatures",
+      "newCandidates": "Nouveaux Candidats",
+      "hiringVelocity": "Vitesse de Recrutement",
+      "activePostings": "Offres d'Emploi Actives",
+      "candidatePipeline": "Pipeline de Candidats"
+    },
+    "admin": {
+      "title": "Hub Administratif",
+      "tagline": "Orchestre l'écosystème de la plateforme et surveille la santé opérationnelle.",
+      "totalUsers": "Utilisateurs Totaux",
+      "monthlyRevenue": "Revenu Mensuel",
+      "activeInstructors": "Instructeurs Actifs",
+      "systemHealth": "Santé du Système",
+      "auditLog": "Journal d'Audit Système",
+      "growth": "Croissance de la Plateforme"
+    }
   },
-  "jobs": {
-    "title": "Marché de l'Emploi & Freelance",
-    "tagline": "Opportunités associées par IA basées sur vos compétences et votre portfolio."
+  "admin": {
+    "courses": {
+      "title": "Architecture des Cours",
+      "tagline": "Concevez votre cursus : paramètres, modules et défis intellectuels.",
+      "settings": "Paramètres",
+      "curriculum": "Cursus",
+      "addModule": "Ajouter un module",
+      "lessonsLabs": "Leçons & Labs",
+      "addLesson": "Ajouter une leçon",
+      "questions": "Questions",
+      "courseTitle": "Titre du Cours",
+      "description": "Description",
+      "imageUrl": "URL de l'image",
+      "published": "Rendre ce cours public",
+      "saveChanges": "Enregistrer les modifications",
+      "deleteCourse": "Supprimer le cours"
+    },
+    "users": {
+      "title": "Écosystème Utilisateurs",
+      "tagline": "Gérez les comptes étudiants, les mentors et les permissions.",
+      "invite": "Inviter un utilisateur",
+      "search": "Rechercher...",
+      "table": {
+        "user": "Utilisateur",
+        "role": "Rôle",
+        "reputation": "Réputation",
+        "status": "Statut",
+        "actions": "Actions",
+        "roles": {
+          "admin": "Admin",
+          "student": "Étudiant",
+          "mentor": "Mentor",
+          "company": "Entreprise"
+        },
+        "statuses": {
+          "active": "Actif",
+          "suspended": "Suspendu"
+        }
+      }
+    },
+    "jobs": {
+      "title": "Admin Carrières",
+      "tagline": "Gérez les opportunités d'emploi et le pipeline de recrutement.",
+      "addJob": "Publier une offre"
+    }
+  },
+  "projects": {
+    "title": "Laboratoire de Projets",
+    "tagline": "Construisez des applications réelles et montrez vos compétences.",
+    "leaderboard": "Classement",
+    "difficulty": "Difficulté",
+    "startLab": "Démarrer le Lab",
+    "capstone": {
+      "title": "Projet de Fin d'Études",
+      "tagline": "Prêt pour le diplôme ? Collaborez en équipe sur un problème réel d'entreprise.",
+      "apply": "Postuler pour le Capstone"
+    }
+  },
+  "learning": {
+    "title": "Centre d'Apprentissage",
+    "tagline": "Votre espace personnel pour maîtriser de nouvelles compétences.",
+    "resume": "Reprendre l'apprentissage",
+    "myCourses": "Mes Cours",
+    "completed": "Terminé"
+  },
+  "certificates": {
+    "title": "Certifications & Badges",
+    "tagline": "Gérez et partagez vos certifications professionnelles vérifiables.",
+    "empty": "Aucun certificat obtenu pour le moment",
+    "emptyDesc": "Terminez votre premier cours et passez l'examen final pour obtenir votre titre professionnel.",
+    "verified": "Vérifié",
+    "share": "Partager sur LinkedIn",
+    "verificationPortal": "Portail de Vérification",
+    "verificationDesc": "Tous les certificats Kladriva sont sécurisés avec un code de vérification unique."
+  },
+  "resources": {
+    "title": "Bibliothèque de l'Académie",
+    "tagline": "Accédez à des guides premium, des modèles et des livres blancs.",
+    "download": "Télécharger la ressource"
+  },
+  "network": {
+    "title": "Réseau de l'Académie",
+    "tagline": "Connectez-vous avec vos pairs, mentors et recruteurs.",
+    "connect": "Se connecter",
+    "message": "Message"
+  },
+  "paths": {
+    "title": "Parcours d'Apprentissage",
+    "tagline": "Des parcours curatés pour maîtriser des domaines professionnels spécifiques.",
+    "enroll": "S'inscrire au parcours"
   }
 }

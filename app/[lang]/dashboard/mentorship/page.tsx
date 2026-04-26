@@ -1,119 +1,89 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Calendar, MessageSquare, Video, Star, Clock } from "lucide-react";
-import { prisma } from "@/lib/prisma";
-import { auth } from "@/lib/auth";
-import { format } from "date-fns";
-import Link from "next/link";
+import { prisma } from "@/lib/prisma"
+import { auth } from "@/lib/auth"
+import { redirect } from "next/navigation"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Badge } from "@/components/ui/badge"
+import { Calendar, MessageCircle, Star, Video } from "lucide-react"
 
-export default async function MentorshipPage() {
-  const mentorsFromDb = await prisma.user.findMany({
-    where: { role: 'MENTOR' },
-  });
+export default async function MentorshipDashboard({ params }: { params: Promise<{ lang: string }> }) {
+  const { lang } = await params
+  const session = await auth()
+  if (!session?.user) redirect(`/${lang}/auth/signin`)
 
-  const mentors = mentorsFromDb.map(m => ({
-    id: m.id,
-    name: m.name || 'Anonymous',
-    title: m.headline || 'Industry Expert',
-    expertise: m.bio?.split(',').map(s => s.trim()) || [], // Simplified for now
-    rating: (Math.random() * (5.0 - 4.5) + 4.5).toFixed(1), // Mock rating
-    sessions: Math.floor(Math.random() * 200), // Mock data
-    price: `$${Math.floor(Math.random() * 50) + 50}/hr`, // Mock data
-    availability: "Next slot: Tomorrow",
-    avatar: m.image || '',
-  }));
-
-  const session = await auth();
-  const userId = session?.user?.id;
-
-  const upcomingSessions = userId ? await prisma.mentorshipSession.findMany({
-    where: { 
-      menteeId: userId,
-      status: "SCHEDULED",
-      date: { gte: new Date() }
-    },
-    include: {
-      mentor: true,
-    },
-    orderBy: { date: 'asc' },
-  }) : [];
+  const mentors = await prisma.user.findMany({
+    where: { role: "MENTOR" },
+    take: 6
+  })
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Mentorship</h1>
-        <p className="text-slate-400">Get personalized guidance from industry experts who have been where you want to go.</p>
-      </div>
-
-      {upcomingSessions.length > 0 && (
-        <div className="space-y-4">
-          <h2 className="text-xl font-semibold text-white">Upcoming Sessions</h2>
-          <div className="grid gap-4">
-            {upcomingSessions.map((s) => (
-              <Card key={s.id} className="bg-slate-900 border-slate-800 border-l-4 border-l-indigo-500">
-                <CardContent className="py-4 flex items-center justify-between">
-                  <div className="flex items-center gap-4">
-                    <div className="h-10 w-10 rounded-full bg-slate-800 flex items-center justify-center text-white font-bold overflow-hidden">
-                      {s.mentor.image ? <img src={s.mentor.image} className="w-full h-full object-cover" /> : s.mentor.name?.charAt(0)}
-                    </div>
-                    <div>
-                      <p className="font-semibold text-white">{s.mentor.name}</p>
-                      <p className="text-sm text-slate-400">{format(s.date, 'EEEE, MMM do @ p')}</p>
-                    </div>
-                  </div>
-                  <Button variant="outline" className="border-slate-700 text-slate-300 gap-2">
-                    <Video className="w-4 h-4" /> Join Call
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
-
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <h2 className="text-xl font-semibold text-white">Find a Mentor</h2>
-          <Button variant="outline" className="border-slate-700 text-slate-300">View All</Button>
-        </div>
-        <div className="grid gap-6 md:grid-cols-3">
-          {mentors.map((mentor) => (
-            <Card key={mentor.id} className="bg-slate-900 border-slate-800 flex flex-col">
-              <CardHeader className="text-center pb-2">
-                <div className="mx-auto h-16 w-16 rounded-full bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center text-white text-xl font-bold mb-3 overflow-hidden">
-                  {mentor.avatar ? (
-                    <img src={mentor.avatar} alt={mentor.name} className="w-full h-full object-cover" />
-                  ) : (
-                    mentor.name.charAt(0)
-                  )}
-                </div>
-                <CardTitle className="text-lg text-white">{mentor.name}</CardTitle>
-                <CardDescription className="text-slate-400 text-xs">{mentor.title}</CardDescription>
-              </CardHeader>
-              <CardContent className="flex-1 flex flex-col justify-between">
-                <div className="space-y-3 mt-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="flex items-center gap-1 text-amber-400">
-                      <Star className="w-4 h-4 fill-amber-400" /> {mentor.rating}
-                    </span>
-                    <span className="text-slate-400">{mentor.sessions} sessions</span>
-                    <span className="text-emerald-400 font-semibold">{mentor.price}</span>
-                  </div>
-                  <div className="flex items-center gap-1 text-xs text-slate-500">
-                    <Clock className="w-3 h-3" /> {mentor.availability}
-                  </div>
-                  <Link href={`/dashboard/mentorship/${mentor.id}`} className="w-full">
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 gap-2 mt-2">
-                      <MessageSquare className="w-4 h-4" /> Book Session
-                    </Button>
-                  </Link>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+    <div className="space-y-10">
+      <div className="apple-toolbar">
+        <div className="space-y-1">
+          <h1 className="text-2xl font-semibold tracking-[-0.04em] text-slate-950">Mentorship</h1>
+          <p className="text-sm text-slate-600">Connect with experts to accelerate your career.</p>
         </div>
       </div>
+
+      <div className="grid md:grid-cols-3 gap-8">
+        {mentors.map((mentor) => (
+          <Card key={mentor.id} className="apple-surface bg-white overflow-hidden border-black/6 hover:shadow-apple-lg transition-all group rounded-3xl">
+             <CardContent className="p-8">
+                <div className="flex items-center gap-6 mb-8">
+                   <Avatar className="w-20 h-20 border-2 border-primary/10">
+                      <AvatarImage src={mentor.image || ""} />
+                      <AvatarFallback className="bg-primary/5 text-primary font-bold text-xl">{mentor.name?.[0]}</AvatarFallback>
+                   </Avatar>
+                   <div>
+                      <h3 className="text-xl font-semibold tracking-[-0.02em] text-slate-950">{mentor.name}</h3>
+                      <p className="text-sm text-slate-600 font-medium">{mentor.headline || "Senior Expert"}</p>
+                      <div className="flex items-center gap-1 mt-2">
+                         <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
+                         <span className="text-sm font-semibold text-slate-950">4.9</span>
+                         <span className="text-xs text-slate-500">(48 reviews)</span>
+                      </div>
+                   </div>
+                </div>
+
+                <div className="space-y-4 mb-8">
+                   <p className="text-sm text-slate-600 line-clamp-3 leading-relaxed">
+                      {mentor.bio || "Helping students navigate the complex world of software engineering and design systems."}
+                   </p>
+                   <div className="flex flex-wrap gap-2">
+                      <Badge variant="secondary" className="bg-slate-100 text-slate-700 border-none font-medium">React</Badge>
+                      <Badge variant="secondary" className="bg-slate-100 text-slate-700 border-none font-medium">System Design</Badge>
+                      <Badge variant="secondary" className="bg-slate-100 text-slate-700 border-none font-medium">UI/UX</Badge>
+                   </div>
+                </div>
+
+                <div className="grid grid-cols-2 gap-3 pt-6 border-t border-slate-100">
+                   <Button variant="outline" className="h-11 rounded-full font-medium gap-2 border-slate-200 bg-white hover:bg-slate-50">
+                      <MessageCircle className="w-4 h-4" /> Message
+                   </Button>
+                   <Button className="h-11 rounded-full bg-slate-950 text-white hover:bg-slate-800 font-medium gap-2 shadow-lg shadow-slate-950/10">
+                      <Calendar className="w-4 h-4" /> Book Session
+                   </Button>
+                </div>
+             </CardContent>
+          </Card>
+        ))}
+      </div>
+
+      <section className="rounded-[3rem] p-12 text-white relative overflow-hidden shadow-2xl bg-[radial-gradient(circle_at_top_left,rgba(15,23,42,0.92),rgba(15,23,42,1)_55%,rgba(37,99,235,0.94)_130%)]">
+         <div className="absolute top-0 right-0 p-12 opacity-10">
+            <Video className="w-64 h-64" />
+         </div>
+         <div className="relative z-10 max-w-2xl">
+            <h2 className="text-3xl font-semibold tracking-[-0.04em] mb-4">Unlimited 1-on-1 access</h2>
+            <p className="text-white/72 text-lg mb-8 leading-relaxed">
+               Upgrade to Kladriva Pro to unlock unlimited weekly mentorship sessions and direct project reviews from our staff engineers.
+            </p>
+            <Button size="lg" className="bg-white text-slate-950 hover:bg-slate-100 font-semibold px-10 h-12 rounded-full">
+               Upgrade to Pro
+            </Button>
+         </div>
+      </section>
     </div>
-  );
+  )
 }
