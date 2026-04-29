@@ -16,7 +16,9 @@ import { Label } from "@/components/ui/label"
 import { Briefcase, CheckCircle2, Loader2, Sparkles } from "lucide-react"
 import { useToast } from "@/hooks/use-toast"
 
-export function JobApplyButton({ jobId, jobTitle, company }: { jobId: string, jobTitle: string, company: string }) {
+import { applyToJob } from "@/app/actions/jobs"
+
+export function JobApplyButton({ jobId, jobTitle, company, userId }: { jobId: string, jobTitle: string, company: string, userId: string }) {
   const [open, setOpen] = React.useState(false)
   const [loading, setLoading] = React.useState(false)
   const [isSuccess, setIsSuccess] = React.useState(false)
@@ -30,9 +32,7 @@ export function JobApplyButton({ jobId, jobTitle, company }: { jobId: string, jo
     const coverNote = formData.get("coverNote") as string
 
     try {
-      // In a real app, this would be a server action
-      // For now, let's simulate the flow
-      await new Promise(resolve => setTimeout(resolve, 1500))
+      await applyToJob(jobId, userId, coverNote)
       
       setIsSuccess(true)
       toast({
@@ -44,10 +44,10 @@ export function JobApplyButton({ jobId, jobTitle, company }: { jobId: string, jo
         setOpen(false)
         setIsSuccess(false)
       }, 2000)
-    } catch (error) {
+    } catch (error: any) {
       toast({
         title: "Erreur",
-        description: "Impossible d'envoyer votre candidature pour le moment.",
+        description: error.message || "Impossible d'envoyer votre candidature pour le moment.",
         variant: "destructive",
       })
     } finally {
@@ -57,11 +57,11 @@ export function JobApplyButton({ jobId, jobTitle, company }: { jobId: string, jo
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger asChild>
+      <DialogTrigger render={
         <Button className="w-full h-12 rounded-full bg-[#1d1d1f] hover:bg-black text-white font-semibold transition-all gap-2 text-[15px] shadow-lg shadow-black/5">
           Postuler maintenant
         </Button>
-      </DialogTrigger>
+      } />
       <DialogContent className="sm:max-w-[500px] rounded-[32px] border-[#d2d2d7] p-0 overflow-hidden bg-white">
         {isSuccess ? (
           <div className="p-12 text-center space-y-6 animate-in zoom-in-95 duration-300">

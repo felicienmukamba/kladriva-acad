@@ -1,126 +1,171 @@
 import { auth } from "@/lib/auth"
-import { prisma } from "@/lib/prisma"
 import { redirect } from "next/navigation"
+import { prisma } from "@/lib/prisma"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { updateProfile } from "@/app/actions/user"
-import { UserCircle, Shield, Camera, Zap } from "lucide-react"
-import { subscribeToProPlan } from "@/app/actions/billing"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Shield, User, Mail, Camera, Save, Lock, Bell, Sparkles, ChevronRight } from "lucide-react"
+import { updateProfile } from "@/lib/user-actions"
+import { revalidatePath } from "next/cache"
 
 export default async function ProfilePage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params
   const session = await auth()
-
-  if (!session?.user) {
-    redirect(`/${lang}/auth/signin`)
-  }
+  if (!session?.user) redirect(`/${lang}/auth/signin`)
 
   const user = await prisma.user.findUnique({
-    where: { id: session.user.id! },
-    include: { subscription: true }
+    where: { id: session.user.id },
   })
 
-  if (!user) return null
+  if (!user) redirect(`/${lang}/auth/signin`)
+
+  async function handleUpdate(formData: FormData) {
+    "use server"
+    const name = formData.get("name") as string
+    const bio = formData.get("bio") as string
+    
+    await updateProfile({ name, bio })
+  }
 
   return (
-    <div className="max-w-4xl mx-auto space-y-12 pb-24">
-      <div className="space-y-2">
-        <h1 className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">Your Profile</h1>
-        <p className="text-[#86868b] text-[17px]">Manage your personal information and preferences.</p>
+    <div className="max-w-4xl mx-auto space-y-12 pb-20 animate-in fade-in slide-in-from-bottom-4 duration-1000">
+      {/* Header */}
+      <div className="space-y-4">
+        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1d1d1f]/5 border border-[#1d1d1f]/10 text-[#1d1d1f] text-[11px] font-bold uppercase tracking-widest">
+          <User className="w-3.5 h-3.5" /> Compte Utilisateur
+        </div>
+        <h1 className="text-[32px] md:text-[40px] font-semibold tracking-tight text-[#1d1d1f]">
+          Mon Profil
+        </h1>
+        <p className="text-[#86868b] text-xl leading-relaxed">
+          Gérez vos informations personnelles et personnalisez votre expérience d'apprentissage.
+        </p>
       </div>
 
-      <div className="bg-[#f5f5f7] border border-[#d2d2d7] rounded-[24px] overflow-hidden">
-        <div className="h-32 bg-[#e8e8ed] relative">
-           <div className="absolute -bottom-12 left-8">
-              <div className="w-24 h-24 rounded-full bg-white p-1 shadow-sm border border-[#d2d2d7] group relative overflow-hidden">
-                 {user.image ? (
-                   <img src={user.image} alt="Profile" className="w-full h-full object-cover rounded-full" />
-                 ) : (
-                   <div className="w-full h-full bg-[#1d1d1f] text-white flex items-center justify-center text-3xl font-semibold rounded-full">
-                     {user.name?.charAt(0)}
-                   </div>
-                 )}
-                 <div className="absolute inset-0 bg-black/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer rounded-full">
-                    <Camera className="w-6 h-6 text-white" />
+      <div className="grid gap-8 md:grid-cols-12">
+        {/* Sidebar Info */}
+        <div className="md:col-span-4 space-y-6">
+          <Card className="border-[#d2d2d7] rounded-[40px] shadow-sm overflow-hidden bg-white group">
+            <CardContent className="p-8 flex flex-col items-center text-center">
+              <div className="relative mb-6">
+                <Avatar className="w-32 h-32 rounded-[40px] shadow-2xl ring-4 ring-white border border-[#d2d2d7]/30">
+                  <AvatarImage src={user.image || ""} />
+                  <AvatarFallback className="bg-[#f5f5f7] text-[#1d1d1f] font-bold text-4xl">{user.name?.[0]}</AvatarFallback>
+                </Avatar>
+                <button className="absolute bottom-0 right-0 p-2.5 bg-[#1d1d1f] text-white rounded-2xl shadow-xl hover:scale-110 transition-transform active:scale-95">
+                  <Camera className="w-5 h-5" />
+                </button>
+              </div>
+              <h2 className="text-2xl font-bold text-[#1d1d1f] tracking-tight">{user.name}</h2>
+              <p className="text-[#86868b] text-[15px] font-medium mt-1 uppercase tracking-tighter">{user.role}</p>
+              
+              <div className="w-full grid grid-cols-2 gap-4 mt-8 pt-8 border-t border-[#f5f5f7]">
+                 <div className="space-y-1">
+                    <p className="text-[17px] font-bold text-[#1d1d1f]">{user.reputation}</p>
+                    <p className="text-[10px] text-[#86868b] uppercase font-black tracking-widest">Points</p>
+                 </div>
+                 <div className="space-y-1">
+                    <p className="text-[17px] font-bold text-[#1d1d1f]">0</p>
+                    <p className="text-[10px] text-[#86868b] uppercase font-black tracking-widest">Badges</p>
                  </div>
               </div>
-           </div>
-        </div>
-        
-        <div className="pt-20 px-8 pb-8">
-          <form action={async (formData) => {
-            "use server"
-            await updateProfile(formData)
-          }} className="space-y-8">
-            <div className="grid md:grid-cols-2 gap-8">
-              <div className="space-y-2">
-                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Full Name</label>
-                <Input name="name" defaultValue={user.name || ""} className="h-12 bg-white border-[#d2d2d7] rounded-[12px] text-[#1d1d1f] focus-visible:ring-[#0066cc]" />
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Avatar URL</label>
-                <Input name="image" defaultValue={user.image || ""} placeholder="https://..." className="h-12 bg-white border-[#d2d2d7] rounded-[12px] text-[#1d1d1f] focus-visible:ring-[#0066cc]" />
-              </div>
-              
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Specialties / Expertise</label>
-                <Input name="specialties" defaultValue={user.specialties || ""} placeholder="E.g. React, Kubernetes, AWS" className="h-12 bg-white border-[#d2d2d7] rounded-[12px] text-[#1d1d1f] focus-visible:ring-[#0066cc]" />
-              </div>
+            </CardContent>
+          </Card>
 
-              <div className="space-y-2 md:col-span-2">
-                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Bio</label>
-                <textarea name="bio" defaultValue={user.bio || ""} rows={4} className="w-full bg-white border border-[#d2d2d7] rounded-[12px] p-4 text-[#1d1d1f] focus:outline-none focus:border-[#0066cc] focus:ring-1 focus:ring-[#0066cc] resize-none" placeholder="Tell us about yourself..." />
-              </div>
-            </div>
+          <div className="p-8 rounded-[40px] bg-[#f5f5f7]/50 border border-[#d2d2d7] space-y-4">
+             <h3 className="text-sm font-bold text-[#1d1d1f] uppercase tracking-widest">Statut du compte</h3>
+             <div className="flex items-center gap-3 text-emerald-600">
+                <Shield className="w-5 h-5" />
+                <span className="text-[15px] font-bold">Vérifié & Sécurisé</span>
+             </div>
+          </div>
+        </div>
 
-            <div className="flex justify-end pt-6 border-t border-[#d2d2d7]">
-              <Button type="submit" className="bg-[#1d1d1f] hover:bg-black text-white font-medium h-12 px-8 rounded-full">
-                Save Changes
-              </Button>
-            </div>
-          </form>
-        </div>
-      </div>
+        {/* Main Settings Form */}
+        <div className="md:col-span-8 space-y-8">
+          <Card className="border-[#d2d2d7] rounded-[40px] shadow-sm bg-white overflow-hidden">
+            <CardHeader className="p-10 pb-0">
+              <CardTitle className="text-2xl font-bold text-[#1d1d1f]">Informations Générales</CardTitle>
+              <CardDescription className="text-[#86868b] text-[15px]">Ces détails seront visibles par vos mentors et pairs.</CardDescription>
+            </CardHeader>
+            <CardContent className="p-10 pt-8">
+              <form action={handleUpdate} className="space-y-8">
+                <div className="grid gap-6 sm:grid-cols-2">
+                  <div className="space-y-2.5">
+                    <Label htmlFor="name" className="text-[13px] font-bold text-[#1d1d1f] uppercase tracking-wider ml-1">Nom complet</Label>
+                    <Input 
+                      id="name" 
+                      name="name" 
+                      defaultValue={user.name || ""} 
+                      className="h-12 rounded-2xl border-[#d2d2d7] focus:ring-[#0066cc] bg-[#f5f5f7]/30"
+                    />
+                  </div>
+                  <div className="space-y-2.5">
+                    <Label htmlFor="email" className="text-[13px] font-bold text-[#1d1d1f] uppercase tracking-wider ml-1">Adresse Email</Label>
+                    <div className="relative">
+                      <Input 
+                        id="email" 
+                        disabled 
+                        defaultValue={user.email || ""} 
+                        className="h-12 rounded-2xl border-[#d2d2d7] bg-[#f5f5f7] text-[#86868b] cursor-not-allowed pl-10"
+                      />
+                      <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4.5 h-4.5 text-[#86868b]" />
+                    </div>
+                  </div>
+                </div>
 
-      <div className="p-8 rounded-[24px] bg-white border border-[#d2d2d7] flex items-center gap-6">
-        <div className="w-12 h-12 rounded-full bg-[#f5f5f7] flex items-center justify-center shrink-0">
-           <Shield className="w-6 h-6 text-[#1d1d1f]" />
-        </div>
-        <div>
-           <h3 className="text-[17px] font-semibold text-[#1d1d1f] mb-1">Account Security</h3>
-           <p className="text-[#86868b] text-[15px]">Your account is secured by Kladriva Authentication. To change your password or email, please contact support.</p>
-        </div>
-      </div>
+                <div className="space-y-2.5">
+                  <Label htmlFor="bio" className="text-[13px] font-bold text-[#1d1d1f] uppercase tracking-wider ml-1">Biographie</Label>
+                  <Textarea 
+                    id="bio" 
+                    name="bio" 
+                    defaultValue={user.bio || ""} 
+                    placeholder="Dites-nous en plus sur vous, vos objectifs et votre parcours..."
+                    className="min-h-[160px] rounded-[24px] border-[#d2d2d7] focus:ring-[#0066cc] bg-[#f5f5f7]/30 p-5 text-[15px] resize-none"
+                  />
+                </div>
 
-      <div className="p-8 rounded-[24px] bg-[#1d1d1f] text-white flex flex-col md:flex-row items-center gap-6 justify-between">
-        <div className="flex items-center gap-6">
-           <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center shrink-0">
-              <Zap className="w-6 h-6 text-yellow-400" />
-           </div>
-           <div>
-              <h3 className="text-[20px] font-semibold mb-1">Kladriva Pro Plan</h3>
-              <p className="text-[#a1a1a6] text-[15px]">
-                {user.subscription?.active && user.subscription.plan === "PROFESSIONAL" 
-                  ? `Active until ${new Date(user.subscription.endDate!).toLocaleDateString()}` 
-                  : "Unlock all premium courses and mentorship sessions."}
-              </p>
-           </div>
+                <div className="flex justify-end pt-4">
+                  <Button className="h-12 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-bold px-10 gap-2 shadow-xl shadow-black/10 transition-all active:scale-95">
+                    <Save className="w-4.5 h-4.5" /> Enregistrer les modifications
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+
+          {/* Security & Notifications Placeholder */}
+          <div className="grid gap-6 sm:grid-cols-2">
+             <div className="p-8 rounded-[40px] border border-[#d2d2d7] bg-white flex items-center justify-between group cursor-pointer hover:border-[#1d1d1f] transition-colors">
+                <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-2xl bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f]">
+                      <Lock className="w-5 h-5" />
+                   </div>
+                   <div className="space-y-0.5">
+                      <p className="font-bold text-[#1d1d1f]">Mot de passe</p>
+                      <p className="text-[13px] text-[#86868b]">Dernière modification : 3j</p>
+                   </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[#d2d2d7] group-hover:text-[#1d1d1f] transition-colors" />
+             </div>
+
+             <div className="p-8 rounded-[40px] border border-[#d2d2d7] bg-white flex items-center justify-between group cursor-pointer hover:border-[#1d1d1f] transition-colors">
+                <div className="flex items-center gap-4">
+                   <div className="w-12 h-12 rounded-2xl bg-[#f5f5f7] flex items-center justify-center text-[#1d1d1f]">
+                      <Bell className="w-5 h-5" />
+                   </div>
+                   <div className="space-y-0.5">
+                      <p className="font-bold text-[#1d1d1f]">Notifications</p>
+                      <p className="text-[13px] text-[#86868b]">Email & Push activés</p>
+                   </div>
+                </div>
+                <ChevronRight className="w-5 h-5 text-[#d2d2d7] group-hover:text-[#1d1d1f] transition-colors" />
+             </div>
+          </div>
         </div>
-        {!user.subscription?.active || user.subscription.plan !== "PROFESSIONAL" ? (
-           <form action={async () => {
-             "use server"
-             await subscribeToProPlan()
-           }}>
-              <Button type="submit" className="bg-white text-[#1d1d1f] hover:bg-[#f5f5f7] font-medium h-12 px-8 rounded-full shrink-0">
-                 Upgrade for $49.99/mo
-              </Button>
-           </form>
-        ) : (
-           <Button variant="outline" className="border-white/20 text-white font-medium h-12 px-8 rounded-full shrink-0 hover:bg-white/10">
-              Manage Billing
-           </Button>
-        )}
       </div>
     </div>
   )

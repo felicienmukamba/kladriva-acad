@@ -2,7 +2,8 @@ import { prisma } from "@/lib/prisma"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Briefcase, MapPin, DollarSign, Clock, ExternalLink, Search, Filter, Sparkles, Building2, ArrowRight } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Briefcase, MapPin, DollarSign, Clock, ExternalLink, Search, Filter, Sparkles, Building2, ArrowRight, Users } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { JobApplyButton } from "@/components/jobs/JobApplyButton"
 
@@ -95,9 +96,14 @@ export default async function JobsPage({ params }: { params: Promise<{ lang: str
               </div>
             </div>
 
-            <div className="relative z-10 pt-4">
-              <JobApplyButton jobId={job.id} jobTitle={job.title} company={job.company || "Kladriva Partner"} />
-            </div>
+                <div className="mt-8">
+                  <JobApplyButton 
+                    jobId={job.id} 
+                    jobTitle={job.title} 
+                    company={job.company || "Kladriva Partner"}
+                    userId={session.user.id!}
+                  />
+                </div>
           </div>
         ))}
 

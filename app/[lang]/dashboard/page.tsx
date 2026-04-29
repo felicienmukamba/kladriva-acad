@@ -35,9 +35,17 @@ export default async function DashboardPage({ params }: { params: Promise<{ lang
     const sessions = await prisma.mentorshipSession.findMany({
       where: { mentorId: userId },
       include: { mentee: true },
-      orderBy: { date: "desc" }
+      orderBy: { date: "asc" }
     })
-    dashboardData = { sessions }
+    const uniqueMentees = await prisma.mentorshipSession.groupBy({
+      by: ['menteeId'],
+      where: { mentorId: userId }
+    })
+    dashboardData = { 
+      sessions, 
+      menteesCount: uniqueMentees.length,
+      rating: 4.9 // Mock for now until we have reviews in DB
+    }
   } else if (role === "ADMIN" || role === "INSTRUCTOR") {
     const stats = {
       users: await prisma.user.count(),

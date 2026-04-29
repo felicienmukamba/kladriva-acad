@@ -100,9 +100,36 @@ export async function createProject(data: {
   const project = await prisma.project.create({
     data,
   })
+  revalidatePath("/[lang]/dashboard/projects", "page")
+  return project
+}
+
+export async function updateProject(id: string, data: Partial<{
+  courseId: string
+  title: string
+  description: string
+  difficulty: string
+  rubric?: string
+}>) {
+  await checkAdmin()
+  
+  const project = await prisma.project.update({
+    where: { id },
+    data,
+  })
   
   revalidatePath("/[lang]/dashboard/projects", "page")
   return project
+}
+
+export async function deleteProject(id: string) {
+  await checkAdmin()
+  
+  await prisma.project.delete({
+    where: { id },
+  })
+  
+  revalidatePath("/[lang]/dashboard/projects", "page")
 }
 
 // PATH ACTIONS

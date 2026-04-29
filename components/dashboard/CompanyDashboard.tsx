@@ -2,7 +2,7 @@ import { useDictionary } from "@/components/DictionaryProvider"
 import { Briefcase, FileText, UserPlus, TrendingUp } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-export function CompanyDashboard() {
+export function CompanyDashboard({ data }: { data?: any }) {
   const dict = useDictionary()
   
   const stats = [

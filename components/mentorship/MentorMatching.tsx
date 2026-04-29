@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Sparkles, Brain, Search, Check, ChevronRight, Video, MessageCircle, Calendar } from "lucide-react";
+import { Sparkles, Brain, Search, Check, ChevronRight, Video, MessageCircle, Calendar, Target, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
@@ -52,120 +52,148 @@ export function MentorMatching() {
   };
 
   return (
-    <div className="space-y-8">
-      {!showResults && !isMatching && (
-        <Card className="bg-gradient-to-br from-indigo-600 to-purple-700 border-none overflow-hidden relative">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
-          <CardContent className="p-12 text-center space-y-6 relative z-10">
-            <div className="w-20 h-20 bg-white/20 backdrop-blur-md rounded-[28px] flex items-center justify-center mx-auto mb-4 border border-white/30">
-              <Sparkles className="w-10 h-10 text-white" />
+    <div className="w-full">
+      <AnimatePresence mode="wait">
+        {!showResults && !isMatching && (
+          <motion.div 
+            key="start"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="p-12 md:p-16 text-center space-y-8 relative overflow-hidden group"
+          >
+            <div className="absolute top-0 right-0 w-96 h-96 bg-[#0066cc]/5 rounded-full blur-[100px] -mr-48 -mt-48 transition-all group-hover:bg-[#0066cc]/10" />
+            
+            <div className="w-24 h-24 bg-[#f5f5f7] rounded-[32px] flex items-center justify-center mx-auto mb-6 shadow-inner border border-[#d2d2d7]/30 transition-transform group-hover:rotate-12 duration-500">
+              <Sparkles className="w-12 h-12 text-[#1d1d1f]" />
             </div>
-            <h2 className="text-3xl font-bold text-white tracking-tight">Trouvez votre Mentor Idéal</h2>
-            <p className="text-indigo-100 text-lg max-w-xl mx-auto">
-              Notre algorithme analyse vos objectifs et votre niveau technique pour vous proposer les meilleurs mentors.
-            </p>
+            
+            <div className="space-y-4 relative z-10">
+              <h2 className="text-[32px] md:text-[40px] font-bold text-[#1d1d1f] tracking-tight leading-tight">
+                Trouvez votre Mentor Idéal
+              </h2>
+              <p className="text-[#86868b] text-[18px] md:text-[20px] max-w-2xl mx-auto leading-relaxed">
+                Notre algorithme de matching analyse vos objectifs et votre stack technique pour vous connecter avec l'expert parfait.
+              </p>
+            </div>
+
             <Button 
               onClick={startMatching}
               size="lg" 
-              className="bg-white text-indigo-600 hover:bg-indigo-50 font-bold rounded-full px-10 h-14 shadow-xl shadow-indigo-900/20 gap-3"
+              className="h-14 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-bold px-12 gap-3 shadow-2xl shadow-black/10 transition-all hover:scale-105 active:scale-95"
             >
-              Lancer le Matching Algorithmique <ChevronRight className="w-5 h-5" />
+              Lancer le Matching IA <ChevronRight className="w-5 h-5" />
             </Button>
-          </CardContent>
-        </Card>
-      )}
+          </motion.div>
+        )}
 
-      {isMatching && (
-        <div className="py-24 text-center space-y-8">
-          <div className="relative w-32 h-32 mx-auto">
-            <motion.div 
-              className="absolute inset-0 border-4 border-indigo-500/20 rounded-full"
-              animate={{ scale: [1, 1.2, 1], opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-            <motion.div 
-              className="absolute inset-2 border-4 border-indigo-500 rounded-full border-t-transparent"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <Brain className="w-10 h-10 text-indigo-500" />
+        {isMatching && (
+          <motion.div 
+            key="matching"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="py-32 text-center space-y-8"
+          >
+            <div className="relative w-40 h-40 mx-auto">
+              <motion.div 
+                className="absolute inset-0 border-2 border-[#0066cc]/10 rounded-[48px]"
+                animate={{ scale: [1, 1.1, 1], opacity: [0.5, 1, 0.5] }}
+                transition={{ duration: 2, repeat: Infinity }}
+              />
+              <motion.div 
+                className="absolute inset-4 border-4 border-[#0066cc] rounded-[40px] border-t-transparent"
+                animate={{ rotate: 360 }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
+              />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <Brain className="w-12 h-12 text-[#0066cc]" />
+              </div>
             </div>
-          </div>
-          <div className="space-y-2">
-            <h3 className="text-2xl font-bold text-white">Analyse de votre profil...</h3>
-            <p className="text-slate-400">Nous parcourons notre réseau de +500 experts.</p>
-          </div>
-        </div>
-      )}
+            <div className="space-y-3">
+              <h3 className="text-2xl font-bold text-[#1d1d1f]">Analyse de votre progression...</h3>
+              <p className="text-[#86868b] text-[15px] font-medium uppercase tracking-widest">Calcul du score d'affinité avec +500 experts</p>
+            </div>
+          </motion.div>
+        )}
 
-      {showResults && (
-        <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
-          <div className="flex items-center justify-between">
-            <h2 className="text-2xl font-bold text-white flex items-center gap-2">
-              <Check className="w-6 h-6 text-emerald-500" /> Vos Matchs Recommandés
-            </h2>
-            <Button variant="ghost" onClick={() => setShowResults(false)} className="text-slate-400">Relancer</Button>
-          </div>
-
-          <div className="grid md:grid-cols-3 gap-6">
-            {MOCK_MENTORS.map((mentor) => (
-              <Card 
-                key={mentor.id}
-                className={cn(
-                  "cursor-pointer transition-all duration-500 border-2 relative overflow-hidden",
-                  selectedMentor === mentor.id 
-                    ? "border-indigo-500 bg-indigo-500/5 shadow-[0_0_30px_rgba(99,102,241,0.15)]" 
-                    : "border-slate-800 bg-slate-900/50 hover:border-slate-700"
-                )}
-                onClick={() => setSelectedMentor(mentor.id)}
-              >
-                {mentor.matchScore > 90 && (
-                  <div className="absolute top-4 right-4 bg-emerald-500 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    Best Match
+        {showResults && (
+          <motion.div 
+            key="results"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="p-10 md:p-12 space-y-10"
+          >
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h2 className="text-[28px] font-bold text-[#1d1d1f] tracking-tight flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                    <Check className="w-6 h-6 text-emerald-600" />
                   </div>
-                )}
-                <CardContent className="p-6 space-y-6">
-                  <div className="flex flex-col items-center text-center space-y-4">
+                  Matchs Recommandés
+                </h2>
+                <p className="text-[#86868b] text-[15px]">Ces mentors sont les plus à même de vous aider à atteindre vos objectifs.</p>
+              </div>
+              <Button variant="ghost" onClick={() => setShowResults(false)} className="text-[#86868b] hover:bg-[#f5f5f7] rounded-full px-6 font-bold">Relancer l'IA</Button>
+            </div>
+
+            <div className="grid md:grid-cols-3 gap-8">
+              {MOCK_MENTORS.map((mentor) => (
+                <div 
+                  key={mentor.id}
+                  className={cn(
+                    "group relative p-8 rounded-[40px] border-2 transition-all duration-500 cursor-pointer flex flex-col",
+                    selectedMentor === mentor.id 
+                      ? "border-[#1d1d1f] bg-[#f5f5f7]/50 shadow-2xl shadow-black/5" 
+                      : "border-[#d2d2d7] bg-white hover:border-[#86868b]"
+                  )}
+                  onClick={() => setSelectedMentor(mentor.id)}
+                >
+                  {mentor.matchScore > 90 && (
+                    <div className="absolute top-6 right-6 bg-[#1d1d1f] text-white text-[9px] font-black px-3 py-1 rounded-full uppercase tracking-widest shadow-xl">
+                      Top Match
+                    </div>
+                  )}
+                  
+                  <div className="flex flex-col items-center text-center space-y-6 mb-8 flex-1">
                     <div className="relative">
-                      <Avatar className="w-20 h-20 border-2 border-indigo-500/50">
+                      <Avatar className="w-24 h-24 rounded-[32px] border-4 border-white shadow-xl transition-transform duration-500 group-hover:scale-105">
                         <AvatarImage src={mentor.image} />
-                        <AvatarFallback>{mentor.name[0]}</AvatarFallback>
+                        <AvatarFallback className="bg-[#f5f5f7] text-[#1d1d1f] font-bold text-2xl">{mentor.name[0]}</AvatarFallback>
                       </Avatar>
-                      <div className="absolute -bottom-1 -right-1 bg-indigo-600 rounded-full p-1.5 border-2 border-slate-900">
-                        <div className="text-[10px] font-bold text-white">{mentor.matchScore}%</div>
+                      <div className="absolute -bottom-2 -right-2 bg-emerald-500 text-white rounded-2xl px-2.5 py-1.5 border-4 border-white shadow-lg text-[12px] font-black">
+                        {mentor.matchScore}%
                       </div>
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold text-white">{mentor.name}</h3>
-                      <p className="text-xs text-slate-400 font-medium">{mentor.role}</p>
+                      <h3 className="text-[20px] font-bold text-[#1d1d1f] tracking-tight leading-tight">{mentor.name}</h3>
+                      <p className="text-[14px] text-[#86868b] font-medium mt-1 leading-relaxed px-2">{mentor.role}</p>
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-1.5">
+                      {mentor.specialties.map(s => (
+                        <span key={s} className="text-[10px] px-3 py-1 rounded-lg bg-[#f5f5f7] text-[#1d1d1f] font-black uppercase tracking-tight border border-[#d2d2d7]/30">
+                          {s}
+                        </span>
+                      ))}
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap justify-center gap-1.5">
-                    {mentor.specialties.map(s => (
-                      <span key={s} className="text-[10px] px-2 py-1 rounded-md bg-slate-800 text-slate-300 border border-slate-700">
-                        {s}
-                      </span>
-                    ))}
-                  </div>
-
-                  <div className="space-y-2 pt-4 border-t border-slate-800">
+                  <div className="space-y-3 pt-6 border-t border-[#d2d2d7]/50">
                     {mentor.introVideo && (
-                      <Button variant="outline" className="w-full h-10 rounded-xl gap-2 border-slate-700 text-slate-300 hover:bg-slate-800">
-                        <Video className="w-4 h-4" /> Voir Intro Video
+                      <Button variant="outline" className="w-full h-11 rounded-full gap-2 border-[#d2d2d7] text-[#1d1d1f] font-bold hover:bg-[#f5f5f7] transition-all">
+                        <Video className="w-4 h-4" /> Intro Video
                       </Button>
                     )}
-                    <Button className="w-full h-10 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white font-bold gap-2">
-                      <Calendar className="w-4 h-4" /> Book Kick-off
+                    <Button className="w-full h-11 rounded-full bg-[#1d1d1f] text-white hover:bg-black font-bold gap-2 shadow-lg shadow-black/5 transition-all active:scale-95">
+                      <Calendar className="w-4 h-4" /> Réserver
                     </Button>
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      )}
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
-import { MoreVertical, Mail, Shield, UserX, Loader2, CheckCircle2 } from "lucide-react"
+import { MoreVertical, Mail, Shield, UserX, Loader2, CheckCircle2, Trash2 } from "lucide-react"
 import { updateUserRole, deleteUser } from "@/lib/admin-actions"
 import { useToast } from "@/hooks/use-toast"
 import {
@@ -71,29 +71,43 @@ export function UserActions({ userId, currentRole, userName }: { userId: string,
   return (
     <>
       <DropdownMenu>
-        <DropdownMenuTrigger asChild>
+        <DropdownMenuTrigger render={
           <Button variant="ghost" size="icon" className="rounded-2xl hover:bg-[#f5f5f7] h-10 w-10">
             <MoreVertical className="w-5 h-5 text-[#86868b]" />
           </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" className="w-56 rounded-[24px] p-2 shadow-2xl border-[#d2d2d7] bg-white/80 backdrop-blur-xl">
-          <DropdownMenuLabel className="px-4 py-2 text-[11px] font-bold uppercase tracking-widest text-[#86868b]">Actions</DropdownMenuLabel>
-          <DropdownMenuItem className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-[#1d1d1f] hover:bg-[#f5f5f7]">
-            <Mail className="w-4.5 h-4.5 text-[#86868b]" /> Envoyer un message
-          </DropdownMenuItem>
-          <DropdownMenuItem 
-            onClick={() => setShowRoleDialog(true)}
-            className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-[#1d1d1f] hover:bg-[#f5f5f7]"
-          >
-            <Shield className="w-4.5 h-4.5 text-[#86868b]" /> Modifier le rôle
-          </DropdownMenuItem>
-          <DropdownMenuSeparator className="bg-[#d2d2d7] my-2 mx-2" />
-          <DropdownMenuItem 
-            onClick={() => setShowDeleteDialog(true)}
-            className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-rose-600 focus:text-rose-600 focus:bg-rose-50"
-          >
-            <UserX className="w-4.5 h-4.5" /> Supprimer le compte
-          </DropdownMenuItem>
+        } />
+        <DropdownMenuContent align="end" className="w-64 rounded-[24px] p-2 shadow-2xl border-[#d2d2d7] bg-white/80 backdrop-blur-xl">
+          <div className="px-3 py-2 text-[11px] font-black uppercase tracking-widest text-[#86868b]">Changer le rôle</div>
+          <DropdownMenuItem render={
+            <div onClick={() => handleRoleChange("STUDENT")} className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-[#1d1d1f] hover:bg-[#f5f5f7]">
+              <div className="w-8 h-8 rounded-lg bg-emerald-50 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-emerald-600" />
+              </div>
+              Étudiant
+            </div>
+          } />
+          <DropdownMenuItem render={
+            <div onClick={() => handleRoleChange("MENTOR")} className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-[#1d1d1f] hover:bg-[#f5f5f7]">
+              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-indigo-600" />
+              </div>
+              Mentor
+            </div>
+          } />
+          <DropdownMenuItem render={
+            <div onClick={() => handleRoleChange("ADMIN")} className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-[#1d1d1f] hover:bg-[#f5f5f7]">
+              <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center">
+                <Shield className="w-4 h-4 text-rose-600" />
+              </div>
+              Administrateur
+            </div>
+          } />
+          <div className="h-px bg-[#f5f5f7] my-2 mx-1" />
+          <DropdownMenuItem render={
+            <div onClick={handleDelete} className="rounded-2xl gap-3 font-semibold p-3 cursor-pointer text-rose-600 focus:text-rose-600 focus:bg-rose-50">
+              <Trash2 className="w-4.5 h-4.5" /> Supprimer l'utilisateur
+            </div>
+          } />
         </DropdownMenuContent>
       </DropdownMenu>
 

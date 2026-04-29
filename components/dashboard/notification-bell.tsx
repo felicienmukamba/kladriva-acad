@@ -7,7 +7,8 @@ import {
   DropdownMenuContent, 
   DropdownMenuItem, 
   DropdownMenuTrigger,
-  DropdownMenuLabel
+  DropdownMenuLabel,
+  DropdownMenuGroup
 } from "@/components/ui/dropdown-menu"; // Assuming these exist or will be adapted
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -59,9 +60,11 @@ export function NotificationBell({ userId, initialNotifications }: { userId: str
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-80 p-2 rounded-2xl border-border/50 bg-card/80 backdrop-blur-xl shadow-apple animate-in slide-in-from-top-2 duration-300">
-        <DropdownMenuLabel className="px-4 py-3 border-b border-border/50 mb-2">
-           <h4 className="font-bold text-sm">Notifications</h4>
-        </DropdownMenuLabel>
+        <DropdownMenuGroup>
+          <DropdownMenuLabel className="px-4 py-3 border-b border-border/50 mb-2">
+             <h4 className="font-bold text-sm">Notifications</h4>
+          </DropdownMenuLabel>
+        </DropdownMenuGroup>
         
         <div className="max-h-96 overflow-y-auto space-y-1">
           {notifications.length === 0 ? (
