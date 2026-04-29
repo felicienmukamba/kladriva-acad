@@ -61,6 +61,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         session.user.role = token.role as string
       }
 
+      if (token.reputation !== undefined && session.user) {
+        (session.user as any).reputation = token.reputation
+      }
+
       return session
     },
     async jwt({ token }) {
@@ -73,6 +77,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       if (!existingUser) return token
 
       token.role = existingUser.role
+      token.reputation = existingUser.reputation
 
       return token
     },

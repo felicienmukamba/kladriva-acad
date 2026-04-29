@@ -44,11 +44,11 @@ export default async function SubmissionDetailPage({ params }: { params: Promise
           }`}>
             {submission.status}
           </Badge>
-          {submission.grade && (
-            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full px-4 py-2">
+          {submission.score && (
+            <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-2xl px-5 py-3 shadow-2xl animate-in zoom-in-50 duration-500 delay-200">
               <BarChart3 className="w-4 h-4 text-indigo-400" />
-              <span className="text-white font-bold text-xl">{submission.grade}</span>
-              <span className="text-slate-500 text-sm">/100</span>
+              <span className="text-white font-bold text-xl">{submission.score}</span>
+              <span className="text-slate-500 text-sm font-medium">/ 100</span>
             </div>
           )}
         </div>
@@ -91,10 +91,13 @@ export default async function SubmissionDetailPage({ params }: { params: Promise
                 </div>
                 <Button 
                   variant="ghost" 
+                  title="Open Repository"
                   className="text-indigo-400 hover:text-indigo-300 hover:bg-indigo-400/10" 
-                  render={<a href={submission.repoUrl!} target="_blank" rel="noreferrer" />}
+                  asChild
                 >
-                  Open Repo <ChevronRight className="w-4 h-4" />
+                  <a href={submission.repoUrl!} target="_blank" rel="noreferrer">
+                    Open Repo <ChevronRight className="w-4 h-4" />
+                  </a>
                 </Button>
               </div>
               {submission.liveUrl && (
@@ -105,10 +108,13 @@ export default async function SubmissionDetailPage({ params }: { params: Promise
                   </div>
                   <Button 
                     variant="ghost" 
+                    title="View Live Demo"
                     className="text-emerald-400 hover:text-emerald-300 hover:bg-emerald-400/10" 
-                    render={<a href={submission.liveUrl} target="_blank" rel="noreferrer" />}
+                    asChild
                   >
-                    View Live <ChevronRight className="w-4 h-4" />
+                    <a href={submission.liveUrl} target="_blank" rel="noreferrer">
+                      View Live <ChevronRight className="w-4 h-4" />
+                    </a>
                   </Button>
                 </div>
               )}

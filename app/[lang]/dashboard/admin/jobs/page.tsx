@@ -28,7 +28,6 @@ export default async function AdminJobsPage({ params }: { params: Promise<{ lang
 
   const jobs = await prisma.job.findMany({
     include: {
-      company: true,
       _count: {
         select: { applications: true }
       }
@@ -87,9 +86,9 @@ export default async function AdminJobsPage({ params }: { params: Promise<{ lang
                 <TableCell>
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center font-bold text-[10px] text-slate-400">
-                       {job.company.name?.[0]}
+                       {job.company?.[0]}
                     </div>
-                    <span className="text-sm font-bold text-slate-900">{job.company.name}</span>
+                    <span className="text-sm font-bold text-slate-900">{job.company}</span>
                   </div>
                 </TableCell>
                 <TableCell>
@@ -99,13 +98,13 @@ export default async function AdminJobsPage({ params }: { params: Promise<{ lang
                   </div>
                 </TableCell>
                 <TableCell>
-                   <span className="text-sm font-medium text-slate-600">{job.salaryRange || "Competitive"}</span>
+                   <span className="text-sm font-medium text-slate-600">{job.salary || "Competitive"}</span>
                 </TableCell>
                 <TableCell className="text-right pr-8">
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       render={
-                        <Button variant="ghost" size="icon" className="rounded-xl hover:bg-white hover:shadow-sm">
+                        <Button variant="ghost" size="icon" title="Actions" className="rounded-xl hover:bg-white hover:shadow-sm">
                           <MoreVertical className="w-4 h-4 text-slate-400" />
                         </Button>
                       }

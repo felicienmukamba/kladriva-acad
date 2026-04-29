@@ -3,7 +3,7 @@ import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { QuizView } from "@/components/learning/QuizView"
 import { Button } from "@/components/ui/button"
-import { CheckCircle2, PlayCircle, Award } from "lucide-react"
+import { CheckCircle2, PlayCircle, Award, ChevronLeft, Sparkles, Download } from "lucide-react"
 import { completeLesson, submitQuiz } from "@/app/actions/learning"
 import { CertificateDownload } from "@/components/certificates/CertificateDownload"
 import { CourseForum } from "@/components/learning/CourseForum"
@@ -75,45 +75,102 @@ export default async function LearningPage({
     const threads = forum?.threads || []
 
     return (
-      <div className="max-w-4xl mx-auto py-16 px-8 space-y-12">
-        <div className="space-y-3">
-          <div className="flex items-center gap-3 text-[13px] text-[#86868b] font-medium uppercase tracking-wider">
-             <span className="flex items-center gap-1"><PlayCircle className="w-4 h-4" /> Video Lesson</span>
-             <span className="w-1 h-1 bg-[#d2d2d7] rounded-full"></span>
-             <span className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4" /> Part of Module</span>
+      <div className="max-w-5xl mx-auto py-12 px-6 space-y-10">
+        {/* Lesson Header & Progress */}
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <div className="space-y-1">
+              <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-[10px] font-bold uppercase tracking-widest w-fit">
+                <CheckCircle2 className="w-3 h-3" /> Micro-Learning Module
+              </div>
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight text-white">{lesson.title}</h1>
+            </div>
+            <div className="hidden md:block text-right">
+              <div className="text-sm font-medium text-slate-400 mb-2">Progression du Module</div>
+              <div className="flex items-center gap-3">
+                 <div className="w-32 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                    <div className="h-full bg-indigo-500 w-[65%]" />
+                 </div>
+                 <span className="text-xs font-bold text-white">65%</span>
+              </div>
+            </div>
           </div>
-          <h1 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f] leading-tight">{lesson.title}</h1>
+
+          {/* Video Player with Glassmorphism */}
+          {lesson.videoUrl && (
+            <div className="group relative aspect-video bg-slate-900 rounded-[32px] overflow-hidden border border-slate-800 shadow-2xl transition-all hover:border-indigo-500/30">
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10 pointer-events-none" />
+              <iframe 
+                src={lesson.videoUrl.replace("watch?v=", "embed/")} 
+                className="w-full h-full border-0 relative z-0"
+                allowFullScreen
+                title={lesson.title}
+                suppressHydrationWarning
+              />
+            </div>
+          )}
         </div>
 
-        {lesson.videoUrl && (
-          <div className="aspect-video bg-black rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.08)] relative">
-            <iframe 
-              src={lesson.videoUrl.replace("watch?v=", "embed/")} 
-              className="w-full h-full border-0"
-              allowFullScreen
-              title={lesson.title}
-            />
+        {/* Lesson Content */}
+        <div className="grid lg:grid-cols-4 gap-12">
+          <div className="lg:col-span-3 space-y-10">
+            <div className="prose prose-invert prose-slate max-w-none 
+              prose-headings:text-white prose-headings:font-bold prose-headings:tracking-tight
+              prose-p:text-slate-300 prose-p:leading-relaxed prose-p:text-lg
+              prose-strong:text-white prose-code:text-indigo-300 prose-pre:bg-slate-900/50 prose-pre:border prose-pre:border-slate-800">
+              <ReactMarkdown>
+                {lesson.content || "No content available for this lesson yet."}
+              </ReactMarkdown>
+            </div>
+
+            <div className="pt-10 border-t border-slate-800 flex items-center justify-between">
+              <Button variant="ghost" className="text-slate-400 hover:text-white gap-2">
+                <ChevronLeft className="w-4 h-4" /> Leçon Précédente
+              </Button>
+              <form action={async () => {
+                "use server"
+                await completeLesson(enrollment.id, lesson.id)
+              }}>
+                <Button size="lg" className="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 h-12 rounded-xl shadow-lg shadow-indigo-600/20 transition-all active:scale-[0.98]">
+                  Marquer comme complété
+                </Button>
+              </form>
+            </div>
+
+            <div className="bg-slate-900/50 rounded-[32px] p-8 border border-slate-800">
+               <CourseForum courseId={id} threads={threads} />
+            </div>
           </div>
-        )}
 
-        <div className="prose prose-lg max-w-none prose-p:text-[#1d1d1f] prose-p:leading-relaxed prose-headings:font-semibold prose-headings:tracking-tight prose-headings:text-[#1d1d1f] prose-a:text-[#0066cc] prose-a:no-underline hover:prose-a:underline prose-strong:text-[#1d1d1f] prose-ul:text-[#1d1d1f] prose-li:marker:text-[#86868b]">
-          <ReactMarkdown>
-            {lesson.content || "No content available for this lesson yet."}
-          </ReactMarkdown>
+          <aside className="space-y-6">
+            <div className="p-6 rounded-2xl bg-indigo-600 text-white shadow-xl shadow-indigo-900/20">
+               <div className="flex items-center gap-3 mb-4">
+                  <div className="p-2 bg-white/20 rounded-lg">
+                    <Sparkles className="w-5 h-5 text-white" />
+                  </div>
+                  <h4 className="font-bold">Défi de Code</h4>
+               </div>
+               <p className="text-sm text-indigo-100 mb-6">
+                  Prêt à pratiquer ? Ouvrez le sandbox pour tester les concepts vus dans cette vidéo.
+               </p>
+               <Button className="w-full bg-white text-indigo-600 hover:bg-indigo-50 font-bold rounded-xl h-11">
+                  Ouvrir le Sandbox
+               </Button>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-slate-900 border border-slate-800">
+               <h4 className="font-bold text-white mb-4">Ressources</h4>
+               <div className="space-y-3">
+                  {["Code Source (GitHub)", "Documentation PDF", "Checklist Architecture"].map(res => (
+                    <div key={res} className="flex items-center justify-between p-3 rounded-xl bg-slate-800/50 hover:bg-slate-800 transition-colors cursor-pointer group">
+                       <span className="text-xs text-slate-300 group-hover:text-white transition-colors">{res}</span>
+                       <Download className="w-3.5 h-3.5 text-slate-500" />
+                    </div>
+                  ))}
+               </div>
+            </div>
+          </aside>
         </div>
-
-        <div className="pt-12 border-t border-[#d2d2d7] flex justify-end">
-          <form action={async () => {
-            "use server"
-            await completeLesson(enrollment.id, lesson.id)
-          }}>
-            <Button size="lg" className="bg-[#0066cc] hover:bg-[#0055b3] text-white font-medium px-8 h-12 rounded-full transition-all active:scale-[0.98]">
-              Mark as Completed
-            </Button>
-          </form>
-        </div>
-
-        <CourseForum courseId={id} threads={threads} />
       </div>
     )
   }

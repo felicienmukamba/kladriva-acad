@@ -33,7 +33,7 @@ export default async function LessonPage({
         }
       }
     }
-  } as any) as any;
+  })
 
   if (!lesson || lesson.module.courseId !== id) {
     notFound();
@@ -111,8 +111,8 @@ export default async function LessonPage({
                         <p className="text-[10px] font-black uppercase text-slate-500 tracking-widest">{resource.type} • {resource.size || 'N/A'}</p>
                       </div>
                     </div>
-                    <a href={resource.url} target="_blank" rel="noopener noreferrer">
-                      <Button variant="ghost" size="sm" className="rounded-lg hover:bg-white/10">
+                    <a href={resource.url} target="_blank" rel="noopener noreferrer" title={`Download ${resource.title}`}>
+                      <Button variant="ghost" size="sm" className="rounded-lg hover:bg-white/10" title="Download">
                         <Download className="w-4 h-4" />
                       </Button>
                     </a>

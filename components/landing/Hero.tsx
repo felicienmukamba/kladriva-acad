@@ -33,31 +33,31 @@ export function Hero({
   const secondaryCopy =
     lang === "fr"
       ? {
-          shellEyebrow: "Apple-inspired learning flow",
+          shellEyebrow: "Pédagogie par projet",
           shellTitle:
-            "Une page d'accueil qui donne envie de cliquer, d'acheter et de revenir apprendre.",
-          panelEyebrow: "Conversion stack",
-          panelTitle: "Du positionnement premium au passage a l'action.",
+            "Apprenez en réalisant des projets concrets, comme en entreprise.",
+          panelEyebrow: "Coaching carrière",
+          panelTitle: "On ne vous lâche pas tant que vous n'êtes pas en poste.",
           panelDescription:
-            "Hero editorial, confiance immediate, carrousel immersif, programme clair et CTA visibles a chaque etape.",
+            "Au-delà des cours, nous vous préparons au marché du travail : CV, portfolio, entretiens blancs et accès exclusif à nos entreprises partenaires.",
           checklist: [
-            "Narration visuelle premium",
-            "Parcours et programmes mis en scene",
-            "CTA lisibles sur desktop et mobile",
+            "Accompagnement personnalisé",
+            "Communauté d'entraide active",
+            "Réseau d'entreprises partenaires",
           ],
         }
       : {
-          shellEyebrow: "Apple-inspired learning flow",
+          shellEyebrow: "Project-based learning",
           shellTitle:
-            "A homepage that makes people want to click, buy, and come back to learn.",
-          panelEyebrow: "Conversion stack",
-          panelTitle: "From premium positioning to action.",
+            "Learn by building real-world projects, just like in a company.",
+          panelEyebrow: "Career Coaching",
+          panelTitle: "We don't let go until you're hired.",
           panelDescription:
-            "Editorial hero, instant trust, immersive carousel, clear offer, and visible CTAs at every stage.",
+            "Beyond courses, we prepare you for the job market: CV, portfolio, mock interviews, and exclusive access to our partner companies.",
           checklist: [
-            "Premium visual storytelling",
-            "Programs and paths staged like products",
-            "Clear CTAs on desktop and mobile",
+            "Personalized support",
+            "Active peer community",
+            "Partner company network",
           ],
         };
 

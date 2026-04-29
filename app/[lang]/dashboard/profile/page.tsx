@@ -64,8 +64,8 @@ export default async function ProfilePage({ params }: { params: Promise<{ lang: 
               </div>
               
               <div className="space-y-2 md:col-span-2">
-                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Headline / Role</label>
-                <Input name="headline" defaultValue={user.headline || ""} placeholder="E.g. Senior Software Engineer" className="h-12 bg-white border-[#d2d2d7] rounded-[12px] text-[#1d1d1f] focus-visible:ring-[#0066cc]" />
+                <label className="text-[13px] font-semibold text-[#86868b] uppercase tracking-wider">Specialties / Expertise</label>
+                <Input name="specialties" defaultValue={user.specialties || ""} placeholder="E.g. React, Kubernetes, AWS" className="h-12 bg-white border-[#d2d2d7] rounded-[12px] text-[#1d1d1f] focus-visible:ring-[#0066cc]" />
               </div>
 
               <div className="space-y-2 md:col-span-2">

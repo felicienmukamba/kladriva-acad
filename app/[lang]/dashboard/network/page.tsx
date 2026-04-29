@@ -1,13 +1,14 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { UserPlus, MessageCircle, Globe, Users, TrendingUp, Heart } from "lucide-react";
+import { UserPlus, MessageCircle, Globe, Users, TrendingUp, Heart, Sparkles, Activity } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { CreatePostForm } from "@/components/CreatePostForm";
 import { redirect } from "next/navigation";
 import { getDictionary } from "@/lib/dictionary";
 import { likePost, followUser } from "@/app/actions/posts";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export default async function NetworkPage({ params }: { params: Promise<{ lang: string }> }) {
   const { lang } = await params;
@@ -15,6 +16,8 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
   if (!session?.user) {
     redirect(`/${lang}/auth/signin`);
   }
+
+  const user = session.user as any;
 
   const dict = await getDictionary(lang as "en" | "fr");
 
@@ -42,43 +45,45 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
   }) : [];
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 animate-in fade-in duration-500">
       <div className="flex justify-between items-center">
         <div>
-          <h1 className="text-[32px] font-semibold tracking-tight text-[#1d1d1f] mb-2">{dict.network.title}</h1>
-          <p className="text-[17px] text-[#86868b]">{dict.network.tagline}</p>
+          <h1 className="text-3xl font-bold tracking-tight text-foreground mb-2">{dict.network.title}</h1>
+          <p className="text-lg text-muted-foreground">{dict.network.tagline}</p>
         </div>
       </div>
 
       <div className="grid gap-6 md:grid-cols-3">
-        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
+        <Card className="border-border/50 bg-card shadow-apple rounded-2xl overflow-hidden relative">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Connections</CardTitle>
-            <Users className="h-5 w-5 text-[#1d1d1f]" />
+            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Réseau</CardTitle>
+            <Users className="h-5 w-5 text-primary" />
           </CardHeader>
           <CardContent>
-            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
-            <p className="text-[13px] font-medium text-[#86868b]">No new this month</p>
+            <div className="text-3xl font-bold tracking-tight">124</div>
+            <p className="text-xs font-medium text-green-500 flex items-center gap-1 mt-1">
+              <TrendingUp className="w-3 h-3" /> +12% cette semaine
+            </p>
           </CardContent>
         </Card>
-        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
+        <Card className="border-border/50 bg-card shadow-apple rounded-2xl overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Profile Views</CardTitle>
-            <TrendingUp className="h-5 w-5 text-[#1d1d1f]" />
+            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Réputation</CardTitle>
+            <Sparkles className="h-5 w-5 text-amber-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
-            <p className="text-[13px] font-medium text-[#86868b]">Starting fresh</p>
+            <div className="text-3xl font-bold tracking-tight">{user.reputation || 0}</div>
+            <p className="text-xs font-medium text-muted-foreground mt-1">Niveau: Pionnier</p>
           </CardContent>
         </Card>
-        <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none">
+        <Card className="border-border/50 bg-card shadow-apple rounded-2xl overflow-hidden">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-[13px] font-semibold uppercase tracking-wider text-[#86868b]">Post Impressions</CardTitle>
-            <Globe className="h-5 w-5 text-[#1d1d1f]" />
+            <CardTitle className="text-xs font-bold uppercase tracking-widest text-muted-foreground">Activités</CardTitle>
+            <Activity className="h-5 w-5 text-indigo-500" />
           </CardHeader>
           <CardContent>
-            <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">0</div>
-            <p className="text-[13px] font-medium text-[#86868b]">Last 30 days</p>
+            <div className="text-3xl font-bold tracking-tight">12</div>
+            <p className="text-xs font-medium text-muted-foreground mt-1">Actions ce mois</p>
           </CardContent>
         </Card>
       </div>
@@ -86,48 +91,53 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
       <div className="grid gap-8 lg:grid-cols-3">
         {/* Feed */}
         <div className="lg:col-span-2 space-y-6">
-          {session.user?.id && <CreatePostForm userId={session.user.id} />}
+          <div className="bg-card border-border/50 rounded-2xl p-6 shadow-apple">
+             {session.user?.id && <CreatePostForm userId={session.user.id} />}
+          </div>
           
           <div className="space-y-6">
-            <h2 className="text-[20px] font-semibold text-[#1d1d1f]">Community Feed</h2>
+            <h2 className="text-xl font-bold text-foreground">Flux Communautaire</h2>
             {posts.length === 0 ? (
-              <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none py-16 text-center">
-                <p className="text-[#86868b] text-[15px]">The feed is quiet. Be the first to post!</p>
+              <Card className="border-dashed border-2 py-16 text-center bg-muted/20">
+                <p className="text-muted-foreground">Le flux est calme. Soyez le premier à poster !</p>
               </Card>
             ) : (
               posts.map((post) => (
-                <Card key={post.id} className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-none overflow-hidden">
+                <Card key={post.id} className="apple-card overflow-hidden">
                   <CardContent className="p-6">
                     <div className="flex items-center gap-4 mb-6">
-                      <div className="h-12 w-12 rounded-[14px] bg-[#f5f5f7] border border-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] font-semibold text-[15px] overflow-hidden">
+                      <Avatar className="h-12 w-12 border border-primary/20">
                         {post.user.image ? (
-                          <img src={post.user.image} alt={post.user.name || ''} className="w-full h-full object-cover" />
+                          <AvatarImage src={post.user.image} />
                         ) : (
-                          post.user.name?.charAt(0)
+                          <AvatarFallback className="bg-primary/5 text-primary font-bold">{post.user.name?.charAt(0)}</AvatarFallback>
                         )}
-                      </div>
+                      </Avatar>
                       <div>
-                        <p className="font-semibold text-[#1d1d1f] text-[15px]">{post.user.name}</p>
-                        <p className="text-[13px] text-[#86868b] font-medium">
+                        <div className="flex items-center gap-2">
+                           <p className="font-bold text-foreground text-[15px]">{post.user.name}</p>
+                           {post.user.reputation > 500 && <Badge className="bg-amber-500/10 text-amber-600 border-none h-4 text-[8px] font-black">EXPERT</Badge>}
+                        </div>
+                        <p className="text-xs text-muted-foreground">
                           {new Date(post.createdAt).toLocaleDateString()}
                         </p>
                       </div>
                     </div>
-                    <p className="text-[#1d1d1f] text-[15px] leading-relaxed mb-6">
+                    <p className="text-foreground text-[15px] leading-relaxed mb-6">
                       {post.content}
                     </p>
-                    <div className="flex items-center gap-8 pt-6 border-t border-[#d2d2d7]">
+                    <div className="flex items-center gap-8 pt-6 border-t border-border/50">
                       <form action={async () => {
                         "use server"
                         if(!session?.user?.id) return;
                         await likePost(post.id, session.user.id);
                       }}>
-                        <button type="submit" className="flex items-center gap-2 text-[14px] font-medium text-[#86868b] hover:text-[#0066cc] transition-colors group">
-                          <Heart className="w-5 h-5 group-hover:fill-[#0066cc]/20" /> 
+                        <button type="submit" className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-primary transition-colors group">
+                          <Heart className="w-5 h-5 group-hover:fill-primary/20" /> 
                           <span>{post._count.likes}</span>
                         </button>
                       </form>
-                      <button className="flex items-center gap-2 text-[14px] font-medium text-[#86868b] hover:text-[#1d1d1f] transition-colors">
+                      <button className="flex items-center gap-2 text-sm font-bold text-muted-foreground hover:text-foreground transition-colors">
                         <MessageCircle className="w-5 h-5" /> 
                         <span>{post._count.comments}</span>
                       </button>
@@ -141,33 +151,39 @@ export default async function NetworkPage({ params }: { params: Promise<{ lang: 
 
         {/* Suggested Connections */}
         <div className="space-y-6">
-          <h2 className="text-[20px] font-semibold text-[#1d1d1f]">Suggested for you</h2>
-          {suggestedUsers.map((person) => (
-            <Card key={person.id} className="border border-[#d2d2d7] rounded-[20px] bg-white shadow-none">
-              <CardContent className="p-4 flex items-center gap-4">
-                <div className="h-12 w-12 rounded-[14px] bg-[#f5f5f7] border border-[#d2d2d7] flex items-center justify-center text-[#1d1d1f] font-semibold text-[15px] shrink-0 overflow-hidden">
-                  {person.image ? (
-                    <img src={person.image} alt={person.name || ''} className="w-full h-full object-cover" />
-                  ) : (
-                    person.name?.charAt(0)
-                  )}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="font-semibold text-[#1d1d1f] text-[15px] truncate">{person.name}</p>
-                  <p className="text-[13px] font-medium text-[#86868b] truncate">{person.headline || 'Kladriva Student'}</p>
-                </div>
-                <form action={async () => {
-                  "use server"
-                  if(!session?.user?.id) return;
-                  await followUser(session.user.id, person.id);
-                }}>
-                  <Button type="submit" size="sm" variant="outline" className="border-[#d2d2d7] text-[#1d1d1f] hover:bg-[#f5f5f7] rounded-full shrink-0">
-                    <UserPlus className="w-4 h-4" />
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          ))}
+          <h2 className="text-xl font-bold text-foreground">Suggestions de contacts</h2>
+          <div className="space-y-3">
+            {suggestedUsers.map((person) => (
+              <Card key={person.id} className="border-border/50 bg-card hover:bg-muted/30 transition-colors rounded-2xl shadow-apple">
+                <CardContent className="p-4 flex items-center gap-4">
+                  <Avatar className="h-12 w-12 border border-primary/20">
+                    <AvatarImage src={person.image || ''} />
+                    <AvatarFallback>{person.name?.charAt(0)}</AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-bold text-foreground text-sm truncate">{person.name}</p>
+                    <p className="text-xs text-muted-foreground truncate">{person.bio || 'Étudiant Kladriva'}</p>
+                  </div>
+                  <form action={async () => {
+                    "use server"
+                    if(!session?.user?.id) return;
+                    await followUser(session.user.id, person.id);
+                  }}>
+                    <Button type="submit" size="sm" variant="ghost" className="text-primary hover:bg-primary/10 rounded-full h-10 w-10 p-0">
+                      <UserPlus className="w-5 h-5" />
+                    </Button>
+                  </form>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+
+          {/* Ad/Highlight Section */}
+          <Card className="apple-card border-none bg-gradient-to-br from-indigo-600 to-primary text-white p-6">
+             <h4 className="font-bold mb-2">Devenez Mentor</h4>
+             <p className="text-xs text-white/80 leading-relaxed mb-6">Partagez votre expertise et gagnez des points de réputation bonus en aidant les nouveaux apprenants.</p>
+             <Button className="w-full bg-white text-primary hover:bg-white/90 rounded-xl font-bold text-xs h-10">Postuler</Button>
+          </Card>
         </div>
       </div>
     </div>

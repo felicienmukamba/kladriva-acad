@@ -14,7 +14,7 @@ export default async function ResourcesDashboard({ params }: { params: Promise<{
 
   const dict = await getDictionary(lang as "en" | "fr")
 
-  const resources = await (prisma as any).resource.findMany({
+  const resources = await prisma.resource.findMany({
     include: {
       lesson: true
     },

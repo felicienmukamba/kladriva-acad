@@ -20,6 +20,7 @@ export async function createJob(data: {
   salaryRange: string
   type: string
   remote: boolean
+  company: string
 }) {
   const session = await checkAdmin()
   
@@ -88,10 +89,11 @@ export async function deleteUser(userId: string) {
 
 // PROJECT ACTIONS
 export async function createProject(data: {
+  courseId: string
   title: string
   description: string
   difficulty: string
-  skills: string
+  rubric?: string
 }) {
   await checkAdmin()
   

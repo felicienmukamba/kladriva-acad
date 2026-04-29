@@ -8,139 +8,116 @@ async function main() {
 
   // Clear existing data
   console.log('Cleaning up database...');
-  await prisma.pathEnrollment.deleteMany();
-  await prisma.courseOnPath.deleteMany();
-  await prisma.path.deleteMany();
-  await prisma.certificate.deleteMany();
-  await prisma.quizSubmission.deleteMany();
-  await prisma.option.deleteMany();
-  await prisma.question.deleteMany();
-  await prisma.quiz.deleteMany();
-  await prisma.jobApplication.deleteMany();
-  await prisma.job.deleteMany();
-  await prisma.mentorshipSession.deleteMany();
-  await prisma.availabilitySlot.deleteMany();
-  await prisma.projectSubmission.deleteMany();
-  await prisma.project.deleteMany();
-  await (prisma as any).resource.deleteMany();
-  await prisma.lesson.deleteMany();
-  await prisma.module.deleteMany();
-  await prisma.enrollment.deleteMany();
-  await prisma.course.deleteMany();
-  await prisma.user.deleteMany();
+  try {
+    await prisma.activityLog.deleteMany();
+    await prisma.notification.deleteMany();
+    await prisma.message.deleteMany();
+    await prisma.pathEnrollment.deleteMany();
+    await prisma.courseOnPath.deleteMany();
+    await prisma.path.deleteMany();
+    await prisma.certificate.deleteMany();
+    await prisma.quizSubmission.deleteMany();
+    await prisma.option.deleteMany();
+    await prisma.question.deleteMany();
+    await prisma.quiz.deleteMany();
+    await prisma.jobApplication.deleteMany();
+    await prisma.job.deleteMany();
+    await prisma.mentorshipSession.deleteMany();
+    await prisma.availabilitySlot.deleteMany();
+    await prisma.peerReview.deleteMany();
+    await prisma.projectSubmission.deleteMany();
+    await prisma.project.deleteMany();
+    await prisma.resource.deleteMany();
+    await prisma.note.deleteMany();
+    await prisma.progress.deleteMany();
+    await prisma.lesson.deleteMany();
+    await prisma.module.deleteMany();
+    await prisma.enrollment.deleteMany();
+    await prisma.course.deleteMany();
+    await prisma.user.deleteMany();
+  } catch (e) {
+    console.log('Cleanup: Some tables might not exist yet or are already empty.');
+  }
 
   console.log('Seeding Kladriva Academy data...');
 
-  // Create Mentors
-  const mentor1 = await prisma.user.create({
+  // 1. Create Users (Admin/Instructor & Student)
+  const instructor = await prisma.user.create({
     data: {
-      name: 'Sarah Jenkins',
-      email: 'sarah@example.com',
+      name: 'Félicien Mukamba',
+      email: 'felicien@kladriva.com',
       password: hashedPassword,
       role: 'ADMIN',
-      headline: 'Senior Frontend Engineer at Vercel',
-      bio: 'Expert in React, Next.js, and Design Systems.',
-      image: 'https://i.pravatar.cc/150?u=sarah',
+      bio: 'Expert en Architecture Cloud & DevOps. Fondateur de Kladriva.',
+      specialties: 'AWS, Kubernetes, Terraform, Next.js',
+      image: 'https://github.com/shadcn.png',
     },
   });
 
-  // Create Students
-  const student1 = await prisma.user.create({
+  const student = await prisma.user.create({
     data: {
-      name: 'Alex Rivera',
+      name: 'Alexandre Rivière',
       email: 'alex@example.com',
       password: hashedPassword,
       role: 'STUDENT',
-      headline: 'Aspiring Full-Stack Developer',
-      bio: 'Learning the ropes of modern web development.',
+      bio: 'Développeur passionné par le Web et le Cloud.',
+      reputation: 150,
       image: 'https://i.pravatar.cc/150?u=alex',
     },
   });
 
-  // Create Courses
+  // 2. Create Courses
   console.log('Creating courses...');
   const course1 = await prisma.course.create({
     data: {
-      title: 'Modern React Mastery',
-      description: 'Master React 19, Server Components, and advanced state management.',
-      imageUrl: 'https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&q=80&w=800',
+      title: 'Expertise Kubernetes & Orchestration',
+      slug: 'expertise-kubernetes',
+      description: 'Maîtrisez le déploiement et la gestion de conteneurs à grande échelle.',
+      level: 'ADVANCED',
+      technologies: 'Kubernetes, Docker, Helm, ArgoCD',
+      duration: 1200, // 20 hours
       published: true,
-      instructorId: mentor1.id,
-      modules: {
-        create: [
-          {
-            title: 'Foundations of React',
-            description: 'Core concepts and architecture.',
-            order: 1,
-            lessons: {
-              create: [
-                { 
-                  title: 'The Virtual DOM', 
-                  order: 1, 
-                  content: 'Deep dive into rendering...', 
-                  videoUrl: 'https://www.youtube.com/watch?v=N3AkSS5hXMA',
-                  resources: {
-                    create: [
-                      { title: 'Reconciliation Cheat Sheet', url: 'https://reactjs.org/docs/reconciliation.html', type: 'PDF', category: 'Technical', size: '1.2 MB' },
-                      { title: 'DOM Visualization Tool', url: 'https://github.com', type: 'LINK', category: 'Technical' }
-                    ]
-                  }
-                } as any,
-                { title: 'JSX & Props', order: 2, content: 'Understanding component communication...', videoUrl: 'https://www.youtube.com/watch?v=N3AkSS5hXMA' },
-              ],
-            },
-            quiz: {
-              create: {
-                title: 'Foundations Checkpoint',
-                passingScore: 80,
-                questions: {
-                  create: [
-                    {
-                      text: 'What is the primary benefit of the Virtual DOM?',
-                      options: {
-                        create: [
-                          { text: 'Faster direct manipulation of HTML', isCorrect: false },
-                          { text: 'Efficient updates by minimizing real DOM changes', isCorrect: true },
-                          { text: 'Automatic CSS optimization', isCorrect: false },
-                        ]
-                      }
-                    },
-                    {
-                      text: 'React components must return a single element.',
-                      type: 'TRUE_FALSE',
-                      options: {
-                        create: [
-                          { text: 'True (or a Fragment)', isCorrect: true },
-                          { text: 'False', isCorrect: false },
-                        ]
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          }
-        ]
-      }
+      instructorId: instructor.id,
+      imageUrl: 'https://images.unsplash.com/photo-1667372393119-3d4c48d07fc9?auto=format&fit=crop&q=80&w=800',
     }
   });
 
-  const course2 = await prisma.course.create({
+  // 3. Create Modules & Lessons
+  const module1 = await prisma.module.create({
     data: {
-      title: 'Backend with Prisma & PostgreSQL',
-      description: 'Build scalable APIs and manage data with professional tools.',
-      imageUrl: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&q=80&w=800',
-      published: true,
-      instructorId: mentor1.id,
-      modules: {
+      courseId: course1.id,
+      title: 'Architecture et Concepts de base',
+      order: 1,
+    }
+  });
+
+  const lesson1 = await prisma.lesson.create({
+    data: {
+      moduleId: module1.id,
+      title: 'Introduction aux Control Plane et Worker Nodes',
+      order: 1,
+      type: 'VIDEO',
+      videoUrl: 'https://www.youtube.com/watch?v=N3AkSS5hXMA',
+      content: 'Dans cette leçon, nous allons explorer les composants internes de Kubernetes...',
+      videoDuration: 900, // 15 mins
+    }
+  });
+
+  // 4. Create Quiz
+  const quiz1 = await prisma.quiz.create({
+    data: {
+      lessonId: lesson1.id,
+      title: 'Test de connaissances : Architecture K8s',
+      passingScore: 80,
+      questions: {
         create: [
           {
-            title: 'Database Modeling',
-            description: 'Designing schemas that scale.',
-            order: 1,
-            lessons: {
+            text: 'Quel composant est responsable de l\'ordonnancement des pods ?',
+            options: {
               create: [
-                { title: 'Relations in Prisma', order: 1, content: '1:1, 1:n, and n:m...', videoUrl: 'https://www.youtube.com/watch?v=N3AkSS5hXMA' },
+                { text: 'kube-scheduler', isCorrect: true },
+                { text: 'kube-apiserver', isCorrect: false },
+                { text: 'etcd', isCorrect: false },
               ]
             }
           }
@@ -149,37 +126,80 @@ async function main() {
     }
   });
 
-  // Create Path
-  console.log('Creating learning paths...');
-  const path1 = await prisma.path.create({
+  // 5. Create Project
+  const project1 = await prisma.project.create({
     data: {
-      title: 'Full-Stack Professional Path',
-      description: 'A comprehensive journey from frontend to backend mastery.',
-      imageUrl: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&q=80&w=800',
-      published: true,
-      courses: {
-        create: [
-          { courseId: course1.id, order: 1 },
-          { courseId: course2.id, order: 2 },
+      courseId: course1.id,
+      title: 'Déploiement d\'une App Multi-tier sur Cluster GKE',
+      description: 'Vous devez déployer une application avec Redis, Node.js et Ingress...',
+      difficulty: 'ADVANCED',
+      rubric: JSON.stringify({
+        criteria: [
+          { id: '1', label: 'Utilisation de Helm', weight: 30 },
+          { id: '2', label: 'Sécurité (NetworkPolicies)', weight: 40 },
+          { id: '3', label: 'HPA Configuré', weight: 30 }
         ]
-      }
+      })
     }
   });
 
-  // Enroll student
+  // 6. Enrollments & Progress
   await prisma.enrollment.create({
     data: {
-      userId: student1.id,
+      userId: student.id,
       courseId: course1.id,
-      progress: 20
     }
   });
 
-  await prisma.pathEnrollment.create({
+  await prisma.progress.create({
     data: {
-      userId: student1.id,
-      pathId: path1.id,
-      progress: 10
+      userId: student.id,
+      lessonId: lesson1.id,
+      isCompleted: true,
+      completedAt: new Date(),
+    }
+  });
+
+  // 7. Activity Logs
+  await prisma.activityLog.create({
+    data: {
+      userId: student.id,
+      action: 'COURSE_ENROLLED',
+      entityType: 'COURSE',
+      entityId: course1.id,
+      metadata: JSON.stringify({ title: course1.title })
+    }
+  });
+
+  // 8. Jobs
+  console.log('Creating jobs...');
+  const job1 = await prisma.job.create({
+    data: {
+      title: 'Senior Cloud Architect',
+      company: 'TechCorp Global',
+      location: 'Remote / Paris',
+      type: 'FULL_TIME',
+      salary: '85k€ - 110k€',
+      description: 'Nous recherchons un expert Kubernetes pour diriger notre migration vers GKE...',
+    }
+  });
+
+  await prisma.job.create({
+    data: {
+      title: 'Full-Stack Developer (Next.js)',
+      company: 'Kladriva Solutions',
+      location: 'Brussels',
+      type: 'CONTRACT',
+      salary: '600€/jour',
+      description: 'Rejoignez l\'équipe Kladriva pour bâtir le futur de l\'éducation en ligne.',
+    }
+  });
+
+  await prisma.jobApplication.create({
+    data: {
+      userId: student.id,
+      jobId: job1.id,
+      status: 'INTERVIEW_SCHEDULED',
     }
   });
 

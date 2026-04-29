@@ -18,7 +18,7 @@ export default async function CourseLearningLayout({
     redirect(`/${lang}/auth/signin`)
   }
 
-  const enrollment = await (prisma as any).enrollment.findUnique({
+  const enrollment = await prisma.enrollment.findUnique({
     where: {
       userId_courseId: {
         userId: session.user.id!,
@@ -55,20 +55,20 @@ export default async function CourseLearningLayout({
           >
             <ChevronLeft className="w-4 h-4" /> Back to Dashboard
           </Link>
-          <h2 className="font-semibold text-[20px] text-[#1d1d1f] leading-tight line-clamp-2">{(enrollment as any).course.title}</h2>
+          <h2 className="font-semibold text-[20px] text-[#1d1d1f] leading-tight line-clamp-2">{enrollment.course.title}</h2>
           <div className="mt-6">
              <div className="flex justify-between text-[11px] font-semibold text-[#86868b] mb-2 uppercase tracking-wider">
                 <span>Progress</span>
-                <span>{(enrollment as any).progress}%</span>
+                <span>{enrollment.progress}%</span>
              </div>
              <div className="w-full bg-[#d2d2d7] h-[4px] rounded-full overflow-hidden">
-                <div className="bg-[#1d1d1f] h-full transition-all duration-500" style={{ width: `${(enrollment as any).progress}%` }} />
+                <div className="bg-[#1d1d1f] h-full transition-all duration-500" style={{ width: `${enrollment.progress}%` }} />
              </div>
           </div>
         </div>
 
         <nav className="flex-1 overflow-y-auto p-4 space-y-8 no-scrollbar">
-          {(enrollment as any).course.modules.map((module: any, mIdx: number) => (
+          {enrollment.course.modules.map((module, mIdx) => (
             <div key={module.id} className="space-y-3">
               <h3 className="text-[12px] font-semibold text-[#86868b] uppercase tracking-wider px-3">
                 Module {mIdx + 1}: {module.title}

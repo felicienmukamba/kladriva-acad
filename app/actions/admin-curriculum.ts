@@ -119,7 +119,7 @@ export async function addQuestion(quizId: string, courseId: string, data: { text
 // Resource Actions
 export async function createResource(lessonId: string, courseId: string, data: { title: string; url: string; type: string; category: string; size?: string }) {
   await checkAdmin()
-  const resource = await (prisma as any).resource.create({
+  const resource = await prisma.resource.create({
     data: {
       ...data,
       lessonId
@@ -131,7 +131,7 @@ export async function createResource(lessonId: string, courseId: string, data: {
 
 export async function deleteResource(id: string, courseId: string) {
   await checkAdmin()
-  await (prisma as any).resource.delete({
+  await prisma.resource.delete({
     where: { id }
   })
   revalidatePath(`/dashboard/admin/courses/${courseId}`)

@@ -41,7 +41,7 @@ This is a high-quality submission that demonstrates a strong grasp of the fundam
     data: {
       status: "REVIEWED",
       feedback: mockFeedback,
-      grade: mockScore,
+      score: mockScore,
     }
   });
 

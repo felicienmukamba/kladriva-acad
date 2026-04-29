@@ -1,125 +1,184 @@
-import { isAdmin } from "@/lib/permissions"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { prisma } from "@/lib/prisma"
-import { BookOpen, Users, Briefcase, Award, MessageSquare, LayoutGrid, DollarSign, Activity, AlertCircle, TrendingUp } from "lucide-react"
-import Link from "next/link"
+"use client";
 
-export default async function AdminDashboard({ params }: { params: Promise<{ lang: string }> }) {
-  const { lang } = await params
-  await isAdmin(lang)
+import React from "react";
+import { 
+  Users, 
+  BookOpen, 
+  CheckCircle, 
+  TrendingUp, 
+  Activity, 
+  DollarSign, 
+  Award,
+  ArrowUpRight,
+  UserPlus
+} from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription 
+} from "@/components/ui/card";
+import { 
+  BarChart, 
+  Bar, 
+  XAxis, 
+  YAxis, 
+  CartesianGrid, 
+  Tooltip, 
+  ResponsiveContainer,
+  LineChart,
+  Line
+} from "recharts";
 
-  const courseCount = await prisma.course.count()
-  const userCount = await prisma.user.count()
-  const jobCount = await prisma.job.count()
-  const certCount = await prisma.certificate.count()
-  const mentorCount = await prisma.user.count({ where: { role: "MENTOR" } })
+const stats = [
+  { label: "Utilisateurs actifs", value: "2,543", icon: Users, change: "+12%", color: "text-blue-500" },
+  { label: "Cours complétés", value: "842", icon: CheckCircle, change: "+18%", color: "text-green-500" },
+  { label: "Certificats émis", value: "1,205", icon: Award, change: "+5%", color: "text-purple-500" },
+  { label: "Revenus (Mensuel)", value: "$45,200", icon: DollarSign, change: "+24%", color: "text-primary" },
+];
 
-  const totalRevenue = await prisma.payment.aggregate({
-    _sum: { amount: true },
-    where: { status: "PAID" }
-  })
+const chartData = [
+  { name: "Jan", users: 400, revenue: 2400 },
+  { name: "Feb", users: 600, revenue: 3600 },
+  { name: "Mar", users: 800, revenue: 5400 },
+  { name: "Apr", users: 1200, revenue: 8200 },
+  { name: "May", users: 1500, revenue: 10500 },
+  { name: "Jun", users: 2100, revenue: 14000 },
+];
 
-  const recentEnrollments = await prisma.enrollment.findMany({
-    take: 5,
-    orderBy: { createdAt: 'desc' },
-    include: { user: true, course: true }
-  })
+const recentActivity = [
+  { id: 1, user: "Sophie Martin", action: "a terminé le cours", target: "Architecture Docker", time: "Il y a 5 min" },
+  { id: 2, user: "Marc Dubois", action: "a rejoint la formation", target: "Next.js Full-Stack", time: "Il y a 12 min" },
+  { id: 3, user: "Léa Garcia", action: "a obtenu la certification", target: "AWS Cloud Expert", time: "Il y a 45 min" },
+  { id: 4, user: "Thomas Müller", action: "a réservé un mentor", target: "Félicien Mukamba", time: "Il y a 1h" },
+];
 
-  const pendingSubmissions = await prisma.projectSubmission.count({
-    where: { status: "PENDING" }
-  })
-
-  const adminStats = [
-    { title: "Revenue", count: `$${(totalRevenue._sum.amount || 0).toLocaleString()}`, icon: <DollarSign className="w-5 h-5 text-green-600" />, href: "#", bg: "bg-green-50" },
-    { title: "Courses", count: courseCount, icon: <BookOpen className="w-5 h-5 text-[#0066cc]" />, href: "courses", bg: "bg-blue-50" },
-    { title: "Students", count: userCount, icon: <Users className="w-5 h-5 text-indigo-600" />, href: "users", bg: "bg-indigo-50" },
-    { title: "Jobs", count: jobCount, icon: <Briefcase className="w-5 h-5 text-orange-600" />, href: "jobs", bg: "bg-orange-50" },
-    { title: "Certificates", count: certCount, icon: <Award className="w-5 h-5 text-yellow-600" />, href: "certificates", bg: "bg-yellow-50" },
-    { title: "Mentors", count: mentorCount, icon: <MessageSquare className="w-5 h-5 text-purple-600" />, href: "mentorship", bg: "bg-purple-50" },
-  ]
-
+export default function AdminDashboard() {
   return (
-    <div className="px-6 py-10 space-y-10 bg-[#f5f5f7] min-h-screen max-w-7xl mx-auto">
-      <div className="flex items-center justify-between">
+    <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-[32px] font-semibold tracking-tight text-[#1d1d1f]">Admin Console</h1>
-          <p className="text-[17px] text-[#86868b]">Manage content, jobs, and users in a calmer layout.</p>
+          <h1 className="text-3xl font-bold tracking-tight">Vue d'ensemble Admin</h1>
+          <p className="text-muted-foreground mt-1">Gérez vos utilisateurs, vos cours et analysez les performances de la plateforme.</p>
+        </div>
+        <div className="flex gap-2">
+          <Button variant="outline" className="rounded-xl">Exporter les données</Button>
+          <Button className="rounded-xl gap-2">
+            <UserPlus className="w-4 h-4" /> Nouvel Utilisateur
+          </Button>
         </div>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-        {adminStats.map((stat) => (
-          <Link key={stat.title} href={stat.href === "#" ? "#" : `/${lang}/dashboard/admin/${stat.href}`}>
-            <Card className="border border-[#d2d2d7] rounded-[24px] bg-white hover:bg-[#fcfcfd] transition-colors shadow-sm cursor-pointer h-full">
-              <CardContent className="p-6 flex flex-col items-center justify-center text-center space-y-4">
-                <div className={`p-4 rounded-full ${stat.bg}`}>
-                   {stat.icon}
-                </div>
-                <div>
-                  <div className="text-[28px] font-semibold tracking-tight text-[#1d1d1f]">{stat.count}</div>
-                  <div className="text-[12px] font-semibold uppercase tracking-wider text-[#86868b] mt-1">{stat.title}</div>
-                </div>
-              </CardContent>
-            </Card>
-          </Link>
+      {/* Stats Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {stats.map((stat) => (
+          <Card key={stat.label} className="border-border/50 bg-card/50 backdrop-blur-xl rounded-2xl shadow-apple transition-all hover:shadow-apple-lg overflow-hidden relative group">
+             <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                <stat.icon className="w-12 h-12" />
+             </div>
+             <CardHeader className="pb-2">
+               <CardDescription className="text-xs uppercase tracking-wider font-bold">{stat.label}</CardDescription>
+               <CardTitle className="text-3xl font-bold">{stat.value}</CardTitle>
+             </CardHeader>
+             <CardContent>
+               <div className="flex items-center gap-1.5 text-xs font-medium text-green-500">
+                 <TrendingUp className="w-3 h-3" />
+                 {stat.change} <span className="text-muted-foreground font-normal ml-1">vs mois dernier</span>
+               </div>
+             </CardContent>
+          </Card>
         ))}
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-8 mt-12">
-        <div className="lg:col-span-2 space-y-6">
-           <h2 className="text-[20px] font-semibold text-[#1d1d1f] flex items-center gap-2">
-             <Activity className="w-5 h-5" /> Recent Enrollments
-           </h2>
-           <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-sm overflow-hidden">
-             <div className="divide-y divide-[#d2d2d7]">
-                {recentEnrollments.map(enr => (
-                  <div key={enr.id} className="p-6 flex items-center justify-between hover:bg-[#f5f5f7] transition-colors">
-                     <div className="flex items-center gap-4">
-                        <div className="w-10 h-10 rounded-full bg-[#1d1d1f] text-white flex items-center justify-center text-[13px] font-bold">
-                           {(enr.user.name || "S")[0]}
-                        </div>
-                        <div>
-                           <p className="text-[15px] font-semibold text-[#1d1d1f]">{enr.user.name || "Anonymous Student"}</p>
-                           <p className="text-[13px] text-[#86868b]">Enrolled in <span className="font-medium text-[#1d1d1f]">{enr.course.title}</span></p>
-                        </div>
-                     </div>
-                     <span className="text-[13px] text-[#86868b]">{new Date(enr.createdAt).toLocaleDateString()}</span>
+      <div className="grid lg:grid-cols-3 gap-6">
+        {/* Main Chart */}
+        <Card className="lg:col-span-2 border-border/50 bg-card/50 backdrop-blur-xl rounded-2xl shadow-apple overflow-hidden">
+          <CardHeader>
+            <CardTitle className="text-lg">Croissance des revenus & Utilisateurs</CardTitle>
+            <CardDescription>Performance semestrielle de la plateforme.</CardDescription>
+          </CardHeader>
+          <CardContent className="h-[400px] pt-4">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={chartData}>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(0,0,0,0.05)" />
+                <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#888" }} dy={10} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fontSize: 12, fill: "#888" }} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "rgba(255,255,255,0.9)", border: "none", borderRadius: "12px", boxShadow: "0 10px 15px -3px rgba(0,0,0,0.1)" }}
+                  cursor={{ fill: "rgba(0,0,0,0.02)" }}
+                />
+                <Bar dataKey="revenue" fill="oklch(0.45 0.2 270)" radius={[6, 6, 0, 0]} barSize={40} />
+                <Bar dataKey="users" fill="oklch(0.55 0.18 270 / 0.3)" radius={[6, 6, 0, 0]} barSize={40} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+
+        {/* Recent Activity */}
+        <Card className="border-border/50 bg-card/50 backdrop-blur-xl rounded-2xl shadow-apple overflow-hidden">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg">Activité récente</CardTitle>
+              <Activity className="w-4 h-4 text-primary" />
+            </div>
+            <CardDescription>Dernières actions sur la plateforme.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-6">
+              {recentActivity.map((activity) => (
+                <div key={activity.id} className="flex gap-4 group">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:text-white transition-colors">
+                    <Users className="w-5 h-5" />
                   </div>
-                ))}
-                {recentEnrollments.length === 0 && (
-                  <div className="p-8 text-center text-[#86868b]">No recent enrollments.</div>
-                )}
-             </div>
-           </Card>
-        </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm">
+                      <span className="font-bold">{activity.user}</span> {activity.action} <span className="font-semibold text-primary">{activity.target}</span>
+                    </p>
+                    <p className="text-[11px] text-muted-foreground mt-1">{activity.time}</p>
+                  </div>
+                  <ArrowUpRight className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
+              ))}
+              <Button variant="ghost" className="w-full text-xs text-primary hover:bg-primary/5 rounded-xl">
+                Voir tous les logs
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="space-y-6">
-           <h2 className="text-[20px] font-semibold text-[#1d1d1f]">Platform Health</h2>
-           <div className="space-y-4">
-              <Card className="border border-[#d2d2d7] rounded-[24px] bg-[#1d1d1f] text-white shadow-sm p-6">
-                 <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-white/10 rounded-xl">
-                       <AlertCircle className="w-6 h-6 text-yellow-400" />
-                    </div>
-                    <Badge variant="outline" className="border-white/20 text-white hover:bg-white/10">Action Needed</Badge>
-                 </div>
-                 <div className="text-[32px] font-semibold tracking-tight mb-1">{pendingSubmissions}</div>
-                 <p className="text-[15px] text-[#a1a1a6]">Project submissions waiting for instructor review or peer grading.</p>
-              </Card>
-
-              <Card className="border border-[#d2d2d7] rounded-[24px] bg-white shadow-sm p-6">
-                 <div className="flex justify-between items-start mb-6">
-                    <div className="p-3 bg-green-50 rounded-xl">
-                       <TrendingUp className="w-6 h-6 text-green-600" />
-                    </div>
-                 </div>
-                 <div className="text-[32px] font-semibold tracking-tight text-[#1d1d1f] mb-1">+{Math.floor(Math.random() * 40) + 10}%</div>
-                 <p className="text-[15px] text-[#86868b]">Monthly active user growth compared to last 30 days.</p>
-              </Card>
-           </div>
-        </div>
+      {/* Quick Actions / Shortcuts */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+         <Card className="apple-card border-none bg-gradient-to-br from-primary to-indigo-700 text-white">
+            <CardHeader>
+               <CardTitle className="text-white">Gérer le Catalogue</CardTitle>
+               <CardDescription className="text-white/70">Ajoutez de nouveaux cours ou modifiez les parcours existants.</CardDescription>
+            </CardHeader>
+            <CardContent>
+               <Button variant="secondary" className="w-full rounded-xl">Accéder aux Cours</Button>
+            </CardContent>
+         </Card>
+         <Card className="apple-card border-none bg-slate-900 text-white">
+            <CardHeader>
+               <CardTitle className="text-white">Vérification Certificats</CardTitle>
+               <CardDescription className="text-white/70">Validez les demandes d'émission ou révoquez des certificats.</CardDescription>
+            </CardHeader>
+            <CardContent>
+               <Button variant="secondary" className="w-full rounded-xl">Gérer les Certificats</Button>
+            </CardContent>
+         </Card>
+         <Card className="apple-card border-none bg-teal-600 text-white">
+            <CardHeader>
+               <CardTitle className="text-white">Support Mentorat</CardTitle>
+               <CardDescription className="text-white/70">Intervenez dans les tickets SOS ou modifiez les réservations.</CardDescription>
+            </CardHeader>
+            <CardContent>
+               <Button variant="secondary" className="w-full rounded-xl">Voir les Sessions</Button>
+            </CardContent>
+         </Card>
       </div>
     </div>
-  )
+  );
 }

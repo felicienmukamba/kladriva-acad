@@ -26,12 +26,19 @@ export async function submitPeerReview(submissionId: string, score: number, feed
   const session = await auth()
   if (!session?.user) throw new Error("Unauthorized")
 
+  const submission = await prisma.projectSubmission.findUnique({
+    where: { id: submissionId }
+  })
+  if (!submission) throw new Error("Submission not found")
+
   const review = await prisma.peerReview.create({
     data: {
       submissionId,
       reviewerId: session.user.id!,
-      score,
-      feedback
+      revieweeId: submission.userId,
+      totalScore: score,
+      comment: feedback,
+      scoresJson: "{}" // Default for now
     }
   })
 
@@ -41,16 +48,16 @@ export async function submitPeerReview(submissionId: string, score: number, feed
   })
   
   if (allReviews.length >= 3) {
-    const avgScore = allReviews.reduce((acc, r) => acc + r.score, 0) / allReviews.length
+    const avgScore = allReviews.reduce((acc, r) => acc + r.totalScore, 0) / allReviews.length
     if (avgScore >= 70) { // Assuming 70 is passing
       await prisma.projectSubmission.update({
         where: { id: submissionId },
-        data: { status: "APPROVED", grade: avgScore }
+        data: { status: "APPROVED", score: avgScore }
       })
     } else {
       await prisma.projectSubmission.update({
         where: { id: submissionId },
-        data: { status: "REJECTED", grade: avgScore }
+        data: { status: "REJECTED", score: avgScore }
       })
     }
   }
@@ -73,7 +80,7 @@ export async function getInstructorSubmissionStats(projectId: string) {
   return submissions.map(sub => ({
     ...sub,
     avgGrade: sub.reviews.length > 0 
-      ? sub.reviews.reduce((acc, r) => acc + r.score, 0) / sub.reviews.length 
+      ? sub.reviews.reduce((acc, r) => acc + r.totalScore, 0) / sub.reviews.length 
       : null
   }))
 }

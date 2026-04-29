@@ -11,12 +11,18 @@ import {
   ChevronRight,
   ShieldCheck,
   Zap,
-  PlayCircle
+  PlayCircle,
+  Trophy,
+  Brain,
+  GitBranch,
+  Sparkles
 } from "lucide-react";
 import { EnrollButton } from "@/components/EnrollButton";
 import Link from "next/link";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/landing/Footer";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 export default async function CourseDetail({
   params,
@@ -116,60 +122,109 @@ export default async function CourseDetail({
         </div>
       </section>
 
-      {/* Course Details Content */}
-      <section className="max-w-7xl mx-auto px-6 py-24">
+      {/* Program Roadmap */}
+      <section className="max-w-7xl mx-auto px-6 py-24 bg-white">
         <div className="grid lg:grid-cols-3 gap-16">
-           <div className="lg:col-span-2 space-y-24">
-              <div className="space-y-12">
-                 <h2 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f]">Program Syllabus</h2>
-                 
-                 <div className="space-y-6">
-                    {course.modules.map((module, idx) => (
-                      <div key={module.id} className="p-8 bg-[#f5f5f7] rounded-[24px] hover:bg-[#e8e8ed] transition-colors duration-300">
-                         <div className="flex flex-col gap-4">
-                            <div className="text-[12px] font-semibold text-[#86868b] uppercase tracking-wider">Module {idx + 1}</div>
-                            <h4 className="text-[24px] font-semibold text-[#1d1d1f]">
-                              {module.title}
-                            </h4>
-                            <p className="text-[#1d1d1f] text-[17px] leading-relaxed max-w-xl">
-                              {module.description}
-                            </p>
-                            <div className="flex items-center gap-2 text-[#0066cc] font-medium mt-2">
-                               <PlayCircle className="w-4 h-4" />
-                               <span className="text-[15px]">{module.lessons.length} Lessons</span>
-                            </div>
-                         </div>
+          <div className="lg:col-span-2 space-y-16">
+            <div className="space-y-4">
+              <h2 className="text-[40px] font-semibold tracking-tight text-[#1d1d1f]">Feuille de Route (Roadmap)</h2>
+              <p className="text-[#86868b] text-[18px]">Suivez ce parcours structuré pour maîtriser les compétences clés.</p>
+            </div>
+            
+            <div className="relative space-y-8 before:absolute before:inset-0 before:ml-5 before:-translate-x-px md:before:mx-auto md:before:translate-x-0 before:h-full before:w-0.5 before:bg-gradient-to-b before:from-transparent before:via-slate-200 before:to-transparent">
+              {course.modules.map((module, idx) => (
+                <div key={module.id} className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group is-active">
+                  {/* Icon */}
+                  <div className="flex items-center justify-center w-10 h-10 rounded-full border border-white bg-slate-100 group-[.is-active]:bg-indigo-500 text-slate-500 group-[.is-active]:text-white shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 transition-all duration-500 group-hover:scale-110 group-hover:shadow-indigo-200">
+                    <span className="text-xs font-bold">{idx + 1}</span>
+                  </div>
+                  {/* Content */}
+                  <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-6 rounded-3xl bg-[#f5f5f7] border border-transparent hover:border-indigo-100 hover:bg-white hover:shadow-xl transition-all duration-300">
+                    <div className="flex flex-col gap-2">
+                      <div className="flex items-center justify-between">
+                        <time className="text-[12px] font-bold text-indigo-500 uppercase tracking-widest">Semaine {idx + 1}</time>
+                        <div className="flex items-center gap-1 text-[11px] font-medium text-slate-400 bg-slate-100 px-2 py-1 rounded-full">
+                          <Clock className="w-3 h-3" />
+                          ~{module.lessons.length * 15} min
+                        </div>
                       </div>
-                    ))}
-                 </div>
-              </div>
-           </div>
+                      <h4 className="text-[20px] font-bold text-[#1d1d1f] group-hover:text-indigo-600 transition-colors">
+                        {module.title}
+                      </h4>
+                      <p className="text-slate-500 text-[15px] leading-relaxed">
+                        {module.description}
+                      </p>
+                      <div className="flex items-center gap-3 mt-3">
+                         <div className="flex -space-x-2">
+                           {[1, 2, 3].map(i => (
+                             <div key={i} className="w-6 h-6 rounded-full border-2 border-white bg-slate-200 overflow-hidden">
+                               <img src={`https://i.pravatar.cc/100?u=${module.id}${i}`} alt="Student" className="w-full h-full object-cover" />
+                             </div>
+                           ))}
+                         </div>
+                         <span className="text-[12px] text-slate-400 font-medium">+120 apprenants complété</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
 
-           <aside className="space-y-8">
-              <div className="bg-[#1d1d1f] rounded-[24px] p-8 text-white">
-                 <h4 className="text-[24px] font-semibold mb-4">
-                   Certification
-                 </h4>
-                 <p className="text-[#a1a1a6] text-[15px] leading-relaxed mb-8">
-                   Upon completion, you'll receive a verified digital certificate issued by Kladriva Academy 
-                   to share with your professional network.
-                 </p>
-                 <div className="aspect-[4/3] bg-white/10 rounded-[12px] flex items-center justify-center text-white/30 text-[13px] font-medium">
-                   Sample Certificate
-                 </div>
+              {/* Boss Final Node */}
+              <div className="relative flex items-center justify-between md:justify-normal md:odd:flex-row-reverse group">
+                <div className="flex items-center justify-center w-12 h-12 rounded-full border-4 border-indigo-500 bg-indigo-600 text-white shadow-lg shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10">
+                  <Trophy className="w-6 h-6" />
+                </div>
+                <div className="w-[calc(100%-4rem)] md:w-[calc(50%-2.5rem)] p-8 rounded-3xl bg-indigo-900 text-white shadow-2xl shadow-indigo-500/20 transform hover:-translate-y-1 transition-transform">
+                  <div className="space-y-4">
+                    <Badge className="bg-indigo-500/30 text-indigo-200 border-none">Projet Final (Boss)</Badge>
+                    <h4 className="text-[24px] font-bold">Certification Mastery Project</h4>
+                    <p className="text-indigo-200 text-[15px] leading-relaxed">
+                      Appliquez tout ce que vous avez appris dans un projet réel validé par nos mentors experts.
+                    </p>
+                    <Button className="w-full bg-white text-indigo-900 hover:bg-indigo-50 rounded-xl font-bold">
+                      Voir le Brief du Projet
+                    </Button>
+                  </div>
+                </div>
               </div>
+            </div>
+          </div>
 
-              <div className="bg-[#f5f5f7] rounded-[24px] p-8">
-                 <h4 className="text-[20px] font-semibold mb-6 text-[#1d1d1f]">Tools you'll master</h4>
-                 <div className="flex flex-wrap gap-3">
-                    {["Python", "Docker", "TensorFlow", "React", "Prisma"].map(skill => (
-                      <span key={skill} className="bg-white px-4 py-2 rounded-full text-[15px] font-medium text-[#1d1d1f] shadow-sm">
-                        {skill}
-                      </span>
-                    ))}
-                 </div>
-              </div>
-           </aside>
+          <aside className="space-y-8">
+            <div className="bg-[#1d1d1f] rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-500/10 rounded-full blur-3xl -mr-16 -mt-16" />
+               <h4 className="text-[24px] font-bold mb-4 flex items-center gap-2">
+                 <Award className="w-6 h-6 text-indigo-400" /> Certification
+               </h4>
+               <p className="text-[#a1a1a6] text-[15px] leading-relaxed mb-8">
+                 Une fois complété, recevez un certificat digital vérifié par Kladriva Academy, optimisé pour LinkedIn et vos CV.
+               </p>
+               <div className="aspect-[4/3] bg-white/5 rounded-2xl border border-white/10 flex items-center justify-center relative group cursor-pointer">
+                  <div className="absolute inset-0 bg-indigo-500/20 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl" />
+                  <img src="/certificate-preview.png" alt="Sample Certificate" className="w-full h-full object-contain p-4 opacity-50 group-hover:opacity-100 transition-opacity" />
+                  <span className="absolute bottom-4 right-4 bg-white/10 backdrop-blur-md px-3 py-1 rounded-full text-[10px] text-white/60">Aperçu interactif</span>
+               </div>
+            </div>
+
+            <div className="bg-[#f5f5f7] rounded-[32px] p-8 border border-slate-200">
+               <h4 className="text-[20px] font-bold mb-6 text-[#1d1d1f]">Compétences acquises</h4>
+               <div className="grid grid-cols-1 gap-4">
+                  {[
+                    { name: "Algorithmie avancée", icon: Brain },
+                    { name: "Architecture système", icon: GitBranch },
+                    { name: "Déploiement Cloud", icon: Globe },
+                    { name: "UI/UX Avancé", icon: Sparkles }
+                  ].map(skill => (
+                    <div key={skill.name} className="flex items-center gap-3 p-3 bg-white rounded-2xl shadow-sm border border-slate-100">
+                      <div className="p-2 bg-indigo-50 rounded-lg">
+                        <skill.icon className="w-4 h-4 text-indigo-600" />
+                      </div>
+                      <span className="text-[15px] font-semibold text-slate-700">{skill.name}</span>
+                    </div>
+                  ))}
+               </div>
+            </div>
+          </aside>
         </div>
       </section>
 

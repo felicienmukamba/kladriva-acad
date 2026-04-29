@@ -27,109 +27,109 @@ export default async function LandingPage({
     lang === "fr"
       ? {
           hero: {
-            eyebrow: "L'academie qui transforme les visiteurs en eleves engages",
-            title: "Des formations premium pour apprendre, progresser et acheter avec confiance.",
+            eyebrow: "L'accélérateur de carrière tech",
+            title: "Devenez l'expert que les entreprises s'arrachent.",
             subtitle:
-              "Une landing page plus proche de l'univers Apple: sobre, nette, immersive et construite pour donner envie de rejoindre vos programmes.",
-            primaryCta: "Voir les formations",
-            secondaryCta: "Creer mon compte",
-            announcement: "Nouveau design de landing page",
+              "Kladriva Academy transforme votre potentiel en expertise concrète. Profitez de parcours diplômants, de projets réels et d'un mentorat individuel pour garantir votre succès.",
+            primaryCta: "Trouver ma formation",
+            secondaryCta: "Voir le fonctionnement",
+            announcement: "Diplômes reconnus par l'État et mentorat d'élite",
             stats: [
-              { value: `${publishedCourseCount}+`, label: "formations publiees" },
-              { value: `${publishedPathCount}+`, label: "parcours premium" },
-              { value: "100%", label: "experience mobile et desktop" },
+              { value: `${publishedCourseCount}+`, label: "programmes certifiants" },
+              { value: `${publishedPathCount}+`, label: "parcours métiers" },
+              { value: "100%", label: "réussite mentorée" },
             ],
           },
-          carouselHeading: "Un carrousel editorial qui donne le ton des offres.",
+          carouselHeading: "Plus qu'une formation, un nouveau départ professionnel.",
           carouselDescription:
-            "Chaque slide presente une promesse claire, une mise en scene premium et une prochaine action evidente, avec un rendu beaucoup plus cinematographique que votre home actuelle.",
+            "Nos méthodes d'apprentissage sont basées sur la pratique intensive et l'accompagnement par des professionnels du secteur. Obtenez un diplôme, trouvez un job.",
           slides: [
             {
-              eyebrow: "Flagship program",
-              title: "Frontend haut de gamme, experience ultra fluide.",
+              eyebrow: "Diplômes reconnus",
+              title: "Parcours Diplômants de Niveau 6 et 7 (Bac+3/5)",
               description:
-                "Mettez vos formations au niveau d'un produit premium grace a une narration visuelle plus forte et des points d'entree mieux choisis.",
-              detail: "Hero large, typographie ample, CTA forts",
+                "Obtenez un titre RNCP officiel. Nos cursus en Développement Fullstack, Data Science et Cloud Architecture sont conçus pour l'emploi.",
+              detail: "Certification Officielle • Mentorat Hebdo • Projet Réel",
               href: `/${lang}/courses`,
-              cta: "Explorer",
+              cta: "Explorer les diplômes",
               theme: "light" as const,
             },
             {
-              eyebrow: "Mentorat",
-              title: "Des parcours qui rassurent avant meme l'inscription.",
+              eyebrow: "Garantie Emploi",
+              title: "Votre CDI en moins de 6 mois, ou remboursé",
               description:
-                "Les visiteurs comprennent plus vite ce qu'ils achetent: accompagnement, structure, progression et resultat professionnel.",
-              detail: "Confiance, clarte, valeur percue",
+                "Nous sommes les seuls à nous engager sur votre réussite. Si vous ne trouvez pas d'emploi après votre diplôme, nous vous remboursons vos frais.",
+              detail: "Coaching Carrière • Job Board Privé • Réseau Alumni",
               href: `/${lang}/paths`,
-              cta: "Voir les parcours",
+              cta: "Découvrir la garantie",
               theme: "dark" as const,
             },
             {
-              eyebrow: "Conversion",
-              title: "Une page qui pousse naturellement a passer a l'action.",
+              eyebrow: "Mentorat Individuel",
+              title: "Un Expert Dédié à 100% à Votre Progression",
               description:
-                "Le design ne se contente plus d'etre joli: il sert le catalogue, renforce les CTA et rend vos programmes plus desirables.",
-              detail: "Sections memorables et rythme editorial",
+                "Chaque semaine, votre mentor (un pro du secteur) vous guide en visioconférence. Il valide vos compétences et vous aide à lever chaque blocage.",
+              detail: "Revue de Code • Session Live • Suivi Personnalisé",
               href: `/${lang}/auth/signup`,
-              cta: "Commencer",
+              cta: "Démarrer maintenant",
               theme: "accent" as const,
             },
           ],
         }
       : {
           hero: {
-            eyebrow: "An academy built to turn visitors into committed learners",
-            title: "Premium training programs that feel clear, credible, and worth buying.",
+            eyebrow: "The Tech Career Accelerator",
+            title: "Become the Expert Companies Are Looking For.",
             subtitle:
-              "A landing page closer to Apple's visual rhythm: calm, sharp, immersive, and intentionally designed to increase trust and enrollment.",
-            primaryCta: "Browse courses",
-            secondaryCta: "Create account",
-            announcement: "New landing page redesign",
+              "Kladriva Academy transforms your potential into concrete expertise. Benefit from degree programs, real-world projects, and individual mentorship to guarantee your success.",
+            primaryCta: "Find My Program",
+            secondaryCta: "See How It Works",
+            announcement: "State-recognized degrees and elite mentorship",
             stats: [
-              { value: `${publishedCourseCount}+`, label: "published programs" },
-              { value: `${publishedPathCount}+`, label: "guided paths" },
-              { value: "100%", label: "responsive buying flow" },
+              { value: `${publishedCourseCount}+`, label: "certified programs" },
+              { value: `${publishedPathCount}+`, label: "career paths" },
+              { value: "100%", label: "mentored success" },
             ],
           },
-          carouselHeading: "An editorial carousel that sets the tone for the offer.",
+          carouselHeading: "More Than a Course, a Professional New Beginning.",
           carouselDescription:
-            "Each slide combines a clear promise, premium presentation, and an obvious next step, making the homepage feel more cinematic and more intentional.",
+            "Our learning methods are based on intensive practice and coaching by industry professionals. Get a degree, find a job.",
           slides: [
             {
-              eyebrow: "Flagship program",
-              title: "Premium frontend design with a smoother buying experience.",
+              eyebrow: "Recognized Degrees",
+              title: "Bachelor's & Master's Level Programs",
               description:
-                "Present your training like a polished product with stronger storytelling and more deliberate entry points.",
-              detail: "Large hero, spacious typography, stronger CTAs",
+                "Earn an official accredited degree. Our Fullstack Development, Data Science, and Cloud Architecture courses are built for employability.",
+              detail: "Official Certification • Weekly Mentorship • Real Projects",
               href: `/${lang}/courses`,
-              cta: "Explore",
+              cta: "Explore Degrees",
               theme: "light" as const,
             },
             {
-              eyebrow: "Mentorship",
-              title: "Guided paths that reduce hesitation before enrollment.",
+              eyebrow: "Job Guarantee",
+              title: "A Job in Under 6 Months, or Your Money Back",
               description:
-                "Visitors understand faster what they are paying for: support, structure, progress, and professional outcomes.",
-              detail: "Trust, clarity, and perceived value",
+                "We are the only ones committed to your success. If you don't find a job after graduation, we will refund your tuition fees.",
+              detail: "Career Coaching • Private Job Board • Alumni Network",
               href: `/${lang}/paths`,
-              cta: "View paths",
+              cta: "See Guarantee",
               theme: "dark" as const,
             },
             {
-              eyebrow: "Conversion",
-              title: "A homepage that naturally moves people to take action.",
+              eyebrow: "Individual Mentorship",
+              title: "An Expert 100% Dedicated to Your Progress",
               description:
-                "The design no longer just looks good. It supports the catalog, reinforces the CTAs, and makes each program feel more desirable.",
-              detail: "Memorable sections with editorial pacing",
+                "Every week, your mentor (an industry pro) guides you via video call. They validate your skills and help you clear every hurdle.",
+              detail: "Code Review • Live Sessions • Personalized Follow-up",
               href: `/${lang}/auth/signup`,
-              cta: "Get started",
+              cta: "Start Now",
               theme: "accent" as const,
             },
           ],
         };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white text-slate-900 font-sans">
+    <div className="flex min-h-screen flex-col bg-background text-foreground font-sans selection:bg-primary/20 selection:text-primary">
       <Navbar />
 
       <Hero

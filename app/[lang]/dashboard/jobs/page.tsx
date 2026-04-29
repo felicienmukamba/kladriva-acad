@@ -12,7 +12,6 @@ export default async function JobsPage({ params }: { params: Promise<{ lang: str
 
   const jobs = await prisma.job.findMany({
     orderBy: { createdAt: "desc" },
-    include: { company: true }
   })
 
   return (
@@ -38,15 +37,15 @@ export default async function JobsPage({ params }: { params: Promise<{ lang: str
               </div>
               
               <h3 className="text-[20px] font-semibold tracking-tight mb-2 text-[#1d1d1f]">{job.title}</h3>
-              <p className="text-[#86868b] font-medium text-[15px] mb-8">{job.company.name || "Kladriva Partner"}</p>
+              <p className="text-[#86868b] font-medium text-[15px] mb-8">{job.company || "Kladriva Partner"}</p>
               
               <div className="grid grid-cols-2 gap-4 mb-8">
                  <div className="flex items-center gap-2 text-[13px] text-[#86868b] font-medium">
                     <MapPin className="w-4 h-4 text-[#1d1d1f]" /> {job.location || "Remote"}
                  </div>
-                 <div className="flex items-center gap-2 text-[13px] text-[#86868b] font-medium">
-                    <DollarSign className="w-4 h-4 text-[#1d1d1f]" /> {job.salaryRange || "Competitive"}
-                 </div>
+                  <div className="flex items-center gap-2 text-[13px] text-[#86868b] font-medium">
+                     <DollarSign className="w-4 h-4 text-[#1d1d1f]" /> {job.salary || "Competitive"}
+                  </div>
                  <div className="flex items-center gap-2 text-[13px] text-[#86868b] font-medium">
                     <Clock className="w-4 h-4 text-[#1d1d1f]" /> {new Date(job.createdAt).toLocaleDateString()}
                  </div>

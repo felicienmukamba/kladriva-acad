@@ -67,7 +67,7 @@ export default async function MentorProfilePage({ params }: { params: Promise<{ 
                 <div className="flex justify-between items-start">
                   <div>
                     <h1 className="text-[32px] font-semibold text-[#1d1d1f] tracking-tight mb-2">{mentor.name}</h1>
-                    <p className="text-[#86868b] text-[17px] font-medium mb-6">{mentor.headline}</p>
+                    <p className="text-[#86868b] text-[17px] font-medium mb-6">{mentor.bio?.substring(0, 50) || "Senior Expert"}</p>
                     <div className="flex flex-wrap gap-6 text-[13px] font-medium text-[#86868b] uppercase tracking-wider">
                       <span className="flex items-center gap-1.5"><Star className="w-4 h-4 text-[#1d1d1f] fill-[#1d1d1f]" /> 4.9 (48 reviews)</span>
                       <span className="flex items-center gap-1.5"><MessageSquare className="w-4 h-4 text-[#1d1d1f]" /> 124 Sessions</span>

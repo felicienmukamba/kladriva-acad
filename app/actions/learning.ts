@@ -9,7 +9,7 @@ export async function completeLesson(enrollmentId: string, lessonId: string) {
   if (!session?.user) throw new Error("Unauthorized")
 
   // Upsert the lesson progress
-  await prisma.lessonProgress.upsert({
+  await prisma.progress.upsert({
     where: {
       userId_lessonId: {
         userId: session.user.id!,
@@ -38,7 +38,7 @@ export async function completeLesson(enrollmentId: string, lessonId: string) {
   }) || 1 // fallback to avoid division by zero if no lessons
 
   // Recalculate enrollment progress
-  const completedLessons = await prisma.lessonProgress.count({
+  const completedLessons = await prisma.progress.count({
     where: {
       userId: session.user.id!,
       isCompleted: true,
@@ -78,7 +78,7 @@ export async function completeLesson(enrollmentId: string, lessonId: string) {
         data: {
           userId: enrollment.userId,
           courseId: enrollment.courseId,
-          code: `KLAD-${Math.random().toString(36).substring(2, 10).toUpperCase()}`
+          qrCodeToken: `KLAD-${Math.random().toString(36).substring(2, 10).toUpperCase()}`
         }
       })
     }
@@ -92,7 +92,7 @@ export async function updateVideoPosition(lessonId: string, position: number) {
   const session = await auth()
   if (!session?.user) return
 
-  await prisma.lessonProgress.upsert({
+  await prisma.progress.upsert({
     where: {
       userId_lessonId: {
         userId: session.user.id!,

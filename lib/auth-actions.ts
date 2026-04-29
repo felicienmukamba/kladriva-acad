@@ -71,3 +71,9 @@ export const login = async (values: any) => {
     throw error
   }
 }
+
+export const oauthSignIn = async (provider: "google" | "github") => {
+  await signIn(provider, {
+    redirectTo: "/dashboard",
+  })
+}

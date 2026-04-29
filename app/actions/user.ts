@@ -9,7 +9,7 @@ export async function updateProfile(formData: FormData) {
   if (!session?.user?.id) return { success: false, message: "Unauthorized" }
 
   const name = formData.get("name") as string
-  const headline = formData.get("headline") as string
+  const specialties = formData.get("specialties") as string
   const bio = formData.get("bio") as string
   const image = formData.get("image") as string // User can put a URL for avatar
 
@@ -18,7 +18,7 @@ export async function updateProfile(formData: FormData) {
       where: { id: session.user.id },
       data: {
         name,
-        headline,
+        specialties,
         bio,
         ...(image && { image })
       }

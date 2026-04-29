@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
-import { createJob, updateJob } from "@/lib/admin-actions"
+import { createJob, updateJob } from "@/app/actions/admin-jobs"
 import { useDictionary } from "@/components/DictionaryProvider"
 
 export function JobForm({ initialData, lang }: { initialData?: any, lang: string }) {
@@ -20,9 +20,9 @@ export function JobForm({ initialData, lang }: { initialData?: any, lang: string
       title: formData.get("title") as string,
       description: formData.get("description") as string,
       location: formData.get("location") as string,
-      salaryRange: formData.get("salaryRange") as string,
+      salary: formData.get("salary") as string,
       type: formData.get("type") as string,
-      remote: formData.get("remote") === "on",
+      company: formData.get("company") as string,
     }
 
     try {
@@ -58,12 +58,17 @@ export function JobForm({ initialData, lang }: { initialData?: any, lang: string
           <Input id="location" name="location" defaultValue={initialData?.location} required className="rounded-xl h-12" />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="salaryRange">Salary Range</Label>
-          <Input id="salaryRange" name="salaryRange" defaultValue={initialData?.salaryRange} placeholder="e.g. $80k - $120k" className="rounded-xl h-12" />
+          <Label htmlFor="salary">Salary / Rate</Label>
+          <Input id="salary" name="salary" defaultValue={initialData?.salary} placeholder="e.g. $80k - $120k" className="rounded-xl h-12" />
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="space-y-2">
+        <Label htmlFor="company">Company Name</Label>
+        <Input id="company" name="company" defaultValue={initialData?.company} placeholder="e.g. Kladriva Academy" required className="rounded-xl h-12" />
+      </div>
+
+      <div className="grid grid-cols-1 gap-6">
         <div className="space-y-2">
           <Label htmlFor="type">Job Type</Label>
           <select title={dict.admin.jobs.typejob} id="type" name="type" defaultValue={initialData?.type || "FULL_TIME"} className="flex h-12 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm ring-offset-background focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
@@ -72,10 +77,6 @@ export function JobForm({ initialData, lang }: { initialData?: any, lang: string
             <option value="CONTRACT">{dict.admin.jobs.types.contract}</option>
             <option value="FREELANCE">{dict.admin.jobs.types.freelance}</option>
           </select>
-        </div>
-        <div className="flex items-center space-x-2 pt-8">
-           <input title={dict.admin.jobs.remote}  type="checkbox" id="remote" name="remote" defaultChecked={initialData?.remote} className="w-5 h-5 rounded border-slate-300" />
-           <Label htmlFor="remote">Remote Opportunity</Label>
         </div>
       </div>
 

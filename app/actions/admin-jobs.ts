@@ -14,11 +14,10 @@ async function checkAdmin() {
 export async function createJob(data: {
   title: string
   description: string
-  location?: string
-  remote: boolean
-  salaryRange?: string
+  location: string
+  salary?: string
   type: string
-  companyId: string
+  company: string
 }) {
   await checkAdmin()
   const job = await prisma.job.create({ data })
@@ -29,9 +28,8 @@ export async function createJob(data: {
 export async function updateJob(id: string, data: {
   title: string
   description: string
-  location?: string
-  remote: boolean
-  salaryRange?: string
+  location: string
+  salary?: string
   type: string
 }) {
   await checkAdmin()

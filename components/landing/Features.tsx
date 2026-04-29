@@ -8,73 +8,73 @@ export function Features({ lang }: FeaturesProps) {
   const copy =
     lang === "fr"
       ? {
-          eyebrow: "Pourquoi Kladriva",
-          heading: "Des formations concues pour donner de la valeur avant meme l'achat.",
+          eyebrow: "Pourquoi choisir Kladriva ?",
+          heading: "Une méthode d'apprentissage unique pour des résultats garantis.",
           description:
-            "Le design doit inspirer confiance, mais l'offre doit aussi paraitre concrete. Cette section met en avant ce que le client obtient reellement.",
+            "Oubliez les cours théoriques ennuyeux. Nous avons repensé la formation en ligne pour la rendre vivante, humaine et directement applicable en entreprise.",
           cards: [
             {
               icon: Sparkles,
-              title: "Une experience premium",
+              title: "Apprenez à votre rythme",
               description:
-                "Interface epuree, rythme editorial et details soignes pour positionner l'academie comme une offre haut de gamme.",
+                "Accédez à vos cours 24h/24 et 7j/7. Progressez selon votre emploi du temps, sans stress, tout en restant accompagné.",
               tone: "light",
             },
             {
               icon: Users,
-              title: "Un accompagnement visible",
+              title: "Un mentor dédié",
               description:
-                "Mentorat, retours, communaute et parcours guides pour rassurer les visiteurs avant l'inscription.",
+                "Chaque semaine, échangez en direct avec un expert de votre futur métier. Recevez des feedbacks personnalisés sur vos projets.",
               tone: "dark",
             },
             {
               icon: BriefcaseBusiness,
-              title: "Un resultat professionnel",
+              title: "Focus Employabilité",
               description:
-                "Programmes orientes portfolio, emploi et progression concrete plutot que simple accumulation de videos.",
+                "Construisez un portfolio solide avec des projets inspirés de cas réels en entreprise. Soyez prêt à être recruté dès la fin de votre cursus.",
               tone: "accent",
             },
           ],
-          statsTitle: "Ce qui declenche l'achat",
+          statsTitle: "Les clés de votre succès",
           stats: [
-            "Promesse claire en moins de 5 secondes",
-            "Navigation simple avec sections memorables",
-            "CTA repetes sans agressivite",
+            "Parcours flexibles adaptés à votre vie",
+            "Certification reconnue et valorisée",
+            "Coaching carrière jusqu'à l'embauche",
           ],
         }
       : {
-          eyebrow: "Why Kladriva",
-          heading: "Programs designed to create value before the visitor even buys.",
+          eyebrow: "Why choose Kladriva?",
+          heading: "A unique learning method for guaranteed results.",
           description:
-            "Premium design builds trust, but the offer also needs to feel tangible. This section makes the product feel concrete and worth paying for.",
+            "Forget boring theory. We've redesigned online training to make it alive, human, and directly applicable in a corporate environment.",
           cards: [
             {
               icon: Sparkles,
-              title: "A premium experience",
+              title: "Learn at your own pace",
               description:
-                "Clean interface, editorial pacing, and polished details that position the academy as a high-value offer.",
+                "Access your courses 24/7. Progress according to your schedule, stress-free, while remaining fully supported.",
               tone: "light",
             },
             {
               icon: Users,
-              title: "Visible support",
+              title: "A dedicated mentor",
               description:
-                "Mentoring, feedback, community, and guided paths that reduce hesitation before enrollment.",
+                "Every week, talk live with an expert in your future career. Get personalized feedback on all your projects.",
               tone: "dark",
             },
             {
               icon: BriefcaseBusiness,
-              title: "Professional outcomes",
+              title: "Employability focus",
               description:
-                "Programs built around portfolio, employability, and real progression instead of passive video consumption.",
+                "Build a solid portfolio with projects inspired by real business cases. Be ready to get hired by the end of your program.",
               tone: "accent",
             },
           ],
-          statsTitle: "What drives conversion",
+          statsTitle: "The keys to your success",
           stats: [
-            "A clear promise in under five seconds",
-            "Simple navigation with memorable sections",
-            "Repeated CTAs without feeling pushy",
+            "Flexible paths adapted to your life",
+            "Recognized and valued certification",
+            "Career coaching until you're hired",
           ],
         };
 

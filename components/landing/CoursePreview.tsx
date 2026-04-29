@@ -17,32 +17,32 @@ export function CoursePreview({ lang, courses }: CoursePreviewProps) {
   const copy =
     lang === "fr"
       ? {
-          eyebrow: "Programmes",
-          heading: "Choisissez la formation qui convertit votre ambition en progression visible.",
+          eyebrow: "Catalogue de formations",
+          heading: "Des programmes conçus pour transformer votre ambition en expertise.",
           description:
-            "Chaque programme doit sembler desirable, credible et simple a rejoindre. La grille ci-dessous sert autant a inspirer qu'a faire cliquer.",
-          viewAll: "Voir toutes les formations",
-          cardCta: "Voir le programme",
-          tags: ["Projet reel", "Acces immediat", "Certificat"],
-          ctaTitle: "Pret a lancer vos ventes de formations ?",
+            "Découvrez nos cursus phares en Développement, Cloud et Data. Chaque formation inclut un mentorat individuel et des projets concrets pour votre portfolio.",
+          viewAll: "Explorer tout le catalogue",
+          cardCta: "Découvrir le programme",
+          tags: ["Projet réel", "Diplôme reconnu", "Accompagnement"],
+          ctaTitle: "Prêt à propulser votre carrière ?",
           ctaDescription:
-            "La nouvelle landing met en scene vos offres comme un produit premium, avec un parcours de lecture plus convaincant et plus memorable.",
-          primaryCta: "Explorer le catalogue",
-          secondaryCta: "Creer un compte",
+            "Rejoignez des milliers d'étudiants qui ont déjà transformé leur vie professionnelle grâce à notre méthode d'apprentissage unique.",
+          primaryCta: "Voir les parcours",
+          secondaryCta: "Créer mon compte",
         }
       : {
-          eyebrow: "Programs",
-          heading: "Choose the training that turns ambition into visible progress.",
+          eyebrow: "Course Catalog",
+          heading: "Programs designed to turn your ambition into expertise.",
           description:
-            "Each program should feel desirable, credible, and easy to join. This grid is built to inspire and to get clicks.",
-          viewAll: "View all courses",
-          cardCta: "View program",
-          tags: ["Real project", "Instant access", "Certificate"],
-          ctaTitle: "Ready to start selling your training programs?",
+            "Explore our flagship courses in Development, Cloud, and Data. Every program includes individual mentorship and real-world projects for your portfolio.",
+          viewAll: "Browse entire catalog",
+          cardCta: "View program details",
+          tags: ["Real project", "Recognized degree", "Mentorship"],
+          ctaTitle: "Ready to boost your career?",
           ctaDescription:
-            "The new landing page presents your offers like a premium product with a stronger reading flow and clearer conversion moments.",
-          primaryCta: "Browse catalog",
-          secondaryCta: "Create account",
+            "Join thousands of students who have already transformed their professional lives through our unique learning method.",
+          primaryCta: "View all paths",
+          secondaryCta: "Create an account",
         };
 
   return (

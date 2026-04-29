@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Kladriva Academy — Career Transformation Platform",
-  description: "A next-generation professional learning platform combining outcome-driven courses, real-world projects, human mentorship, and a job marketplace. Go beyond Coursera.",
+  title: "Kladriva Academy — Plateforme d'apprentissage immersive",
+  description: "Maîtrisez les technologies modernes avec un mentorat personnalisé, des cours immersifs et des certifications reconnues.",
 };
 
 import { Providers } from "@/components/Providers";
@@ -15,7 +15,7 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="fr"
       className="h-full antialiased"
       suppressHydrationWarning
     >
